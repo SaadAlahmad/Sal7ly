@@ -1,0 +1,101 @@
+/* General Styles */
+.signup-container {
+  font-family: 'Lato', sans-serif;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.signup-header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.signup-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.signup-header p {
+  margin: 5px 0 0;
+  font-size: 1.2rem;
+}
+
+.signup-type {
+  margin-bottom: 20px;
+}
+
+.signup-type-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #388E3C;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-type-button.active {
+  background-color: #2C6E2B;
+}
+
+.signup-type-button:hover {
+  background-color: #2C6E2B;
+}
+
+/* Form Styles */
+.signup-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+/* Submit Button */
+.submit-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #388E3C;
+}

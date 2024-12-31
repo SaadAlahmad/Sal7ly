@@ -1,0 +1,79 @@
+.profile-page {
+  max-width: 900px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  text-align: left;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Space between the profile picture and main content */
+}
+
+.profile-picture {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-main {
+  display: flex;
+  flex: 1; /* Takes the remaining width */
+  gap: 20px; /* Space between profile-details and bio */
+}
+
+.profile-details {
+  flex: 1; /* Allows the details section to take up only necessary space */
+}
+
+.profile-details h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.profile-details p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.profile-bio {
+  flex: 1; /* Bio takes up the remaining available space */
+}
+
+.profile-bio h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.profile-bio p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.profile-worksamples {
+  margin-top: 20px;
+}
+
+.profile-worksamples h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.profile-worksamples ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.loadingp {
+  font-size: xx-large;
+}

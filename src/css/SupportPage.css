@@ -1,0 +1,92 @@
+/* Supportpage.css */
+
+.support-container {
+  padding: 20px;
+  background-color:beige;
+  font-family: Arial, sans-serif;
+}
+
+.support-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.support-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.faq-section, .contact-section, .support-form-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-section h2, .contact-section h2, .support-form-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: green;
+}
+
+.faq-item h3 {
+  font-size: 1.2rem;
+  margin: 10px 0 5px;
+  color: #555;
+}
+
+.faq-item p {
+  margin: 0;
+  color: #777;
+}
+
+.contact-section ul {
+  list-style: none;
+  padding: 0;
+  color: #555;
+}
+
+.contact-section ul li {
+  margin: 5px 0;
+}
+
+.support-form {
+  display: flex;
+  padding-right: 20px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.support-form input, .support-form textarea {
+  width: 100%;
+  padding: 10px;
+  color: black;
+  background-color: wheat;
+  border: 1px solid green;
+  border-radius: 5px;
+}
+
+.support-form textarea {
+  border: 1px solid green;
+  background-color: wheat;
+  resize: none;
+  height: 100px;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: #4fc500;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #008600;
+}

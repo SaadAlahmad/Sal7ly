@@ -1,0 +1,114 @@
+/* General container styling */
+.category-results {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.category-results h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Grid for displaying professionals */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust min-width for responsiveness */
+  gap: 20px;
+  justify-content: center; /* Center content if fewer items */
+  align-items: start;
+  padding: 10px;
+}
+
+/* Individual card styling */
+.result-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px; /* Set a reasonable maximum width for each card */
+  margin: 0 auto; /* Center cards when there are fewer items */
+}
+
+.result-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.result-card img {
+  width: 150px; /* Set the desired width */
+  height: 150px; /* Set the desired height */
+  object-fit: cover; /* Ensure the image maintains its aspect ratio */
+  border-radius: 8px; /* Optional: Add rounded corners for a cleaner look */
+  margin: 10px auto; /* Center the image inside the card */
+  display: block;
+}
+
+.result-card h3 {
+  margin: 15px;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.result-card p {
+  margin: 10px 15px;
+  color: #2e2e2e;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.result-card p h5 {
+  color: #7a7a7a;
+}
+
+/* Work samples section */
+.work-samples {
+  margin: 10px 15px;
+}
+
+.work-samples h4 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.work-samples ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.work-samples ul li {
+  margin: 5px 0;
+}
+
+.work-samples ul li a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.work-samples ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .results-grid {
+      grid-template-columns: 1fr;
+  }
+}
+
+.loadingp {
+  font-size: xx-large;
+}

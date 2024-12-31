@@ -1,0 +1,139 @@
+/* General Styles */
+.request-container {
+  font-family: 'Lato', sans-serif;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.request-header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 800px;
+  margin: 50px auto;
+}
+
+.request-header h1 {
+  margin: 0;
+}
+
+.active-requests-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #388E3C;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.active-requests-button:hover {
+  background-color: #2C6E2B;
+}
+
+/* Form Styles */
+.request-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+/* Button Styles */
+.submit-button,
+.modify-button,
+.delete-button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #388E3C;
+}
+
+.modify-button {
+  background-color: #FFA500;
+  color: white;
+  margin-right: 10px;
+}
+
+.modify-button:hover {
+  background-color: #CC8400;
+}
+
+.delete-button {
+  background-color: #FF4D4D;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #CC0000;
+}
+
+/* Active Requests Section */
+.active-requests-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.requests-list {
+  list-style: none;
+  padding: 0;
+}
+
+.request-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}

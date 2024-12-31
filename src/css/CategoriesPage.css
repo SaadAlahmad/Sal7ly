@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.categories-container {
+  font-family: 'Lato', sans-serif;
+  padding: 20px;
+  text-align: center;
+  background-color: beige;
+  color: #333;
+}
+
+.categories-intro {
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.intro-title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: solid 2px grey;
+}
+
+.intro-description-en {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  font-family: "Josefin Sans", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.intro-description-ar {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  font-family: "Cairo", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0;
+}
+
+.categories-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.category-card {
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #227900;
+}
+
+.category-icon {
+  font-size: 3rem;
+  color: #227900;
+  margin-bottom: 10px;
+}
+
+.category-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
