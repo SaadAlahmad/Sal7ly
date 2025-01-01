@@ -1,12 +1,10 @@
 <?php
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
 
 require_once 'DbConnect.php';
-
-$baseUrl = "http://localhost/test-project/test-project/php_backend"; // Adjust to your base URL
 
 try {
     // Initialize database connection
@@ -26,9 +24,9 @@ try {
         exit;
     }
 
-    // Prepare dynamic SQL query
+    // Build the SQL query
     $sql = "
-        SELECT id, name, picture, city, mobile, bio, worksamples 
+        SELECT id, name, picture, city, mobile 
         FROM craftspeople 
         WHERE category = :category
     ";
@@ -55,25 +53,26 @@ try {
         $stmt->bindParam(':city', $city);
     }
 
+    // Execute query and fetch results
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Process results to update picture paths and ensure all fields are included
+    // Process results to convert picture from BLOB to Base64
     foreach ($results as &$result) {
         if (!empty($result['picture'])) {
-            $result['picture'] = $baseUrl . str_replace('./', '/', $result['picture']);
+            $result['picture'] = 'data:image/jpeg;base64,' . base64_encode($result['picture']);
+        } else {
+            $result['picture'] = '/pictures/userjpg.jpg'; // Default picture
         }
-        $result['bio'] = $result['bio'] ?? '';
-        $result['worksamples'] = $result['worksamples'] ?? [];
     }
     unset($result);
 
-    // Send the results as JSON
+    // Return the results as JSON
     echo json_encode(['results' => $results]);
 
 } catch (Exception $e) {
-    // Handle errors and send a response
-    echo json_encode(['error' => $e->getMessage()]);
+    // Handle errors and return a JSON response
+    echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
     exit;
 }
 ?>

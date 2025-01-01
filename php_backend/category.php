@@ -6,15 +6,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Methods
 
 require_once 'DbConnect.php';
 
-$baseUrl = "http://localhost/test-project/test-project/php_backend"; // Adjust to your base URL
-
 try {
-    // Initialize database connection
     $db = new DbConnect();
     $conn = $db->connect();
 
     // Get the category from the request
-    $category = isset($_GET['category']) ? $_GET['category'] : '';
+    $category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : '';
 
     if (empty($category)) {
         echo json_encode(['error' => 'Category is required']);
@@ -34,11 +31,12 @@ try {
 
     // Process the results
     foreach ($professionals as &$professional) {
+        // Base64-encode picture if it exists
         if (!empty($professional['picture'])) {
-            $professional['picture'] = $baseUrl . str_replace('./', '/', $professional['picture']);
+            $professional['picture'] = 'data:image/jpeg;base64,' . base64_encode($professional['picture']);
+        } else {
+            $professional['picture'] = '/pictures/userjpg.jpg'; // Default picture
         }
-        $professional['bio'] = $professional['bio'] ?? '';
-        $professional['worksamples'] = $professional['worksamples'] ?? [];
     }
     unset($professional);
 
@@ -46,7 +44,8 @@ try {
     echo json_encode(['professionals' => $professionals]);
 
 } catch (Exception $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+    error_log("Error in category.php: " . $e->getMessage());
+    echo json_encode(['error' => 'An error occurred while fetching professionals.']);
     exit;
 }
 ?>

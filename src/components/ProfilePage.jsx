@@ -6,6 +6,7 @@ const ProfilePage = () => {
     const { id } = useParams(); // Get the professional ID from the URL
     const [professional, setProfessional] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [modalImage, setModalImage] = useState(null); // For modal functionality
 
     useEffect(() => {
         const fetchProfessional = async () => {
@@ -31,42 +32,61 @@ const ProfilePage = () => {
         fetchProfessional();
     }, [id]);
 
+    const openModal = (image) => {
+        setModalImage(image);
+    };
+
+    const closeModal = () => {
+        setModalImage(null);
+    };
+
     if (loading) return <p className="loadingp">Loading...</p>;
     if (!professional) return <p>craftsman not found.</p>;
 
     return (
-      <div className="profile-page">
-        <div className="profile-header">
-          <img src={professional.picture} alt={professional.name} className="profile-picture" />
-          <div className="profile-main">
-            <div className="profile-details">
-              <h1>{professional.name}</h1>
-              <p><strong>City:</strong> {professional.city}</p>
-              <p><strong>Mobile:</strong> 0{professional.mobile}</p>
+        <div className="profile-page">
+            <div className="profile-header">
+                <img src={professional.picture} alt={professional.name} className="profile-picture" />
+                <div className="profile-main">
+                    <div className="profile-details">
+                        <h1>{professional.name}</h1>
+                        <p><strong>City:</strong> {professional.city}</p>
+                        <p><strong>Mobile:</strong> 0{professional.mobile}</p>
+                    </div>
+                    <div className="profile-bio">
+                        <h3>Bio:</h3>
+                        <p dangerouslySetInnerHTML={{ __html: professional.bio.replace(/\n/g, "<br />") }} />
+                    </div>
+                </div>
             </div>
-            <div className="profile-bio">
-              <h3>Bio:</h3>
-              <p dangerouslySetInnerHTML={{ __html: professional.bio.replace(/\n/g, "<br />") }} />
+            <div className="profile-worksamples">
+                <h3>Work Samples:</h3>
+                {professional.worksamples.length > 0 ? (
+                    <div className="worksamples-grid">
+                        {professional.worksamples.map((sample, index) => (
+                            <img
+                                key={sample.id}
+                                src={sample.data}
+                                alt={`Sample ${index + 1}`}
+                                className="work-sample-image"
+                                onClick={() => openModal(sample.data)}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p>No work samples available.</p>
+                )}
             </div>
-          </div>
+            {modalImage && (
+                <div className="image-modal" onClick={closeModal}>
+                    <img src={modalImage} alt="Enlarged Work Sample" />
+                    <button className="close-button" onClick={(e) => {
+                        e.stopPropagation();
+                        closeModal();
+                    }}>×</button>
+                </div>
+            )}
         </div>
-        <div className="profile-worksamples">
-          <h3>Work Samples:</h3>
-          {professional.worksamples.length > 0 ? (
-            <ul>
-              {professional.worksamples.map((sample, index) => (
-                <li key={index}>
-                  <a href={sample} target="_blank" rel="noopener noreferrer">
-                    View Sample {index + 1}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No work samples available.</p>
-          )}
-        </div>
-      </div>
     );
 };
 

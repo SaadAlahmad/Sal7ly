@@ -84,6 +84,20 @@ textarea {
   height: 100px;
 }
 
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-left: -30px;
+}
+
 /* Submit Button */
 .submit-button {
   padding: 10px 20px;

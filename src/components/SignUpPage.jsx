@@ -1,43 +1,29 @@
 import React, { useState } from "react";
 import "../css/SignUpPage.css";
 
-const cities = [
-    "Jenin",
-    "Tubas",
-    "Tulkarem",
-    "Nablus",
-    "Qalqilya",
-    "Salfit",
-    "Ramallah and al-Birah",
-    "Jericho",
-    "Bethlehem",
-    "Hebron",
-];
-
-const categories = [
-    "Plumber",
-    "Blacksmith",
-    "Electrician",
-    "Mechanic",
-    "Carpenter",
-    "Gardener",
-    "Mason",
-    "Cleaner",
-    "Tailor",
-    "Tiler",
-];
-
 const SignUpPage = () => {
     const [userType, setUserType] = useState("user");
     const [formData, setFormData] = useState({
+        name: "",
         email: "",
-        phone: "",
+        mobile: "",
         city: "",
         password: "",
-        service: "",
+        category: "",
         bio: "",
+        picture: null,
         workSamples: [],
     });
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const categories = [
+        "Plumber", "Blacksmith", "Electrician", "Mechanic", "Carpenter", "Gardener", "Mason", "Cleaner", "Tailor", "Tiler"
+    ];
+
+    const cities = [
+        "Jenin", "Tubas", "Tulkarem", "Nablus", "Qalqilya", "Salfit", "Ramallah and al-Birah", "Jericho", "Bethlehem", "Hebron"
+    ];
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -45,29 +31,56 @@ const SignUpPage = () => {
     };
 
     const handleFileChange = (e) => {
-        setFormData({ ...formData, workSamples: Array.from(e.target.files) });
+        const { name, files } = e.target;
+        if (name === "picture") {
+            setFormData({ ...formData, picture: files[0] });
+        } else if (name === "workSamples") {
+            setFormData({ ...formData, workSamples: Array.from(files) });
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data:", formData);
-        alert(`Successfully registered as a ${userType === "user" ? "User" : "Professional"}!`);
-        setFormData({
-            email: "",
-            phone: "",
-            city: "",
-            password: "",
-            service: "",
-            bio: "",
-            workSamples: [],
+
+        const formDataToSend = new FormData();
+        Object.keys(formData).forEach((key) => {
+            if (key === "workSamples") {
+                formData.workSamples.forEach((file, index) => {
+                    formDataToSend.append(`workSamples[${index}]`, file);
+                });
+            } else if (formData[key] !== null) {
+                formDataToSend.append(key, formData[key]);
+            }
         });
+        formDataToSend.append("userType", userType);
+
+        try {
+            const response = await fetch("http://localhost/test-project/test-project/php_backend/signuphandler.php", {
+                method: "POST",
+                body: formDataToSend,
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.status) {
+                alert(result.message || "Successfully registered!");
+                setFormData({
+                    name: "", email: "", mobile: "", city: "", password: "", category: "", bio: "", picture: null, workSamples: []
+                });
+            } else {
+                alert(result.error || "Registration failed. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again later.");
+        }
     };
 
     return (
         <div className="signup-container">
             <header className="signup-header">
                 <h1>Sign Up</h1>
-                <p>Register as a User or Professional</p>
+                <p>Register as a User or Craftsman</p>
             </header>
             <div className="signup-type">
                 <button
@@ -77,14 +90,26 @@ const SignUpPage = () => {
                     Register as User
                 </button>
                 <button
-                    className={`signup-type-button ${userType === "professional" ? "active" : ""}`}
-                    onClick={() => setUserType("professional")}
+                    className={`signup-type-button ${userType === "craftsman" ? "active" : ""}`}
+                    onClick={() => setUserType("craftsman")}
                 >
-                    Register as Professional
+                    Register as Craftsman
                 </button>
             </div>
             <form className="signup-form" onSubmit={handleSubmit}>
                 {/* Shared Fields */}
+                <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <input
@@ -98,13 +123,13 @@ const SignUpPage = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="phone">Phone Number</label>
+                    <label htmlFor="mobile">Mobile Number</label>
                     <input
                         type="text"
-                        id="phone"
-                        name="phone"
-                        placeholder="Enter your phone number"
-                        value={formData.phone}
+                        id="mobile"
+                        name="mobile"
+                        placeholder="Enter your mobile number"
+                        value={formData.mobile}
                         onChange={handleInputChange}
                         required
                     />
@@ -127,34 +152,54 @@ const SignUpPage = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="picture">Upload Profile Picture (Optional)</label>
                     <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
+                        type="file"
+                        id="picture"
+                        name="picture"
+                        onChange={handleFileChange}
+                        accept="image/*"
                     />
                 </div>
+                <div className="form-group password-group">
+                    <label htmlFor="password">Password</label>
+                    <div className="password-input-container">
+                        <input
+                            type={passwordVisible ? "text" : "password"}
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password-button"
+                            onClick={() => setPasswordVisible(!passwordVisible)}
+                            aria-label="Toggle password visibility"
+                        >
+                            {passwordVisible ? "🙈" : "👁️"}
+                        </button>
+                    </div>
+                </div>
 
-                {/* Professional-Specific Fields */}
-                {userType === "professional" && (
+                {/* Craftsman-Specific Fields */}
+                {userType === "craftsman" && (
                     <>
                         <div className="form-group">
-                            <label htmlFor="service">Service</label>
+                            <label htmlFor="category">Category</label>
                             <select
-                                id="service"
-                                name="service"
-                                value={formData.service}
+                                id="category"
+                                name="category"
+                                value={formData.category}
                                 onChange={handleInputChange}
                                 required
                             >
-                                <option value="">Select a service</option>
-                                {categories.map((service, index) => (
-                                    <option key={index} value={service}>
-                                        {service}
+                                <option value="">Select a category</option>
+                                {categories.map((category, index) => (
+                                    <option key={index} value={category}>
+                                        {category}
                                     </option>
                                 ))}
                             </select>

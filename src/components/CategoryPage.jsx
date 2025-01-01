@@ -45,7 +45,10 @@ const CategoryPage = () => {
                             className="result-card"
                             onClick={() => navigate(`/profile/${professional.id}`)}
                         >
-                            <img src={professional.picture} alt={professional.name} />
+                            <img 
+                                src={professional.picture.startsWith('data:image') ? professional.picture : `/pictures/${professional.picture}`} 
+                                alt={professional.name} 
+                            />
                             <h3>{professional.name}</h3>
                             <p><h5>City</h5>{professional.city}</p>
                             <p><h5>Mobile</h5> 0{professional.mobile}</p>

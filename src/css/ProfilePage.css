@@ -77,3 +77,84 @@
 .loadingp {
   font-size: xx-large;
 }
+
+/* Work samples grid layout */
+.worksamples-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.work-sample-image {
+  width: 200px; /* Small size */
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  border: solid 2px black;
+  border-radius: 12px;
+}
+
+.work-sample-image:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Modal styles */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8); /* Background blur effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border: 5px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.image-modal .close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  color: #000;
+  font-size: 20px;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.image-modal .close-button:hover {
+  background: #f00;
+  color: #fff;
+}
+
+/* Responsive stacking */
+@media (max-width: 600px) {
+  .worksamples-grid {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .work-sample-image {
+      width: 50%; /* Larger images for smaller screens */
+      height: auto;
+  }
+}
