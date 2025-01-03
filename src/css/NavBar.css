@@ -28,16 +28,17 @@ nav .title {
   font-size: 5rem;
   color: #4CAF50;
   font-family: "Reem Kufi", serif;
-  font-optical-sizing: auto;
+  text-decoration: none;
   font-weight: bold;
   font-style: normal;
-  transition: filter 100ms;
+  transition: color 300ms;
+  transition: filter 300ms;
   padding-right: 60px;
 }
 
 nav .title:hover {
   color: #388E3C;
-  filter: drop-shadow(0 0 0.5em rgb(6, 121, 6));
+  filter: drop-shadow(0 0 0.1em rgba(6, 121, 6, 0.247));
 }
 
 nav ul {
@@ -47,8 +48,20 @@ nav ul {
 
 nav ul li {
  list-style: none; 
+
+ transition: .25s ease;
 }
 
+ul {
+  &:hover {
+		.nav-link {
+			color: #999999;
+			&:hover {
+				color: #137400;
+			}
+		}
+	}
+}
 .nav-link {
   font-family: "Lato", serif;
   font-weight: 700;

@@ -61,6 +61,8 @@
 
 .profile-worksamples {
   margin-top: 20px;
+  border-top: solid 2px rgba(128, 128, 128, 0.281);
+  border-radius: 12px;
 }
 
 .profile-worksamples h3 {
