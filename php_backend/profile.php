@@ -19,11 +19,11 @@ try {
         exit;
     }
 
-    // Fetch the professional's details
+    // Fetch the professional's details if verified
     $stmt = $conn->prepare("
         SELECT id, name, picture, city, mobile, bio 
         FROM craftspeople 
-        WHERE id = :id
+        WHERE id = :id AND verified = 1
     ");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
@@ -57,7 +57,7 @@ try {
             ];
         }, $worksamples);
     } else {
-        echo json_encode(['error' => 'Craftsperson not found']);
+        echo json_encode(['error' => 'Craftsperson not found or not verified']);
         exit;
     }
 

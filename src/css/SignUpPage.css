@@ -41,8 +41,13 @@
 }
 
 .signup-type-button.active {
-  background-color: #2C6E2B;
+  background-color: #1b441b;
 }
+
+.signup-type-button.active:hover {
+  color: white;
+}
+
 
 .signup-type-button:hover {
   background-color: #2C6E2B;

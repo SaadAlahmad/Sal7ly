@@ -4,6 +4,7 @@
   font-family: Arial, sans-serif;
   text-align: left;
   padding: 20px;
+  padding-bottom: 50px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -68,7 +69,7 @@
 .profile-worksamples h3 {
   font-size: 1.5rem;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .profile-worksamples ul {
@@ -84,22 +85,23 @@
 .worksamples-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
 }
 
 .work-sample-image {
-  width: 200px; /* Small size */
+  width: 200px;
   height: 200px;
   object-fit: cover;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  border: solid 2px black;
+  transition: all 0.2s ease-in-out;
+  /* transition: transform 0.2s ease-in-out; */
   border-radius: 12px;
 }
 
 .work-sample-image:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05);
+  filter: drop-shadow(0.5rem 0.35rem 1rem rgba(0, 0, 0, 0.295));
 }
 
 /* Modal styles */

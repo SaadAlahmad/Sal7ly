@@ -7,6 +7,7 @@ import CategoryPage from './components/CategoryPage';
 import ProfilePage from './components/ProfilePage'
 import RequestPage from './components/RequestPage'
 import SupportPage from './components/SupportPage'
+import LoginPage from './components/LoginPage'
 import SignUpPage from './components/SignupPage'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import './css/App.css'
@@ -25,7 +26,7 @@ function App() {
           <Route path="/profile/:id" element={<Layout><ProfilePage /></Layout>} />
           <Route path="/request" element={<Layout><RequestPage /></Layout>} />
           <Route path="/help" element={<Layout><SupportPage /></Layout>} />
-          {/* <Route path="/login" element={<LoginPage />} /> */}
+          <Route path="/login" element={<Layout><LoginPage /></Layout>} />
           <Route path="/signup" element={<Layout><SignUpPage /></Layout>} />
         </Routes>
       </HashRouter>

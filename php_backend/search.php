@@ -28,7 +28,7 @@ try {
     $sql = "
         SELECT id, name, picture, city, mobile 
         FROM craftspeople 
-        WHERE category = :category
+        WHERE category = :category AND verified = 1
     ";
 
     if (!empty($name)) {

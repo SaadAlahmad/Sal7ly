@@ -22,7 +22,7 @@ try {
     $stmt = $conn->prepare("
         SELECT id, name, picture, city, mobile 
         FROM craftspeople 
-        WHERE category = :category
+        WHERE category = :category AND verified = 1
     ");
     $stmt->bindParam(':category', $category);
     $stmt->execute();

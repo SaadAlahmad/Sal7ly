@@ -14,101 +14,163 @@ try {
         throw new Exception('Invalid request method. Only POST is allowed.');
     }
 
-    // Generate a unique ID
-    function generateUniqueId($conn) {
-        do {
-            $datePart = date('Ymd'); // YYYYMMDD format (8 digits)
-            $randomPart = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // 4 random digits
-            $uniqueId = $datePart . $randomPart; // Concatenate date and random parts
-    
-            // Check if the ID is already in use
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM craftspeople WHERE id = :id");
-            $stmt->bindParam(':id', $uniqueId);
-            $stmt->execute();
-            $exists = $stmt->fetchColumn() > 0; // Check if count > 0
-        } while ($exists);
-    
-        return $uniqueId;
-    }
-    
-    $uniqueId = generateUniqueId($conn);
+    $userType = $_POST['userType'] ?? null;
 
-    // Validate required fields
-    $requiredFields = ['name', 'email', 'mobile', 'city', 'category', 'bio', 'password'];
-    foreach ($requiredFields as $field) {
-        if (empty($_POST[$field])) {
-            throw new Exception("The field '$field' is required.");
+    if ($userType === 'user') {
+        // Generate a unique ID for the user
+        function generateUserId($conn) {
+            do {
+                $prefix = '8800';
+                $randomPart = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // 6 random digits
+                $uniqueId = $prefix . $randomPart;
+
+                // Check if the ID is already in use
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE id = :id");
+                $stmt->bindParam(':id', $uniqueId);
+                $stmt->execute();
+                $exists = $stmt->fetchColumn() > 0; // Check if count > 0
+            } while ($exists);
+
+            return $uniqueId;
         }
-    }
 
-    // Extract form data
-    $name = htmlspecialchars($_POST['name']);
-    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-    $mobile = htmlspecialchars($_POST['mobile']);
-    $city = htmlspecialchars($_POST['city']);
-    $category = htmlspecialchars($_POST['category']);
-    $bio = htmlspecialchars($_POST['bio']);
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $userId = generateUserId($conn);
 
-    if (!$email) {
-        throw new Exception('Invalid email address.');
-    }
-
-    // Handle profile picture upload
-    $picture = null;
-    if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
-        $picture = file_get_contents($_FILES['picture']['tmp_name']);
-    }
-
-    // Insert user data into the database
-    $stmt = $conn->prepare("
-        INSERT INTO craftspeople (id, name, email, mobile, city, category, bio, picture, password)
-        VALUES (:id, :name, :email, :mobile, :city, :category, :bio, :picture, :password)
-    ");
-    $stmt->bindParam(':id', $uniqueId);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':mobile', $mobile, PDO::PARAM_INT);
-    $stmt->bindParam(':city', $city);
-    $stmt->bindParam(':category', $category);
-    $stmt->bindParam(':bio', $bio);
-    $stmt->bindParam(':picture', $picture, PDO::PARAM_LOB);
-    $stmt->bindParam(':password', $password);
-
-    $stmt->execute();
-    $userId = $uniqueId;
-
-    // Handle work samples upload
-    $workSamples = [];
-    if (isset($_FILES['workSamples']['tmp_name']) && is_array($_FILES['workSamples']['tmp_name'])) {
-        foreach ($_FILES['workSamples']['tmp_name'] as $key => $tmpName) {
-            if (is_uploaded_file($tmpName)) {
-                $fileContent = file_get_contents($tmpName);
-                $fileType = $_FILES['workSamples']['type'][$key];
-
-                $workStmt = $conn->prepare("
-                    INSERT INTO worksamples (craftsperson_id, file_data, file_type)
-                    VALUES (:craftsperson_id, :file_data, :file_type)
-                ");
-                $workStmt->bindParam(':craftsperson_id', $userId);
-                $workStmt->bindParam(':file_data', $fileContent, PDO::PARAM_LOB);
-                $workStmt->bindParam(':file_type', $fileType);
-                $workStmt->execute();
-
-                $workSamples[] = $conn->lastInsertId();
+        // Validate required fields for users
+        $requiredFields = ['name', 'email', 'mobile', 'password'];
+        foreach ($requiredFields as $field) {
+            if (empty($_POST[$field])) {
+                throw new Exception("The field '$field' is required.");
             }
         }
-    }
 
-    $response['status'] = true;
-    $response['message'] = 'User registered successfully.';
-    $response['userId'] = $userId;
-    $response['workSamples'] = $workSamples;
+        // Extract form data
+        $name = htmlspecialchars($_POST['name']);
+        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+        $mobile = htmlspecialchars($_POST['mobile']);
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $created_at = date('Y-m-d H:i:s');
+        $updated_at = $created_at;
+
+        if (!$email) {
+            throw new Exception('Invalid email address.');
+        }
+
+        // Insert user data into the `users` table
+        $stmt = $conn->prepare("
+            INSERT INTO users (id, name, email, mobile, password, created_at, updated_at)
+            VALUES (:id, :name, :email, :mobile, :password, :created_at, :updated_at)
+        ");
+        $stmt->bindParam(':id', $userId);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':mobile', $mobile, PDO::PARAM_INT);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':created_at', $created_at);
+        $stmt->bindParam(':updated_at', $updated_at);
+
+        $stmt->execute();
+
+        $response['status'] = true;
+        $response['message'] = 'User registered successfully.';
+        $response['userId'] = $userId;
+    } elseif ($userType === 'craftsman') {
+        // Generate a unique ID for the craftsman
+        function generateCraftsmanId($conn) {
+            do {
+                $datePart = date('Ymd'); // YYYYMMDD format (8 digits)
+                $randomPart = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // 4 random digits
+                $uniqueId = $datePart . $randomPart;
+
+                // Check if the ID is already in use
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM craftspeople WHERE id = :id");
+                $stmt->bindParam(':id', $uniqueId);
+                $stmt->execute();
+                $exists = $stmt->fetchColumn() > 0; // Check if count > 0
+            } while ($exists);
+
+            return $uniqueId;
+        }
+
+        $craftsmanId = generateCraftsmanId($conn);
+
+        // Validate required fields for craftsman
+        $requiredFields = ['name', 'email', 'mobile', 'city', 'category', 'bio', 'password'];
+        foreach ($requiredFields as $field) {
+            if (empty($_POST[$field])) {
+                throw new Exception("The field '$field' is required.");
+            }
+        }
+
+        // Extract form data
+        $name = htmlspecialchars($_POST['name']);
+        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+        $mobile = htmlspecialchars($_POST['mobile']);
+        $city = htmlspecialchars($_POST['city']);
+        $category = htmlspecialchars($_POST['category']);
+        $bio = htmlspecialchars($_POST['bio']);
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+        if (!$email) {
+            throw new Exception('Invalid email address.');
+        }
+
+        // Handle profile picture upload
+        $picture = null;
+        if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+            $picture = file_get_contents($_FILES['picture']['tmp_name']);
+        }
+
+        // Insert craftsman data into the `craftspeople` table
+        $stmt = $conn->prepare("
+            INSERT INTO craftspeople (id, name, email, mobile, city, category, bio, picture, password)
+            VALUES (:id, :name, :email, :mobile, :city, :category, :bio, :picture, :password)
+        ");
+        $stmt->bindParam(':id', $craftsmanId);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':mobile', $mobile, PDO::PARAM_INT);
+        $stmt->bindParam(':city', $city);
+        $stmt->bindParam(':category', $category);
+        $stmt->bindParam(':bio', $bio);
+        $stmt->bindParam(':picture', $picture, PDO::PARAM_LOB);
+        $stmt->bindParam(':password', $password);
+
+        $stmt->execute();
+
+        // Handle work samples upload
+        $workSamples = [];
+        if (isset($_FILES['workSamples']['tmp_name']) && is_array($_FILES['workSamples']['tmp_name'])) {
+            foreach ($_FILES['workSamples']['tmp_name'] as $key => $tmpName) {
+                if (is_uploaded_file($tmpName)) {
+                    $fileContent = file_get_contents($tmpName);
+                    $fileType = $_FILES['workSamples']['type'][$key];
+
+                    $workStmt = $conn->prepare("
+                        INSERT INTO worksamples (craftsperson_id, file_data, file_type)
+                        VALUES (:craftsperson_id, :file_data, :file_type)
+                    ");
+                    $workStmt->bindParam(':craftsperson_id', $craftsmanId);
+                    $workStmt->bindParam(':file_data', $fileContent, PDO::PARAM_LOB);
+                    $workStmt->bindParam(':file_type', $fileType);
+                    $workStmt->execute();
+
+                    $workSamples[] = $conn->lastInsertId();
+                }
+            }
+        }
+
+        $response['status'] = true;
+        $response['message'] = 'Craftsman registered successfully.';
+        $response['craftsmanId'] = $craftsmanId;
+        $response['workSamples'] = $workSamples;
+    } else {
+        throw new Exception("Invalid user type.");
+    }
 } catch (Exception $e) {
-    error_log($e->getMessage()); // Log the error to server logs
+    error_log($e->getMessage());
     $response['error'] = $e->getMessage();
 }
 
 echo json_encode($response);
 exit;
-?>
