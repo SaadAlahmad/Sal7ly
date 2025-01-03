@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "../css/LoginPage.css";
-import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-
+import { UserContext } from "./UserContext";
 
 const LoginPage = () => {
     const [loginType, setLoginType] = useState("user");
@@ -10,30 +10,44 @@ const LoginPage = () => {
         password: "",
     });
 
-    const [passwordVisible, setPasswordVisible] = useState(IoMdEyeOff);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const { setUser } = useContext(UserContext); // Use the context to update the user state
+    const navigate = useNavigate(); // Initialize the useNavigate hook
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await fetch("http://localhost/Sal7ly/php_backend/loginhandler.php", {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ ...formData, userType: loginType }),
-              });
+            });
 
             const result = await response.json();
 
             if (response.ok && result.status) {
                 alert(result.message || "Successfully logged in!");
+
+                // Update the user state globally
+                setUser({
+                    name: result.data.name,
+                    email: result.data.email,
+                    userType: loginType,
+                });
+
+                // Redirect to the homepage
+                navigate("/");
+
+                // Clear form data
                 setFormData({ email: "", password: "" });
             } else {
                 alert(result.error || "Log in failed. Please try again.");
@@ -88,14 +102,6 @@ const LoginPage = () => {
                                 onChange={handleInputChange}
                                 required
                             />
-                            <button
-                                type="button"
-                                className="toggle-password-button"
-                                onClick={() => setPasswordVisible(!passwordVisible)}
-                                aria-label="Toggle password visibility"
-                            >
-                                {passwordVisible ? "🙈" : "👁️"}
-                            </button>
                         </div>
                     </div>
                     <button type="submit" className="submit-button">

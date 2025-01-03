@@ -183,3 +183,61 @@ nav .menu span {
     padding-left: 0;
   }
 }
+.user-dropdown {
+  position: relative;
+}
+
+.user-button {
+  font-family: "Lato", serif;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: white;
+  background-color: #4caf50;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.user-button.active {
+  background-color: #388e3c;
+}
+
+.user-button.active:hover {
+  color: white;
+}
+
+
+/* .user-button:hover {
+  transform: scale(1.05);
+} */
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position below the button */
+  left: 0;
+  background-color: #4caf50; /* Match button color */
+  color: white;
+  border-radius: 5px;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  text-align: left;
+  width: 100%;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #388e3c; /* Slightly darker shade */
+}

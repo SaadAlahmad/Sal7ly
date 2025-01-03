@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { UserProvider } from "./components/UserContext";
 import Layout from './components/Layout'
 import HomePage from './components/HomePage'
 import SearchPage from './components/SearchPage'
@@ -17,19 +18,21 @@ function App() {
 
   return (
     <>
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<Layout><HomePage /></Layout>} />
-          <Route path="/search" element={<Layout><SearchPage /></Layout>} />
-          <Route path="/categories" element={<Layout><CategoriesPage /></Layout>} />
-          <Route path="/categories/:category" element={<Layout><CategoryPage /></Layout>} />
-          <Route path="/profile/:id" element={<Layout><ProfilePage /></Layout>} />
-          <Route path="/request" element={<Layout><RequestPage /></Layout>} />
-          <Route path="/help" element={<Layout><SupportPage /></Layout>} />
-          <Route path="/login" element={<Layout><LoginPage /></Layout>} />
-          <Route path="/signup" element={<Layout><SignUpPage /></Layout>} />
-        </Routes>
-      </HashRouter>
+      <UserProvider>
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<Layout><HomePage /></Layout>} />
+            <Route path="/search" element={<Layout><SearchPage /></Layout>} />
+            <Route path="/categories" element={<Layout><CategoriesPage /></Layout>} />
+            <Route path="/categories/:category" element={<Layout><CategoryPage /></Layout>} />
+            <Route path="/profile/:id" element={<Layout><ProfilePage /></Layout>} />
+            <Route path="/request" element={<Layout><RequestPage /></Layout>} />
+            <Route path="/help" element={<Layout><SupportPage /></Layout>} />
+            <Route path="/login" element={<Layout><LoginPage /></Layout>} />
+            <Route path="/signup" element={<Layout><SignUpPage /></Layout>} />
+          </Routes>
+        </HashRouter>
+      </UserProvider>
     </>
   )
 }
