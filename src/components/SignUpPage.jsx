@@ -55,7 +55,7 @@ const SignUpPage = () => {
         formDataToSend.append("userType", userType);
 
         try {
-            const response = await fetch("http://localhost/test-project/test-project/php_backend/signuphandler.php", {
+            const response = await fetch("http://localhost/Sal7ly/php_backend/signuphandler.php", {
                 method: "POST",
                 body: formDataToSend,
             });

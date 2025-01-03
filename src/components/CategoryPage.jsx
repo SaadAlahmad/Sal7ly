@@ -12,7 +12,7 @@ const CategoryPage = () => {
         const fetchProfessionals = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost/test-project/test-project/php_backend/category.php?category=${category}`
+                    `http://localhost/Sal7ly/php_backend/category.php?category=${category}`
                 );
                 const result = await response.json();
 

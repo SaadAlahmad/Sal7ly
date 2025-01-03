@@ -57,7 +57,7 @@ const SearchPage = () => {
         setValidationMessage("");
     
         try {
-            const response = await fetch("http://localhost/test-project/test-project/php_backend/search.php", {
+            const response = await fetch("http://localhost/Sal7ly/php_backend/search.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -12,7 +12,7 @@ const ProfilePage = () => {
         const fetchProfessional = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost/test-project/test-project/php_backend/profile.php?id=${id}`
+                    `http://localhost/Sal7ly/php_backend/profile.php?id=${id}`
                 );
                 const result = await response.json();
 
