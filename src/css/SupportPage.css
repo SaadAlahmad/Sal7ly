@@ -2,8 +2,7 @@
 
 .support-container {
   padding: 20px;
-  background-color:beige;
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 .support-title {
@@ -64,16 +63,9 @@
   width: 100%;
   padding: 10px;
   color: black;
-  background-color: wheat;
+  background-color: #FFF2C2;
   border: 1px solid green;
   border-radius: 5px;
-}
-
-.support-form textarea {
-  border: 1px solid green;
-  background-color: wheat;
-  resize: none;
-  height: 100px;
 }
 
 .submit-button {
