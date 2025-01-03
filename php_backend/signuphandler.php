@@ -14,6 +14,25 @@ try {
         throw new Exception('Invalid request method. Only POST is allowed.');
     }
 
+    // Generate a unique ID
+    function generateUniqueId($conn) {
+        do {
+            $datePart = date('Ymd'); // YYYYMMDD format (8 digits)
+            $randomPart = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // 4 random digits
+            $uniqueId = $datePart . $randomPart; // Concatenate date and random parts
+    
+            // Check if the ID is already in use
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM craftspeople WHERE id = :id");
+            $stmt->bindParam(':id', $uniqueId);
+            $stmt->execute();
+            $exists = $stmt->fetchColumn() > 0; // Check if count > 0
+        } while ($exists);
+    
+        return $uniqueId;
+    }
+    
+    $uniqueId = generateUniqueId($conn);
+
     // Validate required fields
     $requiredFields = ['name', 'email', 'mobile', 'city', 'category', 'bio', 'password'];
     foreach ($requiredFields as $field) {
@@ -43,9 +62,10 @@ try {
 
     // Insert user data into the database
     $stmt = $conn->prepare("
-        INSERT INTO craftspeople (name, email, mobile, city, category, bio, picture, password)
-        VALUES (:name, :email, :mobile, :city, :category, :bio, :picture, :password)
+        INSERT INTO craftspeople (id, name, email, mobile, city, category, bio, picture, password)
+        VALUES (:id, :name, :email, :mobile, :city, :category, :bio, :picture, :password)
     ");
+    $stmt->bindParam(':id', $uniqueId);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':mobile', $mobile, PDO::PARAM_INT);
@@ -56,7 +76,7 @@ try {
     $stmt->bindParam(':password', $password);
 
     $stmt->execute();
-    $userId = $conn->lastInsertId();
+    $userId = $uniqueId;
 
     // Handle work samples upload
     $workSamples = [];
