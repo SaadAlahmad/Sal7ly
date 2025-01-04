@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../css/RequestPage.css";
+import { UserContext } from "./UserContext";
+import { Link } from "react-router-dom";
 
 const services = [
     "Plumber",
-    "Woodworker",
     "Blacksmith",
     "Electrician",
     "Mechanic",
-    "Painter",
     "Carpenter",
     "Gardener",
     "Mason",
@@ -30,7 +30,7 @@ const cities = [
 ];
 
 const RequestPage = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(true); // Replace this with your authentication logic
+    const { user, setUser } = useContext(UserContext);
     const [activeRequests, setActiveRequests] = useState([]);
     const [formData, setFormData] = useState({
         service: "",
@@ -38,6 +38,27 @@ const RequestPage = () => {
         city: "",
         location: "",
     });
+
+    useEffect(() => {
+        // Simulate fetching user session (only if `user` is null initially)
+        if (user === null) {
+            const checkLoginStatus = async () => {
+                try {
+                    const response = await fetch("http://localhost/Sal7ly/php_backend/sessionhandler.php", {
+                        credentials: "include",
+                    });
+                    const data = await response.json();
+                    if (data.loggedIn) {
+                        setUser({ username: data.username, email: data.email });
+                    }
+                } catch (error) {
+                    console.error("Error checking login status:", error);
+                }
+            };
+
+            checkLoginStatus();
+        }
+    }, [user, setUser]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -60,11 +81,24 @@ const RequestPage = () => {
         setActiveRequests(activeRequests.filter((request) => request.id !== id));
     };
 
-    if (!isLoggedIn) {
+    if (!user) {
         return (
-            <div className="request-container">
-                <h1>Please Log In</h1>
-                <p>You must be logged in to submit or view requests.</p>
+            <div className="not-logged-in-container">
+                <h1>You are not logged in</h1>
+                <p>
+                    If you want to send a request for signed contractors, you need to log in.
+                </p>
+                <p>
+                    إذا كنت ترغب في إرسال طلب إلى المقاولين المعتمدين، يجب عليك تسجيل الدخول.
+                </p>
+                <div className="auth-buttons">
+                    <Link to="/login" className="auth-button">
+                        Log In
+                    </Link>
+                    <Link to="/signup" className="auth-button">
+                        Sign Up
+                    </Link>
+                </div>
             </div>
         );
     }
@@ -73,12 +107,6 @@ const RequestPage = () => {
         <div className="request-container">
             <header className="request-header">
                 <h1>Submit a Job Request</h1>
-                <button
-                    className="active-requests-button"
-                    onClick={() => alert("Showing active requests...")}
-                >
-                    View Active Requests
-                </button>
             </header>
             <form className="request-form" onSubmit={handleSubmit}>
                 <div className="form-group">
