@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2025 at 04:51 PM
+-- Generation Time: Jan 04, 2025 at 08:02 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `craftspeople` (
-  `id` int(15) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `mobile` bigint(10) NOT NULL,
@@ -36,8 +36,9 @@ CREATE TABLE `craftspeople` (
   `category` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `bio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `picture` longblob DEFAULT NULL,
-  `worksamples` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `password` char(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `verified` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -47,10 +48,11 @@ CREATE TABLE `craftspeople` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `mobile` bigint(10) NOT NULL,
+  `password` char(60) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -63,7 +65,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `worksamples` (
   `id` int(11) NOT NULL,
-  `craftsperson_id` int(11) DEFAULT NULL,
+  `craftsperson_id` bigint(20) NOT NULL,
   `file_data` longblob DEFAULT NULL,
   `file_type` varchar(50) DEFAULT NULL,
   `file_name` varchar(255) NOT NULL,
@@ -91,23 +93,17 @@ ALTER TABLE `users`
 --
 ALTER TABLE `worksamples`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `craftsperson_id` (`craftsperson_id`);
+  ADD KEY `worksamples_ibfk_1` (`craftsperson_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `craftspeople`
---
-ALTER TABLE `craftspeople`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `worksamples`
@@ -123,7 +119,7 @@ ALTER TABLE `worksamples`
 -- Constraints for table `worksamples`
 --
 ALTER TABLE `worksamples`
-  ADD CONSTRAINT `worksamples_ibfk_1` FOREIGN KEY (`craftsperson_id`) REFERENCES `craftspeople` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `worksamples_ibfk_1` FOREIGN KEY (`craftsperson_id`) REFERENCES `craftspeople` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
