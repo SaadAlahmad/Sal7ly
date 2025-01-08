@@ -30,7 +30,7 @@ const cities = [
 ];
 
 const RequestPage = () => {
-    const { user, loading } = useContext(UserContext);
+    const { user, setUser, loading } = useContext(UserContext);
     const [activeRequests, setActiveRequests] = useState([]);
     const [formData, setFormData] = useState({
         service: "",
@@ -153,6 +153,23 @@ const RequestPage = () => {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+          const response = await fetch("http://localhost/Sal7ly/php_backend/logout.php", {
+            method: "POST",
+            credentials: "include",
+          });
+          const data = await response.json();
+          if (data.success) {
+            setUser(null);
+          } else {
+            console.error("Logout failed");
+          }
+        } catch (error) {
+          console.error("Error during logout:", error);
+        }
+      };    
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -163,12 +180,14 @@ const RequestPage = () => {
                 <h1>You are logged in as a craftsman</h1>
                 <p>To be able to send custom requests you need to log in to a user account.</p>
                 <div className="auth-buttons">
-                    <Link to="/login" className="auth-button">
-                        Log In
-                    </Link>
-                    <Link to="/signup" className="auth-button">
-                        Sign Up
-                    </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                  className="logoutbt"
+                >
+                  Logout
+                </button>
                 </div>
             </div>
         );

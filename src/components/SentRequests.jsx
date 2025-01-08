@@ -3,7 +3,7 @@ import { UserContext } from "./UserContext";
 import "../css/SentRequests.css";
 
 const SentRequests = () => {
-  const { user, loading } = useContext(UserContext);
+  const { user, setUser, loading } = useContext(UserContext);
   const [requests, setRequests] = useState([]);
   const [applications, setApplications] = useState([]);
   const [error, setError] = useState(null);
@@ -13,6 +13,23 @@ const SentRequests = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [applicationText, setApplicationText] = useState("");
   const [modifyText, setModifyText] = useState("");
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost/Sal7ly/php_backend/logout.php", {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUser(null);
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   const fetchApplicationsAndRequests = async () => {
     try {

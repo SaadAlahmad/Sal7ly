@@ -236,3 +236,20 @@ textarea {
 .modify-form .submit-button:hover {
   background-color: #006d0f;
 }
+
+.logoutbt {
+  background-color: #be0000fd;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.logoutbt:hover {
+  background-color: #6d0000;
+}
