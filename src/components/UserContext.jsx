@@ -10,18 +10,26 @@ export const UserProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const response = await fetch("http://localhost/Sal7ly/php_backend/sessionhandler.php", {
-          credentials: "include", // Include cookies in the request
+          credentials: "include",
         });
         if (response.ok) {
           const data = await response.json();
+          // console.log("Fetched user data:", data);
           if (data.loggedIn) {
-            setUser({
-              id: data.id, // Set user ID
+            const userData = {
+              id: data.id, 
               name: data.username,
               email: data.email,
-            });
-          } else {
-            setUser(null);
+              userType: data.userType,
+            };
+
+            
+            if (data.userType === 'craftsman') {
+              userData.city = data.city;
+              userData.category = data.category;
+            }
+
+            setUser(userData);
           }
         } else {
           console.error("Failed to fetch user data");

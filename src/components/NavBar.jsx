@@ -7,25 +7,28 @@ export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
   const dropdownRef = useRef(null); // Reference for dropdown width
-  const { user, setUser, loading } = useContext(UserContext);
+  const { user, setUser, loading } = useContext(UserContext); // Use loading from context
 
-  const handleLogout = () => {
-    fetch("http://localhost/Sal7ly/php_backend/logout.php", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setUser(null);
-        }
-      })
-      .catch((error) => console.error("Error during logout:", error));
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost/Sal7ly/php_backend/logout.php", {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUser(null);
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   if (loading) {
-    // Optionally display a loading indicator or placeholder
-    return <div>Loading...</div>;
+    // Optionally show a loading indicator
+    return <nav>Loading...</nav>;
   }
 
   return (
@@ -80,7 +83,13 @@ export const Navbar = () => {
                   width: dropdownRef.current?.offsetWidth, // Match the width of the button
                 }}
               >
-                <button onClick={handleLogout} className="dropdown-item">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setDropdownOpen(false);
+                  }}
+                  className="dropdown-item"
+                >
                   Logout
                 </button>
               </div>

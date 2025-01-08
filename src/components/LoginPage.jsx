@@ -39,6 +39,7 @@ const LoginPage = () => {
 
                 // Update the user state globally
                 setUser({
+                    id: result.data.id,
                     name: result.data.name,
                     email: result.data.email,
                     userType: loginType,

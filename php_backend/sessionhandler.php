@@ -23,6 +23,13 @@ if (isset($_SESSION['user'])) {
     $response['id'] = $_SESSION['user']['id']; // Include user ID
     $response['username'] = $_SESSION['user']['name'];
     $response['email'] = $_SESSION['user']['email'];
+    $response['userType'] = $_SESSION['user']['userType']; // Include userType
+
+    // Include additional fields for craftsman
+    if ($_SESSION['user']['userType'] === 'craftsman') {
+        $response['city'] = $_SESSION['user']['city'] ?? null;
+        $response['category'] = $_SESSION['user']['category'] ?? null;
+    }
 }
 
 echo json_encode($response);

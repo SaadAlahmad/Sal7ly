@@ -90,16 +90,21 @@ try {
       'name' => $userData['name'],
       'email' => $userData['email'],
       'userType' => $userType,
-  ];
+    ];
   
-  // Debugging log
-  error_log('Session Data: ' . print_r($_SESSION, true));
+    if ($userType === 'craftsman') {
+        $_SESSION['user']['city'] = $userData['city'];
+        $_SESSION['user']['category'] = $userData['category'];
+    }    
 
-  
-  } catch (Exception $e) {
-    error_log($e->getMessage());
-    $response['error'] = $e->getMessage();
-}
+    // Debugging log
+    error_log('Session Data: ' . print_r($_SESSION, true));
 
-echo json_encode($response);
-exit;
+    
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        $response['error'] = $e->getMessage();
+    }
+
+    echo json_encode($response);
+    exit;

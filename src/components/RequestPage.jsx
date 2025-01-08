@@ -67,9 +67,11 @@ const RequestPage = () => {
     };
 
     useEffect(() => {
-        fetchRequests();
-    }, [user]);
-
+        if (!loading && user) {
+            fetchRequests();
+        }
+    }, [loading, user]);
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -155,11 +157,28 @@ const RequestPage = () => {
         return <p>Loading...</p>;
     }
 
+    if (user && user.userType === 'craftsman') {
+        return (
+            <div className="not-logged-in-container">
+                <h1>You are logged in as a craftsman</h1>
+                <p>To be able to send custom requests you need to log in to a user account.</p>
+                <div className="auth-buttons">
+                    <Link to="/login" className="auth-button">
+                        Log In
+                    </Link>
+                    <Link to="/signup" className="auth-button">
+                        Sign Up
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
     if (!user) {
         return (
             <div className="not-logged-in-container">
                 <h1>You are not logged in</h1>
-                <p>If you want to send a request for signed contractors, you need to log in.</p>
+                <p>If you want to send a request for signed craftspeople, you need to log in.</p>
                 <div className="auth-buttons">
                     <Link to="/login" className="auth-button">
                         Log In
