@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import "../css/Navbar.css";
@@ -7,21 +7,7 @@ export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
   const dropdownRef = useRef(null); // Reference for dropdown width
-  const { user, setUser } = useContext(UserContext);
-
-  useEffect(() => {
-    // Fetch session data when Navbar mounts
-    fetch("http://localhost/Sal7ly/php_backend/sessionhandler.php", {
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.loggedIn) {
-          setUser({ name: data.username, email: data.email });
-        }
-      })
-      .catch((error) => console.error("Error fetching session data:", error));
-  }, [setUser]);
+  const { user, setUser, loading } = useContext(UserContext);
 
   const handleLogout = () => {
     fetch("http://localhost/Sal7ly/php_backend/logout.php", {
@@ -36,6 +22,11 @@ export const Navbar = () => {
       })
       .catch((error) => console.error("Error during logout:", error));
   };
+
+  if (loading) {
+    // Optionally display a loading indicator or placeholder
+    return <div>Loading...</div>;
+  }
 
   return (
     <nav>

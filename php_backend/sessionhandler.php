@@ -16,11 +16,11 @@ if (in_array($origin, $allowedOrigins)) {
     exit;
 }
 
-
 $response = ['loggedIn' => false];
 
 if (isset($_SESSION['user'])) {
     $response['loggedIn'] = true;
+    $response['id'] = $_SESSION['user']['id']; // Include user ID
     $response['username'] = $_SESSION['user']['name'];
     $response['email'] = $_SESSION['user']['email'];
 }
