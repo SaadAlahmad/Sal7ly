@@ -50,8 +50,10 @@ const CategoryPage = () => {
                                 alt={professional.name} 
                             />
                             <h3>{professional.name}</h3>
-                            <p><h5>City</h5>{professional.city}</p>
-                            <p><h5>Mobile</h5> 0{professional.mobile}</p>
+                            <p className="pS">City</p>
+                            <p>{professional.city}</p>
+                            <p className="pS">Mobile</p>
+                            <p>0{professional.mobile}</p>
                         </button>
                     ))
                 ) : (

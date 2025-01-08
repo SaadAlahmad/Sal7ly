@@ -1,0 +1,94 @@
+/* SentRequests.css */
+
+/* General Page Styling */
+.sent-requests {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sent-requests h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Requests Container */
+.requests-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Request Card */
+.request-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure spacing between content and button */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 300px;
+  height: 100%; /* Ensure all cards have the same height */
+}
+
+.request-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.request-card h2 {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.request-card p {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.request-card strong {
+  color: #333;
+}
+
+/* Apply Button */
+.request-card button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: auto; /* Push the button to the bottom */
+  background-color: #00cf23;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.request-card button:hover {
+  background-color: #059400;
+}
+
+/* Error Message */
+.error {
+  color: red;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .request-card {
+    width: 100%;
+  }
+}

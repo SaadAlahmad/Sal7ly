@@ -21,7 +21,7 @@ $response = ['loggedIn' => false];
 if (isset($_SESSION['user'])) {
     $response['loggedIn'] = true;
     $response['id'] = $_SESSION['user']['id']; // Include user ID
-    $response['username'] = $_SESSION['user']['name'];
+    $response['name'] = $_SESSION['user']['name'];
     $response['email'] = $_SESSION['user']['email'];
     $response['userType'] = $_SESSION['user']['userType']; // Include userType
 

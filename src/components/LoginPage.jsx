@@ -1,18 +1,14 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "../css/LoginPage.css";
 import { UserContext } from "./UserContext";
 
 const LoginPage = () => {
     const [loginType, setLoginType] = useState("user");
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-    });
-
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const { setUser } = useContext(UserContext); // Use the context to update the user state
-    const navigate = useNavigate(); // Initialize the useNavigate hook
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -26,9 +22,7 @@ const LoginPage = () => {
             const response = await fetch("http://localhost/Sal7ly/php_backend/loginhandler.php", {
                 method: "POST",
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...formData, userType: loginType }),
             });
 
@@ -37,18 +31,11 @@ const LoginPage = () => {
             if (response.ok && result.status) {
                 alert(result.message || "Successfully logged in!");
 
-                // Update the user state globally
-                setUser({
-                    id: result.data.id,
-                    name: result.data.name,
-                    email: result.data.email,
-                    userType: loginType,
-                });
+                // Fetch updated user data from sessionhandler.php
+                await fetchUserData();
 
                 // Redirect to the homepage
                 navigate("/");
-
-                // Clear form data
                 setFormData({ email: "", password: "" });
             } else {
                 alert(result.error || "Log in failed. Please try again.");
@@ -56,6 +43,41 @@ const LoginPage = () => {
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again later.");
+        }
+    };
+
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch("http://localhost/Sal7ly/php_backend/sessionhandler.php", {
+                credentials: "include",
+            });
+
+            const data = await response.json();
+
+            if (data.loggedIn) {
+                if(data.userType === 'craftsman') {
+                    setUser({
+                        id: data.id,
+                        name: data.name,
+                        email: data.email,
+                        userType: data.userType,
+                        city: data.city,
+                        category: data.category,
+                    });    
+                } else {
+                    setUser({
+                        id: data.id,
+                        name: data.name,
+                        email: data.email,
+                        userType: data.userType,
+                    });    
+                }
+            } else {
+                alert("Failed to fetch user data after login.");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            alert("An error occurred while fetching user data.");
         }
     };
 

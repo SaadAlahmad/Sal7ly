@@ -67,7 +67,8 @@
   font-weight: bold;
 }
 
-.result-card p h5 {
+.result-card .pS {
+  font-size: small;
   color: #7a7a7a;
 }
 

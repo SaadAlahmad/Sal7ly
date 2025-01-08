@@ -58,8 +58,11 @@ export const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/request" className="nav-link">
-            Send a Request
+          <NavLink
+            to={user?.userType === "craftsman" ? "/showrequests" : "/request"}
+            className="nav-link"
+          >
+            {user?.userType === "craftsman" ? "Show Requests" : "Send a Request"}
           </NavLink>
         </li>
         <li>
@@ -80,7 +83,7 @@ export const Navbar = () => {
               <div
                 className="dropdown-menu"
                 style={{
-                  width: dropdownRef.current?.offsetWidth, // Match the width of the button
+                  width: dropdownRef.current?.offsetWidth,
                 }}
               >
                 <button

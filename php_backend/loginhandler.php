@@ -85,17 +85,25 @@ try {
     }
 
     // Store user session data
-    $_SESSION['user'] = [
-      'id' => $userData['id'],
-      'name' => $userData['name'],
-      'email' => $userData['email'],
-      'userType' => $userType,
-    ];
   
     if ($userType === 'craftsman') {
-        $_SESSION['user']['city'] = $userData['city'];
-        $_SESSION['user']['category'] = $userData['category'];
-    }    
+        $_SESSION['user'] = [
+            'id' => $userData['id'],
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'category' => $userData['category'],
+            'city' => $userData['city'],
+            'userType' => $userType,
+        ];
+        } else {
+        $_SESSION['user'] = [
+            'id' => $userData['id'],
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'userType' => $userType,
+        ];
+      
+    }
 
     // Debugging log
     error_log('Session Data: ' . print_r($_SESSION, true));

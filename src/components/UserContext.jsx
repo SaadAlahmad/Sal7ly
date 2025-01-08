@@ -18,12 +18,10 @@ export const UserProvider = ({ children }) => {
           if (data.loggedIn) {
             const userData = {
               id: data.id, 
-              name: data.username,
+              name: data.name,
               email: data.email,
               userType: data.userType,
-            };
-
-            
+            }
             if (data.userType === 'craftsman') {
               userData.city = data.city;
               userData.category = data.category;
