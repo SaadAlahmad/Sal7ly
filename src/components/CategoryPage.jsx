@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import '../css/CategoryPage.css';
 
 const CategoryPage = () => {
-    const { category } = useParams(); // Get the category name from the URL
+    const { category } = useParams();
     const navigate = useNavigate();
     const [professionals, setProfessionals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -53,7 +53,7 @@ const CategoryPage = () => {
                             <p className="pS">City</p>
                             <p>{professional.city}</p>
                             <p className="pS">Mobile</p>
-                            <p>0{professional.mobile}</p>
+                            <p>+{professional.mobile}</p>
                         </button>
                     ))
                 ) : (

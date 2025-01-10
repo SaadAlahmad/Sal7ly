@@ -6,7 +6,6 @@ import { UserContext } from "./UserContext";
 const LoginPage = () => {
     const [loginType, setLoginType] = useState("user");
     const [formData, setFormData] = useState({ email: "", password: "" });
-    const [passwordVisible, setPasswordVisible] = useState(false);
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -117,7 +116,7 @@ const LoginPage = () => {
                         <label htmlFor="password">Password</label>
                         <div className="password-input-container">
                             <input
-                                type={passwordVisible ? "text" : "password"}
+                                type="password"
                                 id="password"
                                 name="password"
                                 placeholder="Enter your password"

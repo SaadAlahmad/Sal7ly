@@ -331,14 +331,14 @@ const SentRequests = () => {
               <p><strong>Request ID:</strong> {app.request_id}</p>
               <p><strong>Details:</strong> {app.request.details}</p>
               <p><strong>Message:</strong> {app.message}</p>
-              <p><strong>Created At:</strong> {new Intl.DateTimeFormat('en-GB', {
+              <p><strong>Application Date:</strong> {new Intl.DateTimeFormat('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: true,
-              }).format(new Date(app.request.created_at))}</p>
+              }).format(new Date(app.created_at))}</p>
               <button onClick={() => handleModifyClick(app)}>Modify</button>
               <button onClick={() => handleDeleteApplication(app.id)}>Delete</button>
             </div>

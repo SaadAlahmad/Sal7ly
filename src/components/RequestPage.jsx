@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../css/RequestPage.css";
 import { UserContext } from "./UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const services = [
     "Plumber",
@@ -30,6 +30,7 @@ const cities = [
 ];
 
 const RequestPage = () => {
+    const navigate = useNavigate();
     const { user, setUser, loading } = useContext(UserContext);
     const [activeRequests, setActiveRequests] = useState([]);
     const [formData, setFormData] = useState({
@@ -46,6 +47,10 @@ const RequestPage = () => {
     });
     const [showModifyForm, setShowModifyForm] = useState(false);
     const [modifyRequestId, setModifyRequestId] = useState(null);
+
+    const [selectedRequestId, setSelectedRequestId] = useState(null);
+    const [applications, setApplications] = useState([]);
+    const [showApplicationsModal, setShowApplicationsModal] = useState(false);
 
     const fetchRequests = async () => {
         if (!user) return;
@@ -65,6 +70,27 @@ const RequestPage = () => {
             console.error("Failed to fetch requests:", error);
         }
     };
+
+    const fetchApplications = async (requestId) => {
+        try {
+            const response = await fetch("http://localhost/Sal7ly/php_backend/requesthandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "fetchApplications", request_id: requestId }),
+            });
+            const result = await response.json();
+            if (result.success) {
+                setApplications(result.applications);
+                setShowApplicationsModal(true);
+                setSelectedRequestId(requestId);
+            } else {
+                console.error(result.error);
+            }
+        } catch (error) {
+            console.error("Failed to fetch applications:", error);
+        }
+    };
+    
 
     useEffect(() => {
         if (!loading && user) {
@@ -103,6 +129,9 @@ const RequestPage = () => {
     };
 
     const handleDeleteRequest = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this request?");
+        if (!confirmDelete) return; // Exit if the user cancels
+        
         try {
             const response = await fetch("http://localhost/Sal7ly/php_backend/requesthandler.php", {
                 method: "POST",
@@ -119,7 +148,7 @@ const RequestPage = () => {
             console.error("Failed to delete request:", error);
         }
     };
-
+    
     const handleModifyRequest = (id) => {
         const requestToModify = activeRequests.find((request) => request.id === id);
         setModifyFormData(requestToModify);
@@ -332,6 +361,7 @@ const RequestPage = () => {
                     <ul className="requests-list">
                         {activeRequests.map((request) => (
                             <li key={request.id} className="request-item">
+                                <p>ID: {request.id}</p>
                                 <strong>{request.service}</strong> in {request.city}
                                 <p>{request.details}</p>
                                 <p>
@@ -349,11 +379,56 @@ const RequestPage = () => {
                                 >
                                     Delete
                                 </button>
+                                <button
+                                    onClick={() => fetchApplications(request.id)}
+                                    className="applications-button"
+                                >
+                                    Show Applications ({request.applicationsCount || 0})
+                                </button>
                             </li>
                         ))}
                     </ul>
                 )}
             </section>
+            {showApplicationsModal && (
+                <div className="applications-modal-overlay">
+                    <div className="applications-modal">
+                        <button
+                            className="close-modal-button"
+                            onClick={() => setShowApplicationsModal(false)}
+                        >
+                            X
+                        </button>
+                        <h2>Applications for Request #{selectedRequestId}</h2>
+                        {applications.length === 0 ? (
+                            <p>No applications found.</p>
+                        ) : (
+                            <ul className="applications-list">
+                                {applications.map((app) => (
+                                    <li key={app.id} className="application-item">
+                                        <strong>
+                                            Craftsman:
+                                            <button
+                                                onClick={() => navigate(`/profile/${app.craftsman_id}`)}
+                                                className="craftsman-button"
+                                            >
+                                                {app.craftsman_name}
+                                            </button>
+                                        </strong>
+                                        <p></p>
+                                        <p>Message:</p>
+                                        <p className="appMessage">{app.message}</p>
+                                        <p>
+                                            <em>Submitted on:</em>{" "}
+                                            {new Date(app.created_at).toLocaleString()}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
