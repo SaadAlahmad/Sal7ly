@@ -1,0 +1,88 @@
+.projects-page {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  width: 25%;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px; /* Reduced spacing between sections */
+}
+
+.project-item {
+  padding: 8px 12px; /* Adjusted padding for smaller items */
+  margin: 3px 0; /* Reduced gap between items */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.project-item:hover {
+  background-color: #f0f0f0;
+}
+
+.project-item.active {
+  background-color: #e0e7ff;
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+.project-item.finished {
+  color: #777;
+  font-style: italic;
+}
+
+.workspace {
+  flex-grow: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.workspace h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.workspace p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.new-project-btn {
+  background-color: #2dc000;
+  color: #fff;
+  padding: 8px 16px; /* Adjusted button size */
+  font-size: 0.9rem; /* Slightly smaller font for the button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.new-project-btn:hover {
+  background-color: #106100;
+}
+
+.warning {
+  font-size: 1.5rem;
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}

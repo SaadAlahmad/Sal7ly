@@ -126,6 +126,10 @@ textarea {
   border-radius: 5px;
 }
 
+
+.request-item .det {
+  white-space: pre-wrap;
+}
 .not-logged-in-container {
   font-family: "Lato", serif;
   font-weight: 700;
@@ -362,6 +366,20 @@ textarea {
 
 .applications-button:hover {
   background-color: #0056b3;
+}
+
+.accept-button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.accept-button:hover {
+  background-color: #218838;
 }
 
 /* Animations */

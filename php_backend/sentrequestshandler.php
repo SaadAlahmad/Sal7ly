@@ -53,7 +53,8 @@ try {
             r.user_id = u.id
         WHERE 
             r.service = :category AND 
-            r.city = :city
+            r.city = :city AND
+            r.status = 1
     ");
     $stmt->bindParam(':category', $category);
     $stmt->bindParam(':city', $city);

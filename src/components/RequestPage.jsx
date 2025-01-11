@@ -182,6 +182,37 @@ const RequestPage = () => {
         }
     };
 
+    const handleAcceptApplication = async (application) => {
+        const confirmAccept = window.confirm("Are you sure you want to accept this application?");
+        if (!confirmAccept) return;
+    
+        try {
+            const response = await fetch("http://localhost/Sal7ly/php_backend/accepthandler.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    action: "accept",
+                    request_id: selectedRequestId,
+                    application_id: application.id,
+                    craftsman_id: application.craftsman_id,
+                    user_id: user.id,
+                }),
+            });
+            const result = await response.json();
+            if (result.success) {
+                // Update UI after successful accept
+                fetchRequests();
+                setShowApplicationsModal(false); // Close the modal
+                alert("Application accepted successfully!");
+            } else {
+                console.error(result.error);
+                alert("Failed to accept application.");
+            }
+        } catch (error) {
+            console.error("Error while accepting application:", error);
+        }
+    };    
+
     const handleLogout = async () => {
         try {
           const response = await fetch("http://localhost/Sal7ly/php_backend/logout.php", {
@@ -363,7 +394,7 @@ const RequestPage = () => {
                             <li key={request.id} className="request-item">
                                 <p>ID: {request.id}</p>
                                 <strong>{request.service}</strong> in {request.city}
-                                <p>{request.details}</p>
+                                <div className="det"><p>{request.details}</p></div>
                                 <p>
                                     <em>Location:</em> {request.location}
                                 </p>
@@ -415,7 +446,7 @@ const RequestPage = () => {
                                                 {app.craftsman_name}
                                             </button>
                                         </strong>
-                                        <br/>
+                                        <br />
                                         <strong>Mobile: +</strong>{app.craftsman_mobile}
                                         <p></p>
                                         <p>Message:</p>
@@ -424,6 +455,12 @@ const RequestPage = () => {
                                             <em>Submitted on:</em>{" "}
                                             {new Date(app.created_at).toLocaleString()}
                                         </p>
+                                        <button
+                                            className="accept-button"
+                                            onClick={() => handleAcceptApplication(app)}
+                                        >
+                                            Accept
+                                        </button>
                                     </li>
                                 ))}
                             </ul>
