@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import "../css/Navbar.css";
@@ -7,35 +7,29 @@ export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
   const dropdownRef = useRef(null); // Reference for dropdown width
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, loading } = useContext(UserContext); // Use loading from context
 
-  useEffect(() => {
-    // Fetch session data when Navbar mounts
-    fetch("http://localhost/Sal7ly/php_backend/sessionhandler.php", {
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.loggedIn) {
-          setUser({ name: data.username, email: data.email });
-        }
-      })
-      .catch((error) => console.error("Error fetching session data:", error));
-  }, [setUser]);
-
-  const handleLogout = () => {
-    fetch("http://localhost/Sal7ly/php_backend/logout.php", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setUser(null);
-        }
-      })
-      .catch((error) => console.error("Error during logout:", error));
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost/Sal7ly/php_backend/logout.php", {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUser(null);
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
+
+  if (loading) {
+    // Optionally show a loading indicator
+    return <nav>Loading...</nav>;
+  }
 
   return (
     <nav>
@@ -64,8 +58,11 @@ export const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/request" className="nav-link">
-            Send a Request
+          <NavLink
+            to={user?.userType === "craftsman" ? "/showrequests" : "/request"}
+            className="nav-link"
+          >
+            {user?.userType === "craftsman" ? "Show Requests" : "Send a Request"}
           </NavLink>
         </li>
         <li>
@@ -86,10 +83,16 @@ export const Navbar = () => {
               <div
                 className="dropdown-menu"
                 style={{
-                  width: dropdownRef.current?.offsetWidth, // Match the width of the button
+                  width: dropdownRef.current?.offsetWidth,
                 }}
               >
-                <button onClick={handleLogout} className="dropdown-item">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setDropdownOpen(false);
+                  }}
+                  className="dropdown-item"
+                >
                   Logout
                 </button>
               </div>

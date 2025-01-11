@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import '../css/ProfilePage.css';
 
 const ProfilePage = () => {
-    const { id } = useParams(); // Get the professional ID from the URL
+    const { id } = useParams();
     const [professional, setProfessional] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [modalImage, setModalImage] = useState(null); // For modal functionality
+    const [modalImage, setModalImage] = useState(null);
 
     useEffect(() => {
         const fetchProfessional = async () => {
@@ -51,7 +51,7 @@ const ProfilePage = () => {
                     <div className="profile-details">
                         <h1>{professional.name}</h1>
                         <p><strong>City:</strong> {professional.city}</p>
-                        <p><strong>Mobile:</strong> 0{professional.mobile}</p>
+                        <p><strong>Mobile:</strong> +{professional.mobile}</p>
                     </div>
                     <div className="profile-bio">
                         <h3>Bio:</h3>

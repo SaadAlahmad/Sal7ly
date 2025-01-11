@@ -82,24 +82,38 @@ try {
         $response['data']['city'] = $userData['city'];
         $response['data']['category'] = $userData['category'];
         $response['data']['bio'] = $userData['bio'];
+        $response['data']['picture'] = base64_encode($userData['picture']);
     }
 
     // Store user session data
-    $_SESSION['user'] = [
-      'id' => $userData['id'],
-      'name' => $userData['name'],
-      'email' => $userData['email'],
-      'userType' => $userType,
-  ];
   
-  // Debugging log
-  error_log('Session Data: ' . print_r($_SESSION, true));
+    if ($userType === 'craftsman') {
+        $_SESSION['user'] = [
+            'id' => $userData['id'],
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'category' => $userData['category'],
+            'city' => $userData['city'],
+            'userType' => $userType,
+            'picture' => base64_encode($userData['picture']), // Add encoded picture to session
+        ];
+    } else {
+        $_SESSION['user'] = [
+            'id' => $userData['id'],
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'userType' => $userType,
+        ];
+    }
 
-  
-  } catch (Exception $e) {
-    error_log($e->getMessage());
-    $response['error'] = $e->getMessage();
-}
+    // Debugging log
+    error_log('Session Data: ' . print_r($_SESSION, true));
 
-echo json_encode($response);
-exit;
+    
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        $response['error'] = $e->getMessage();
+    }
+
+    echo json_encode($response);
+    exit;

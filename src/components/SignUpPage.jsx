@@ -3,6 +3,7 @@ import "../css/SignUpPage.css";
 
 const SignUpPage = () => {
     const [userType, setUserType] = useState("user");
+    const [countryCode, setCountryCode] = useState("+970");
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -14,8 +15,6 @@ const SignUpPage = () => {
         picture: null,
         workSamples: [],
     });
-
-    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const categories = [
         "Plumber", "Blacksmith", "Electrician", "Mechanic", "Carpenter", "Gardener", "Mason", "Cleaner", "Tailor", "Tiler"
@@ -42,6 +41,17 @@ const SignUpPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        let mobile = formData.mobile.trim();
+        if (mobile.startsWith("0")) {
+            mobile = mobile.slice(1);
+        }
+        if (mobile.length > 10) {
+            alert("Mobile number must not exceed 10 digits.");
+            return;
+        }
+
+        const fullMobile = countryCode + mobile;
+
         const formDataToSend = new FormData();
         Object.keys(formData).forEach((key) => {
             if (key === "workSamples") {
@@ -52,6 +62,8 @@ const SignUpPage = () => {
                 formDataToSend.append(key, formData[key]);
             }
         });
+
+        formDataToSend.append("mobile", fullMobile);
         formDataToSend.append("userType", userType);
 
         try {
@@ -97,7 +109,7 @@ const SignUpPage = () => {
                 </button>
             </div>
             <form className="signup-form" onSubmit={handleSubmit}>
-                {/* Shared Fields */}
+                {/* craftsman+user */}
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
                     <input
@@ -124,15 +136,25 @@ const SignUpPage = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="mobile">Mobile Number</label>
-                    <input
-                        type="text"
-                        id="mobile"
-                        name="mobile"
-                        placeholder="Enter your mobile number"
-                        value={formData.mobile}
-                        onChange={handleInputChange}
-                        required
-                    />
+                    <div className="mobile-input-container">
+                        <select
+                            value={countryCode}
+                            onChange={(e) => setCountryCode(e.target.value)}
+                            required
+                        >
+                            <option value="+970">+970</option>
+                            <option value="+972">+972</option>
+                        </select>
+                        <input
+                            type="text"
+                            id="mobile"
+                            name="mobile"
+                            placeholder="Enter your mobile number"
+                            value={formData.mobile}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="city">Location (City)</label>
@@ -151,21 +173,26 @@ const SignUpPage = () => {
                         ))}
                     </select>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="picture">Upload Profile Picture (Optional)</label>
-                    <input
-                        type="file"
-                        id="picture"
-                        name="picture"
-                        onChange={handleFileChange}
-                        accept="image/*"
-                    />
-                </div>
+
+                {/* Profile picture input only for craftsmen */}
+                {userType === "craftsman" && (
+                    <div className="form-group">
+                        <label htmlFor="picture">Upload Profile Picture (Optional)</label>
+                        <input
+                            type="file"
+                            id="picture"
+                            name="picture"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                        />
+                    </div>
+                )}
+
                 <div className="form-group password-group">
                     <label htmlFor="password">Password</label>
                     <div className="password-input-container">
                         <input
-                            type={passwordVisible ? "text" : "password"}
+                            type="password"
                             id="password"
                             name="password"
                             placeholder="Enter your password"
@@ -173,18 +200,10 @@ const SignUpPage = () => {
                             onChange={handleInputChange}
                             required
                         />
-                        <button
-                            type="button"
-                            className="toggle-password-button"
-                            onClick={() => setPasswordVisible(!passwordVisible)}
-                            aria-label="Toggle password visibility"
-                        >
-                            {passwordVisible ? "🙈" : "👁️"}
-                        </button>
                     </div>
                 </div>
 
-                {/* Craftsman-Specific Fields */}
+                {/* craftsman */}
                 {userType === "craftsman" && (
                     <>
                         <div className="form-group">

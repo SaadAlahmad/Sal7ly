@@ -1,0 +1,240 @@
+/* SentRequests.css */
+
+/* General Page Styling */
+.sent-requests {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sent-requests h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Requests Container */
+.requests-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Request Card */
+.request-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure spacing between content and button */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 300px;
+  height: 100%; /* Ensure all cards have the same height */
+}
+
+.request-card:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.39);
+}
+
+.request-card h2 {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.request-card p {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.request-card strong {
+  color: #333;
+}
+
+/* Apply Button */
+.request-card button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: auto; /* Push the button to the bottom */
+  background-color: #00cf23;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.request-card button:hover {
+  background-color: #059400;
+}
+
+/* Error Message */
+.error {
+  color: red;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .request-card {
+    width: 100%;
+  }
+}
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.modal-content p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  resize: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-actions button:first-child {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #45a049;
+}
+
+.modal-actions button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #e53935;
+}
+
+.applications-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+}
+
+.application-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.application-card p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.application-card .appCardText{
+  white-space: pre-wrap;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.212);
+  border-left: solid 1px rgba(0, 0, 0, 0.212);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.application-card button {
+  background-color: #b6df00;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-right: 10px;
+}
+
+.application-card button:hover {
+  background-color: #9da000;
+  transform: scale(1.05);
+}
+
+.application-card button:active {
+  background-color: #003d80;
+  transform: scale(1);
+}
+
+.application-card button:last-child {
+  background-color: #dc3545;
+}
+
+.application-card button:last-child:hover {
+  background-color: #b02a37;
+}
+
+.application-card button:last-child:active {
+  background-color: #7b1c26;
+}
+
+.reqDet {
+  white-space: pre-wrap;
+}

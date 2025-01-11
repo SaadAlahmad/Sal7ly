@@ -16,15 +16,23 @@ if (in_array($origin, $allowedOrigins)) {
     exit;
 }
 
-
 $response = ['loggedIn' => false];
 
 if (isset($_SESSION['user'])) {
     $response['loggedIn'] = true;
-    $response['username'] = $_SESSION['user']['name'];
+    $response['id'] = $_SESSION['user']['id']; // Include user ID
+    $response['name'] = $_SESSION['user']['name'];
     $response['email'] = $_SESSION['user']['email'];
+    $response['userType'] = $_SESSION['user']['userType']; // Include userType
+
+    // Include additional fields for craftsman
+    if ($_SESSION['user']['userType'] === 'craftsman') {
+        $response['city'] = $_SESSION['user']['city'] ?? null;
+        $response['category'] = $_SESSION['user']['category'] ?? null;
+
+        $response['picture'] = "data:image/jpeg;base64," . $_SESSION['user']['picture'];
+    }
 }
 
 echo json_encode($response);
 exit;
-?>
