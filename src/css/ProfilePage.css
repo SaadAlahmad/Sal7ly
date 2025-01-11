@@ -104,14 +104,13 @@
   filter: drop-shadow(0.5rem 0.35rem 1rem rgba(0, 0, 0, 0.295));
 }
 
-/* Modal styles */
 .image-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8); /* Background blur effect */
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,6 +123,7 @@
   border: 5px solid #fff;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .image-modal .close-button {
@@ -150,7 +150,6 @@
   color: #fff;
 }
 
-/* Responsive stacking */
 @media (max-width: 600px) {
   .worksamples-grid {
       flex-direction: column;
@@ -158,7 +157,18 @@
   }
 
   .work-sample-image {
-      width: 50%; /* Larger images for smaller screens */
+      width: 50%; 
       height: auto;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }

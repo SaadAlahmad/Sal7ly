@@ -1,41 +1,130 @@
-/* HomePage.css */
 
 .homepage-container {
-  font-family: 'Lato', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  text-align: center;
-  color: #333;
 }
 
+/* Header Styles */
 .homepage-header {
-  background-color: #4CAF50;
-  color: white;
-  padding: 20px;
+  text-align: center;
+  background-color: #009231;
+  color: #fff;
+  padding: 40px 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .homepage-header h1 {
-  font-size: 3rem;
-  margin: 0;
+  font-size: 2.5em;
+  margin-bottom: 10px;
 }
 
 .homepage-header p {
-  font-size: 1.5rem;
+  font-size: 1.2em;
+  margin: 0;
 }
 
-.homepage-about, .homepage-features, .homepage-cta {
-  margin: 20px 0;
-  padding: 20px;
-  background-color: white;
+/* Greeting Card Styles */
+.homepage-greeting-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.2em;
+  color: #333;
+  line-height: 1.8;
 }
 
-.homepage-about h2, .homepage-features h2, .homepage-cta h2 {
-  font-size: 2rem;
-  color: #4CAF50;
+.homepage-greeting-card p {
+  margin: 0;
+  color: #555;
+}
+
+.homepage-greeting-card a {
+  color: #009231;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.homepage-greeting-card a:hover {
+  text-decoration: underline;
+}
+
+/* Profile Card */
+.homepage-profile-card {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.profile-card:hover {
+  transform: scale(1.05);
+}
+
+.profile-card-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-right: 1px solid #ddd;
+}
+
+.profile-card-info {
+  padding: 15px;
+}
+
+.profile-card-info h3 {
+  margin: 0 0 10px;
+  font-size: 1.2em;
+}
+
+.profile-card-info p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* About Section */
+.homepage-about {
+  margin: 40px 0;
+  text-align: center;
+}
+
+.homepage-about h2 {
+  font-size: 2em;
   margin-bottom: 10px;
+}
+
+.homepage-about p {
+  font-size: 1.1em;
+  color: #666;
+}
+
+/* Features Section */
+.homepage-features {
+  margin: 40px 0;
+}
+
+.homepage-features h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .homepage-features ul {
@@ -46,23 +135,76 @@
 
 .homepage-features li {
   margin: 10px 0;
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.1em;
+  padding-left: 20px;
+  position: relative;
 }
 
-.homepage-cta .homepage-button {
-  display: inline-block;
-  margin: 10px;
+.homepage-features li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #008111;
+  font-weight: bold;
+}
+
+/* CTA Section */
+.homepage-cta {
+  text-align: center;
+  background-color: #009231;
+  color: #fff;
+  padding: 30px 20px;
+  border-radius: 8px;
+}
+
+.homepage-cta h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.homepage-cta p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.homepage-button {
+  background-color: #fff;
+  color: #009231;
+  border: 2px solid #fff;
   padding: 10px 20px;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 1.1em;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s;
 }
 
-.homepage-cta .homepage-button:hover {
-  background-color: #388E3C;
+.homepage-button:hover {
+  background-color: #00910788;
+  color: #fff;
+  border-color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .homepage-container {
+      padding: 10px;
+  }
+
+  .profile-card {
+      flex-direction: column;
+      width: 100%;
+  }
+
+  .profile-card-image {
+      width: 100%;
+      height: 150px;
+      border-right: none;
+      border-bottom: 1px solid #ddd;
+  }
 }

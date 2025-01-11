@@ -193,6 +193,14 @@
   color: #333;
 }
 
+.application-card .appCardText{
+  white-space: pre-wrap;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.212);
+  border-left: solid 1px rgba(0, 0, 0, 0.212);
+  border-radius: 12px;
+  padding: 10px;
+}
+
 .application-card button {
   background-color: #b6df00;
   color: #fff;
@@ -225,4 +233,8 @@
 
 .application-card button:last-child:active {
   background-color: #7b1c26;
+}
+
+.reqDet {
+  white-space: pre-wrap;
 }

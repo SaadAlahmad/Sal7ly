@@ -117,10 +117,20 @@ try {
 
         // Handle profile picture upload
         $picture = null;
-        if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
-            $picture = file_get_contents($_FILES['picture']['tmp_name']);
-        }
 
+        if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+            // Use the uploaded picture
+            $picture = file_get_contents($_FILES['picture']['tmp_name']);
+        } else {
+            // Use the default picture if none is uploaded
+            $defaultPicturePath = __DIR__ . "/pictures/userjpg.jpg"; // Path to the default picture
+            if (file_exists($defaultPicturePath)) {
+                $picture = file_get_contents($defaultPicturePath);
+            } else {
+                throw new Exception("Default picture not found.");
+            }
+        }
+        
         // Insert craftsman data into the `craftspeople` table
         $stmt = $conn->prepare("
             INSERT INTO craftspeople (id, name, email, mobile, city, category, bio, picture, password)

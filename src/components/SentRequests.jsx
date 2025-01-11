@@ -3,7 +3,7 @@ import { UserContext } from "./UserContext";
 import "../css/SentRequests.css";
 
 const SentRequests = () => {
-  const { user, setUser, loading } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
   const [requests, setRequests] = useState([]);
   const [applications, setApplications] = useState([]);
   const [error, setError] = useState(null);
@@ -14,26 +14,8 @@ const SentRequests = () => {
   const [applicationText, setApplicationText] = useState("");
   const [modifyText, setModifyText] = useState("");
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("http://localhost/Sal7ly/php_backend/logout.php", {
-        method: "POST",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (data.success) {
-        setUser(null);
-      } else {
-        console.error("Logout failed");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
-
   const fetchApplicationsAndRequests = async () => {
     try {
-      // Fetch applications
       const applicationsResponse = await fetch(
         "http://localhost/Sal7ly/php_backend/fetchApplicationsHandler.php",
         {
@@ -53,7 +35,6 @@ const SentRequests = () => {
       }
       const applications = applicationsData.applications || [];
 
-      // Fetch requests
       const requestsResponse = await fetch(
         "http://localhost/Sal7ly/php_backend/sentrequestshandler.php",
         {
@@ -74,7 +55,6 @@ const SentRequests = () => {
       }
       const requests = requestsData.requests || [];
 
-      // Map requests to include `hasApplication` and applications with `request`
       const updatedRequests = requests.map((request) => {
         const existingApplication = applications.find(
           (app) => app.request_id === request.id
@@ -100,7 +80,7 @@ const SentRequests = () => {
     if (loading) return;
   
     if (!user || user.userType !== "craftsman") {
-      setError("You can't access this page. Please log in.");
+      setError("You can't access this page. Please log in as a craftsman.");
       return;
     }
     
@@ -236,7 +216,7 @@ const SentRequests = () => {
             <div className="request-card" key={request.id}>
               <p><strong>ID:</strong> {request.id}</p>
               <h2>User: {request.name}</h2>
-              <p><strong>Details:</strong> {request.details}</p>
+              <div className="reqDet"><p><strong>Details:</strong><br/>{request.details}</p></div>
               <p><strong>City:</strong> {request.city}</p>
               <p><strong>Location:</strong> {request.location}</p>
               <p><strong>Created At:</strong> {new Intl.DateTimeFormat('en-GB', {
@@ -269,7 +249,7 @@ const SentRequests = () => {
             <h2>Apply for Request</h2>
             <p><strong>ID:</strong> {selectedRequest.id}</p>
             <h2>User: {selectedRequest.name}</h2>
-            <p><strong>Details:</strong> {selectedRequest.details}</p>
+            <div className="reqDet"><p><strong>Details:</strong><br/>{selectedRequest.details}</p></div>
             <p><strong>City:</strong> {selectedRequest.city}</p>
             <p><strong>Location:</strong> {selectedRequest.location}</p>
             <p><strong>Created At:</strong> {new Intl.DateTimeFormat('en-GB', {
@@ -299,7 +279,7 @@ const SentRequests = () => {
             <h2>Modify Application</h2>
             <p><strong>ID:</strong> {selectedRequest.id}</p>
             <h2>User: {selectedRequest.name}</h2>
-            <p><strong>Details:</strong> {selectedRequest.details}</p>
+            <div className="reqDet"><p><strong>Details:</strong><br/>{selectedRequest.details}</p></div>
             <p><strong>City:</strong> {selectedRequest.city}</p>
             <p><strong>Location:</strong> {selectedRequest.location}</p>
             <p><strong>Created At:</strong> {new Intl.DateTimeFormat('en-GB', {
@@ -329,8 +309,12 @@ const SentRequests = () => {
           applications.map((app) => (
             <div className="application-card" key={app.id}>
               <p><strong>Request ID:</strong> {app.request_id}</p>
-              <p><strong>Details:</strong> {app.request.details}</p>
-              <p><strong>Message:</strong> {app.message}</p>
+              <div className="appCardText">
+                <p><strong>Request Details:</strong></p>{app.request.details}
+              </div>
+              <div className="appCardText">
+                <p><strong>Application Message:</strong></p>{app.message}
+              </div>
               <p><strong>Application Date:</strong> {new Intl.DateTimeFormat('en-GB', {
                 day: '2-digit',
                 month: '2-digit',

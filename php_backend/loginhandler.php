@@ -82,6 +82,7 @@ try {
         $response['data']['city'] = $userData['city'];
         $response['data']['category'] = $userData['category'];
         $response['data']['bio'] = $userData['bio'];
+        $response['data']['picture'] = base64_encode($userData['picture']);
     }
 
     // Store user session data
@@ -94,15 +95,15 @@ try {
             'category' => $userData['category'],
             'city' => $userData['city'],
             'userType' => $userType,
+            'picture' => base64_encode($userData['picture']), // Add encoded picture to session
         ];
-        } else {
+    } else {
         $_SESSION['user'] = [
             'id' => $userData['id'],
             'name' => $userData['name'],
             'email' => $userData['email'],
             'userType' => $userType,
         ];
-      
     }
 
     // Debugging log

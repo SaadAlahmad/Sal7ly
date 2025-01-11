@@ -415,6 +415,8 @@ const RequestPage = () => {
                                                 {app.craftsman_name}
                                             </button>
                                         </strong>
+                                        <br/>
+                                        <strong>Mobile: +</strong>{app.craftsman_mobile}
                                         <p></p>
                                         <p>Message:</p>
                                         <p className="appMessage">{app.message}</p>

@@ -62,6 +62,7 @@ const SignUpPage = () => {
                 formDataToSend.append(key, formData[key]);
             }
         });
+
         formDataToSend.append("mobile", fullMobile);
         formDataToSend.append("userType", userType);
 
@@ -172,16 +173,21 @@ const SignUpPage = () => {
                         ))}
                     </select>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="picture">Upload Profile Picture (Optional)</label>
-                    <input
-                        type="file"
-                        id="picture"
-                        name="picture"
-                        onChange={handleFileChange}
-                        accept="image/*"
-                    />
-                </div>
+
+                {/* Profile picture input only for craftsmen */}
+                {userType === "craftsman" && (
+                    <div className="form-group">
+                        <label htmlFor="picture">Upload Profile Picture (Optional)</label>
+                        <input
+                            type="file"
+                            id="picture"
+                            name="picture"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                        />
+                    </div>
+                )}
+
                 <div className="form-group password-group">
                     <label htmlFor="password">Password</label>
                     <div className="password-input-container">

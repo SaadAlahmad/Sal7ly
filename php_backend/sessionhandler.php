@@ -29,9 +29,10 @@ if (isset($_SESSION['user'])) {
     if ($_SESSION['user']['userType'] === 'craftsman') {
         $response['city'] = $_SESSION['user']['city'] ?? null;
         $response['category'] = $_SESSION['user']['category'] ?? null;
+
+        $response['picture'] = "data:image/jpeg;base64," . $_SESSION['user']['picture'];
     }
 }
 
 echo json_encode($response);
 exit;
-?>

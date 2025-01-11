@@ -25,6 +25,7 @@ export const UserProvider = ({ children }) => {
             if (data.userType === 'craftsman') {
               userData.city = data.city;
               userData.category = data.category;
+              userData.picture = data.picture;
             }
 
             setUser(userData);

@@ -62,6 +62,7 @@ const LoginPage = () => {
                         userType: data.userType,
                         city: data.city,
                         category: data.category,
+                        picture: data.picture,
                     });    
                 } else {
                     setUser({
@@ -114,7 +115,7 @@ const LoginPage = () => {
                     </div>
                     <div className="form-group password-group">
                         <label htmlFor="password">Password</label>
-                        <div className="password-input-container">
+                        <div className="password-input-login-container">
                             <input
                                 type="password"
                                 id="password"
