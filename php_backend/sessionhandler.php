@@ -2,7 +2,7 @@
 session_start();
 
 header("Content-Type: application/json");
-$allowedOrigins = ['http://localhost:5173']; // Add your allowed origins here
+$allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 if (in_array($origin, $allowedOrigins)) {
@@ -20,12 +20,11 @@ $response = ['loggedIn' => false];
 
 if (isset($_SESSION['user'])) {
     $response['loggedIn'] = true;
-    $response['id'] = $_SESSION['user']['id']; // Include user ID
+    $response['id'] = $_SESSION['user']['id'];
     $response['name'] = $_SESSION['user']['name'];
     $response['email'] = $_SESSION['user']['email'];
-    $response['userType'] = $_SESSION['user']['userType']; // Include userType
+    $response['userType'] = $_SESSION['user']['userType'];
 
-    // Include additional fields for craftsman
     if ($_SESSION['user']['userType'] === 'craftsman') {
         $response['city'] = $_SESSION['user']['city'] ?? null;
         $response['category'] = $_SESSION['user']['category'] ?? null;

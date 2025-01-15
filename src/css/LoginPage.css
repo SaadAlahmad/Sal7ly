@@ -19,7 +19,6 @@
   overflow: hidden;
 }
 
-/* Login form styling */
 .login-content {
   flex: 2;
   padding: 2rem;
@@ -88,7 +87,6 @@
   background-color: #036100;
 }
 
-/* Side menu styling */
 .side-menu {
   flex: 1;
   display: flex;

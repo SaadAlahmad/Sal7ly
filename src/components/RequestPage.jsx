@@ -118,7 +118,7 @@ const RequestPage = () => {
             });
             const result = await response.json();
             if (result.success) {
-                fetchRequests(); // Refresh the requests
+                fetchRequests();
                 setFormData({ service: "", details: "", city: "", location: "" });
             } else {
                 console.error(result.error);
@@ -130,7 +130,7 @@ const RequestPage = () => {
 
     const handleDeleteRequest = async (id) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this request?");
-        if (!confirmDelete) return; // Exit if the user cancels
+        if (!confirmDelete) return;
         
         try {
             const response = await fetch("http://localhost/Sal7ly/php_backend/requesthandler.php", {
@@ -140,7 +140,7 @@ const RequestPage = () => {
             });
             const result = await response.json();
             if (result.success) {
-                fetchRequests(); // Refresh the requests
+                fetchRequests();
             } else {
                 console.error(result.error);
             }
@@ -171,7 +171,7 @@ const RequestPage = () => {
             });
             const result = await response.json();
             if (result.success) {
-                fetchRequests(); // Refresh the requests
+                fetchRequests();
                 setShowModifyForm(false);
                 setModifyFormData({ service: "", details: "", city: "", location: "" });
             } else {
@@ -200,9 +200,8 @@ const RequestPage = () => {
             });
             const result = await response.json();
             if (result.success) {
-                // Update UI after successful accept
                 fetchRequests();
-                setShowApplicationsModal(false); // Close the modal
+                setShowApplicationsModal(false);
                 alert("Application accepted successfully!");
             } else {
                 console.error(result.error);
@@ -369,7 +368,7 @@ const RequestPage = () => {
                             />
                         ) : (
                             <input
-                                type={type === "text" ? "text" : type} // Safeguard for valid types
+                                type={type === "text" ? "text" : type}
                                 id={name}
                                 name={name}
                                 placeholder={placeholder}

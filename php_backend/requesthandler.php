@@ -115,11 +115,9 @@ try {
                     exit;
                 }
             
-                // Start a transaction to ensure atomicity
                 $conn->beginTransaction();
                 
                 try {
-                    // Update the request's status
                     $sql = "UPDATE requests SET status = 0 WHERE id = :id AND user_id = :user_id";
                     $stmt = $conn->prepare($sql);
                     $stmt->bindParam(':id', $requestId);
@@ -127,7 +125,6 @@ try {
                     $stmt->execute();
             
                     if ($stmt->rowCount() > 0) {
-                        // Update the status of related applications
                         $sql = "UPDATE applications SET status = 0 WHERE request_id = :request_id";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':request_id', $requestId);

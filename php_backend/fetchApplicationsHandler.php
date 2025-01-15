@@ -18,15 +18,13 @@ require_once 'DbConnect.php';
 $db = new DbConnect();
 $conn = $db->connect();
 
-// Get the POST data
 $data = json_decode(file_get_contents("php://input"), true);
 $craftsmanId = $data['craftsman_id'] ?? null;
-$action = $data['action'] ?? 'fetch'; // Default action is fetch
+$action = $data['action'] ?? 'fetch';
 
 try {
     switch ($action) {
         case 'fetch':
-            // Fetch applications for the craftsman
             if (!$craftsmanId) {
                 echo json_encode(['error' => 'Invalid input']);
                 exit;
@@ -47,7 +45,6 @@ try {
             break;
 
         case 'modify':
-            // Modify application
             $applicationId = $data['application_id'] ?? null;
             $message = $data['message'] ?? null;
 
@@ -69,7 +66,6 @@ try {
             break;
 
         case 'delete':
-            // Delete application (set status to 0)
             $applicationId = $data['application_id'] ?? null;
 
             if (!$applicationId) {

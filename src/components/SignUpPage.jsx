@@ -174,7 +174,6 @@ const SignUpPage = () => {
                     </select>
                 </div>
 
-                {/* Profile picture input only for craftsmen */}
                 {userType === "craftsman" && (
                     <div className="form-group">
                         <label htmlFor="picture">Upload Profile Picture (Optional)</label>

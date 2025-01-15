@@ -1,7 +1,6 @@
 <?php
 header("Content-Type: application/json");
 
-// Handle CORS
 $allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
@@ -16,7 +15,6 @@ if (in_array($origin, $allowedOrigins)) {
     exit;
 }
 
-// Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
@@ -24,22 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once 'DbConnect.php';
 
-// Connect to the database
 $db = new DbConnect();
 $conn = $db->connect();
 
-// Parse incoming JSON data
 $data = json_decode(file_get_contents("php://input"), true);
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Helper function to send JSON response
 function sendResponse($statusCode, $data) {
     http_response_code($statusCode);
     echo json_encode($data);
     exit;
 }
 
-// Handle POST (Fetch Projects)
 if ($method === 'POST') {
     $userId = $data['userId'] ?? null;
     $userType = $data['userType'] ?? null;
@@ -85,7 +79,6 @@ if ($method === 'POST') {
             sendResponse(200, ['activeProjects' => [], 'finishedProjects' => []]);
         }
 
-        // Process and categorize projects
         $activeProjects = [];
         $finishedProjects = [];
 
@@ -141,7 +134,6 @@ if ($method === 'POST') {
     }
 }
 
-// Handle PUT (Update Project Status)
 if ($method === 'PUT') {
     $projectId = $data['projectId'] ?? null;
 
@@ -166,5 +158,4 @@ if ($method === 'PUT') {
     }
 }
 
-// Default: Method not allowed
 sendResponse(405, ['error' => 'Method not allowed']);

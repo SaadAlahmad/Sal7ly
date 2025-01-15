@@ -30,10 +30,8 @@ const LoginPage = () => {
             if (response.ok && result.status) {
                 alert(result.message || "Successfully logged in!");
 
-                // Fetch updated user data from sessionhandler.php
                 await fetchUserData();
 
-                // Redirect to the homepage
                 navigate("/");
                 setFormData({ email: "", password: "" });
             } else {

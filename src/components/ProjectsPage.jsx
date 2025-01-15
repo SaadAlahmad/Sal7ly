@@ -111,7 +111,6 @@ const ProjectsPage = () => {
         const endpoint = "http://localhost/Sal7ly/php_backend/reviewhandler.php";
         const method = hasReview ? "PUT" : "POST";
 
-        // Submit the review (either create or update)
         const response = await fetch(endpoint, {
             method,
             headers: {
@@ -126,7 +125,6 @@ const ProjectsPage = () => {
         });
 
         if (response.ok) {
-            // Perform Bayesian calculation after successful review submission
             await fetch("http://localhost/Sal7ly/php_backend/bayesianhandler.php", {
                 method: "POST",
                 headers: {
@@ -135,7 +133,6 @@ const ProjectsPage = () => {
                 body: JSON.stringify({ projectId: selectedProject.id }),
             });
 
-            // Reset form and state
             alert("Review submitted successfully.");
             setShowReviewForm(false);
             setReviewData({ rating: 0, reviewText: "" });
@@ -324,7 +321,6 @@ const ProjectsPage = () => {
           <div className="review-modal-content">
             <h3>{hasReview ? "Modify Your Review" : "Submit Your Review"}</h3>
             <div className="rating-container">
-              <label>Rating:</label>
               <div className="stars">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span

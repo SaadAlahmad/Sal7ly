@@ -209,6 +209,7 @@
   position: relative;
   width: 550px;
   height: 400px;
+  background-color: rgb(209, 209, 209);
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 10px;

@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-$allowedOrigins = ['http://localhost:5173']; // Allowed origins
+$allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 if (in_array($origin, $allowedOrigins)) {
@@ -18,12 +18,11 @@ require_once 'DbConnect.php';
 $db = new DbConnect();
 $conn = $db->connect();
 
-// Get the POST data
 $data = json_decode(file_get_contents("php://input"), true);
 $craftsmanId = $data['craftsman_id'] ?? null;
 $requestId = $data['request_id'] ?? null;
 $applicationId = $data['application_id'] ?? null;
-$action = $data['action'] ?? 'accept'; // Default action is accept
+$action = $data['action'] ?? 'accept';
 
 try {
     if ($action === 'accept') {
@@ -32,7 +31,6 @@ try {
             exit;
         }
 
-        // Update the request status to 0 (inactive)
         $stmtRequest = $conn->prepare("UPDATE requests SET status = 0 WHERE id = :request_id");
         $stmtRequest->bindParam(':request_id', $requestId, PDO::PARAM_INT);
         if (!$stmtRequest->execute()) {
@@ -40,7 +38,6 @@ try {
             exit;
         }
 
-        // Update all applications related to the request to status 0 (inactive)
         $stmtApplications = $conn->prepare("UPDATE applications SET status = 0 WHERE request_id = :request_id");
         $stmtApplications->bindParam(':request_id', $requestId, PDO::PARAM_INT);
         if (!$stmtApplications->execute()) {
@@ -48,7 +45,6 @@ try {
             exit;
         }
 
-        // Insert the project data into the projects table
         $stmtProject = $conn->prepare(
           "INSERT INTO projects (craftsman_id, user_id, application_id, request_id, created_at, status) 
           VALUES (:craftsman_id, 

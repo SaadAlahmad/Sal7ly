@@ -38,22 +38,18 @@ const SearchPage = () => {
     const handleSearch = async (e) => {
         e.preventDefault();
     
-        // Clear previous results immediately
         setSearchResults([]);
     
-        // Validation: Ensure category is selected
         if (!selectedCategory) {
             setValidationMessage("You must select a category.");
             return;
         }
     
-        // Validation: Ensure at least one of searchInput or selectedCity is provided
         if (!searchInput && !selectedCity) {
             setValidationMessage("You must enter a name or choose a city.");
             return;
         }
     
-        // Clear validation message when inputs are valid
         setValidationMessage("");
     
         try {
@@ -63,17 +59,17 @@ const SearchPage = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name: searchInput,         // Allow empty string
-                    category: selectedCategory, // Required field
-                    city: selectedCity,        // Allow empty string
+                    name: searchInput,
+                    category: selectedCategory,
+                    city: selectedCity,
                 }),
             });
     
             const data = await response.json();
-            setSearchResults(data.results || []); // Populate results or set to an empty array if none
+            setSearchResults(data.results || []);
         } catch (error) {
             console.error("Error fetching search results:", error);
-            setSearchResults([]); // Ensure results remain empty on error
+            setSearchResults([]);
         }
     };
                                 
@@ -151,14 +147,17 @@ const SearchPage = () => {
                                             View Full Profile
                                         </Link>
                                     </div>
+                                    {result.bayesian > 0 && (
+                                        <div className="rating-badge">
+                                            {result.bayesian.toFixed(2)} <span className="star">★</span>
+                                        </div>
+                                    )}
                                 </div>
                             ))
+                        ) : validationMessage ? (
+                            <p style={{ color: "red" }}>{validationMessage}</p>
                         ) : (
-                            validationMessage ? (
-                                <p style={{ color: "red" }}>{validationMessage}</p>
-                            ) : (
-                                <p>No results found or search cleared.</p>
-                            )
+                            <p>No results found or search cleared.</p>
                         )}
                     </div>
                 </div>

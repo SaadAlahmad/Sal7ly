@@ -205,12 +205,14 @@
 
 .rating-container {
   margin-bottom: 10px;
+  position: relative;
 }
 
 .stars {
   display: flex;
   justify-content: center;
-  margin: 10px 0;
+  margin: auto;
+  margin-bottom: 10px;
 }
 
 .star {
