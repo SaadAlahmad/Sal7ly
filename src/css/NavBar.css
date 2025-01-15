@@ -9,7 +9,7 @@
   color: #333;
 }
 
-nav {
+.mainNav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -218,9 +218,9 @@ nav .menu span {
 
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Position below the button */
+  top: 100%;
   left: 0;
-  background-color: #4caf50; /* Match button color */
+  background-color: #4caf50;
   color: white;
   border-radius: 5px;
   padding: 10px 0;
@@ -240,5 +240,5 @@ nav .menu span {
 }
 
 .dropdown-item:hover {
-  background-color: #388e3c; /* Slightly darker shade */
+  background-color: #388e3c;
 }

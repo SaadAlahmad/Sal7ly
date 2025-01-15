@@ -1,10 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../css/HomePage.css";
 import { UserContext } from "./UserContext";
 
 const HomePage = () => {
     const { user, loading } = useContext(UserContext);
+    const [workSamples, setWorkSamples] = useState([]);
+    const [currentSampleIndex, setCurrentSampleIndex] = useState(0);
+    const [fadeClass, setFadeClass] = useState("");
+
+    useEffect(() => {
+        fetch("http://localhost/Sal7ly/php_backend/homepagesamples.php")
+            .then((response) => response.json())
+            .then((data) => {
+                setWorkSamples(data.workSamples);
+                // console.log("Fetched work samples:", data);
+                // console.log("WorkSamples Data:", workSamples);
+            })
+            .catch((error) => console.error("Error fetching work samples:", error));
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFadeClass("fade-image");
+            setTimeout(() => {
+                setCurrentSampleIndex((prevIndex) =>
+                    workSamples.length > 0 ? (prevIndex + 1) % workSamples.length : 0
+                );
+                setFadeClass("");
+            }, 1000);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [workSamples]);
 
     if (loading) {
         return <div className="loading">جاري التحميل... / Loading...</div>;
@@ -47,24 +75,54 @@ const HomePage = () => {
                 </section>
             )}
 
-            <section className="homepage-about">
+            {/* <section className="homepage-about">
                 <h2>من نحن / About Us</h2>
                 <p>
                     صلحلي هي منصة تربط العملاء مع المهنيين المهرة مثل السباكين، والنجارين، والحدادين، وغيرهم.
                     <br />
                     Sal7ly is a platform connecting customers with skilled professionals such as plumbers, carpenters, blacksmiths, and more.
                 </p>
-            </section>
+            </section> */}
 
             <section className="homepage-features">
-                <h2>مميزاتنا / Our Features</h2>
-                <ul>
-                    <li>بحث سهل الاستخدام / Easy-to-use search functionality</li>
-                    <li>تصنيفات شاملة للمهارات والمهن / Comprehensive categories for various trades and skills</li>
-                    <li>تصفية حسب المدينة للعثور على المهنيين بالقرب منك / City-based filtering for finding professionals near you</li>
-                    <li>إرسال الطلبات بسهولة للحصول على خدمات مخصصة / Simple request submission for customized services</li>
-                </ul>
+            <h2>مميزاتنا / Our Features</h2>
+            <div className="features-container">
+                <div className="feature-item">
+                <span className="feature-icon">✓</span>
+                <p>بحث سهل الاستخدام / Easy-to-use search functionality</p>
+                </div>
+                <div className="feature-item">
+                <span className="feature-icon">✓</span>
+                <p>تصنيفات شاملة للمهارات والمهن / Comprehensive categories for various trades and skills</p>
+                </div>
+                <div className="feature-item">
+                <span className="feature-icon">✓</span>
+                <p>تصفية حسب المدينة للعثور على المهنيين بالقرب منك / City-based filtering for finding professionals near you</p>
+                </div>
+                <div className="feature-item">
+                <span className="feature-icon">✓</span>
+                <p>إرسال الطلبات بسهولة للحصول على خدمات مخصصة / Simple request submission for customized services</p>
+                </div>
+            </div>
             </section>
+
+            {workSamples.length > 0 && (
+                <section className="homepage-featured-worksample">
+                    <div className="worksample-card">
+                        <Link to={`/profile/${workSamples[currentSampleIndex].craftsperson_id}`}>
+                            <div
+                                className={`worksample-card-image ${fadeClass}`}
+                                style={{
+                                    backgroundImage: `url(data:${workSamples[currentSampleIndex].file_type};base64,${workSamples[currentSampleIndex].file_data})`,
+                                }}
+                            />
+                            <div className="worksample-card-caption">
+                                {workSamples[currentSampleIndex].craftsperson_name}
+                            </div>
+                        </Link>
+                    </div>
+                </section>
+            )}
 
             <section className="homepage-cta">
                 <h2>ابدأ اليوم / Get Started Today</h2>

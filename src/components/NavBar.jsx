@@ -31,7 +31,7 @@ export const Navbar = () => {
   }
 
   return (
-    <nav>
+    <nav className="mainNav">
       <Link to="/" className="title">
         صلحلي
       </Link>

@@ -10,7 +10,6 @@ try {
     $db = new DbConnect();
     $conn = $db->connect();
 
-    // Get the category from the request
     $category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : '';
 
     if (empty($category)) {
@@ -18,29 +17,27 @@ try {
         exit;
     }
 
-    // Fetch professionals for the given category
     $stmt = $conn->prepare("
-        SELECT id, name, picture, city, mobile 
-        FROM craftspeople 
-        WHERE category = :category AND verified = 1
+        SELECT c.id, c.name, c.picture, c.city, c.mobile, COALESCE(b.bayesian, 0) AS bayesian
+        FROM craftspeople c
+        LEFT JOIN bayesian b ON c.id = b.craftsman_id
+        WHERE c.category = :category AND c.verified = 1
+        ORDER BY b.bayesian DESC, b.bayesian IS NULL
     ");
     $stmt->bindParam(':category', $category);
     $stmt->execute();
 
     $professionals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Process the results
     foreach ($professionals as &$professional) {
-        // Base64-encode picture if it exists
         if (!empty($professional['picture'])) {
             $professional['picture'] = 'data:image/jpeg;base64,' . base64_encode($professional['picture']);
         } else {
-            $professional['picture'] = '/pictures/userjpg.jpg'; // Default picture
+            $professional['picture'] = '/pictures/userjpg.jpg';
         }
     }
     unset($professional);
 
-    // Return JSON response
     echo json_encode(['professionals' => $professionals]);
 
 } catch (Exception $e) {
