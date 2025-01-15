@@ -109,25 +109,42 @@ try {
             echo json_encode(['success' => 'Request updated successfully']);
             break;
 
-        case 'delete':
-            if (empty($requestId) || empty($userId)) {
-                echo json_encode(['error' => 'ID and user ID are required for deletion']);
-                exit;
-            }
-        
-            $sql = "UPDATE requests SET status = 0 WHERE id = :id AND user_id = :user_id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':id', $requestId);
-            $stmt->bindParam(':user_id', $userId);
-            $stmt->execute();
-        
-            if ($stmt->rowCount() > 0) {
-                echo json_encode(['success' => 'Request status updated successfully']);
-            } else {
-                echo json_encode(['error' => 'Request not found or already updated']);
-            }
-            break;
-        
+            case 'delete':
+                if (empty($requestId) || empty($userId)) {
+                    echo json_encode(['error' => 'ID and user ID are required for deletion']);
+                    exit;
+                }
+            
+                // Start a transaction to ensure atomicity
+                $conn->beginTransaction();
+                
+                try {
+                    // Update the request's status
+                    $sql = "UPDATE requests SET status = 0 WHERE id = :id AND user_id = :user_id";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':id', $requestId);
+                    $stmt->bindParam(':user_id', $userId);
+                    $stmt->execute();
+            
+                    if ($stmt->rowCount() > 0) {
+                        // Update the status of related applications
+                        $sql = "UPDATE applications SET status = 0 WHERE request_id = :request_id";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':request_id', $requestId);
+                        $stmt->execute();
+            
+                        $conn->commit();
+                        echo json_encode(['success' => 'Request and related applications status updated successfully']);
+                    } else {
+                        $conn->rollBack();
+                        echo json_encode(['error' => 'Request not found or already updated']);
+                    }
+                } catch (Exception $e) {
+                    $conn->rollBack();
+                    echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+                }
+                break;
+                    
         case 'fetchApplications':
             $requestId = $inputData['request_id'] ?? null;
             if (empty($requestId)) {

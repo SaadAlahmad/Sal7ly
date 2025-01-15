@@ -32,7 +32,13 @@ try {
                 exit;
             }
 
-            $stmt = $conn->prepare("SELECT * FROM applications WHERE craftsman_id = :craftsman_id AND status = 1 ORDER BY created_at DESC");
+            $stmt = $conn->prepare("
+            SELECT a.*, r.details AS request_details, r.city AS request_city, r.location AS request_location
+            FROM applications a
+            LEFT JOIN requests r ON a.request_id = r.id
+            WHERE a.craftsman_id = :craftsman_id AND a.status = 1
+            ORDER BY a.created_at DESC
+            ");
             $stmt->bindParam(':craftsman_id', $craftsmanId, PDO::PARAM_INT);
             $stmt->execute();
             $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);

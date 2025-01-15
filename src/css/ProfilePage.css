@@ -1,19 +1,23 @@
+.profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
 .profile-page {
-  max-width: 900px;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
-  text-align: left;
-  padding: 20px;
-  padding-bottom: 50px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  flex: 7;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .profile-header {
   display: flex;
   align-items: flex-start;
-  gap: 20px; /* Space between the profile picture and main content */
+  gap: 20px; 
 }
 
 .profile-picture {
@@ -25,12 +29,12 @@
 
 .profile-main {
   display: flex;
-  flex: 1; /* Takes the remaining width */
-  gap: 20px; /* Space between profile-details and bio */
+  flex: 1;
+  gap: 20px;
 }
 
 .profile-details {
-  flex: 1; /* Allows the details section to take up only necessary space */
+  flex: 1;
 }
 
 .profile-details h1 {
@@ -46,7 +50,7 @@
 }
 
 .profile-bio {
-  flex: 1; /* Bio takes up the remaining available space */
+  flex: 1;
 }
 
 .profile-bio h3 {
@@ -81,7 +85,6 @@
   font-size: xx-large;
 }
 
-/* Work samples grid layout */
 .worksamples-grid {
   display: flex;
   flex-wrap: wrap;
@@ -95,7 +98,6 @@
   object-fit: cover;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  /* transition: transform 0.2s ease-in-out; */
   border-radius: 12px;
 }
 
@@ -170,5 +172,121 @@
   to {
       opacity: 1;
       transform: translateY(0);
+  }
+}
+
+
+.profile-reviews {
+  flex: 3;
+  max-height: 50vh;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-reviews h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-card {
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #555;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.144);
+  padding-bottom: 5px;
+}
+
+.review-header p {
+  margin: 0;
+}
+
+
+.review-rating {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.review-rating .star {
+  font-size: 1.2rem;
+  cursor: default;
+}
+
+.review-rating .star.filled {
+  color: #ffc107;
+}
+
+.review-rating .star.empty {
+  color: #e0e0e0;
+}
+
+.review-body p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.review-body p strong {
+  font-weight: 600;
+  color: #333;
+}
+
+.review-request-id {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.profile-reviews::-webkit-scrollbar {
+  width: 8px;
+}
+
+.profile-reviews::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.profile-reviews::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+.profile-reviews::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+      flex-direction: column;
+  }
+
+  .profile-reviews {
+      max-height: none;
   }
 }

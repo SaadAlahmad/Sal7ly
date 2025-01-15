@@ -37,24 +37,13 @@ try {
 
     // Fetch requests matching the category and city
     $stmt = $conn->prepare("
-        SELECT 
-            r.id, 
-            r.user_id, 
-            r.details, 
-            r.city, 
-            r.location, 
-            r.created_at,
-            u.name 
-        FROM 
-            requests r
-        JOIN 
-            users u 
-        ON 
-            r.user_id = u.id
-        WHERE 
-            r.service = :category AND 
-            r.city = :city AND
-            r.status = 1
+    SELECT r.id, r.user_id, r.details, r.city, r.location, r.created_at, u.name,
+           COUNT(a.id) AS applications_count
+    FROM requests r
+    JOIN users u ON r.user_id = u.id
+    LEFT JOIN applications a ON r.id = a.request_id AND a.status = 1
+    WHERE r.service = :category AND r.city = :city AND r.status = 1
+    GROUP BY r.id
     ");
     $stmt->bindParam(':category', $category);
     $stmt->bindParam(':city', $city);

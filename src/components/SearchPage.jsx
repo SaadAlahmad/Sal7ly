@@ -145,7 +145,7 @@ const SearchPage = () => {
                                     <img src={result.picture} alt={result.name} className="search-result-picture" />
                                     <div className="search-result-info">
                                         <h3>{result.name}</h3>
-                                        <p>Mobile: 0{result.mobile}</p>
+                                        <p>Mobile: +{result.mobile}</p>
                                         <p>City: {result.city}</p>
                                         <Link to={`/profile/${result.id}`} className="search-profile-button">
                                             View Full Profile

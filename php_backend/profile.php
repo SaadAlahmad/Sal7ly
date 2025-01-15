@@ -56,6 +56,27 @@ try {
                 'data' => 'data:' . $sample['file_type'] . ';base64,' . base64_encode($sample['file_data']),
             ];
         }, $worksamples);
+
+        // Fetch reviews
+        $reviewsStmt = $conn->prepare("
+        SELECT 
+            r.id AS review_id, 
+            r.rating, 
+            r.review_text, 
+            r.created_at, 
+            p.request_id, 
+            u.name AS user_name 
+        FROM reviews r
+        INNER JOIN projects p ON r.project_id = p.id
+        INNER JOIN users u ON p.user_id = u.id
+        WHERE p.craftsman_id = :craftsman_id AND r.status = 1
+        ORDER BY r.created_at DESC
+        ");
+        $reviewsStmt->bindParam(':craftsman_id', $id);
+        $reviewsStmt->execute();
+        $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        $professional['reviews'] = $reviews;
     } else {
         echo json_encode(['error' => 'Craftsperson not found or not verified']);
         exit;
