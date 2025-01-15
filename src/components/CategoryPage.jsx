@@ -45,9 +45,21 @@ const CategoryPage = () => {
                             className="result-card"
                             onClick={() => navigate(`/profile/${professional.id}`)}
                         >
-                            <img 
-                                src={professional.picture.startsWith('data:image') ? professional.picture : `/pictures/${professional.picture}`} 
-                                alt={professional.name} 
+                            <div className="rating-container">
+                                {professional.bayesian && professional.bayesian > 0 ? (
+                                    <>
+                                        <span className="rating">
+                                            <strong>Rating: </strong>{professional.bayesian.toFixed(2)}
+                                        </span>
+                                        <span className="catStar">&#9733;</span>
+                                    </>
+                                ) : (
+                                    <></>  
+                                )}
+                            </div>
+                            <img
+                                src={professional.picture.startsWith('data:image') ? professional.picture : `/pictures/${professional.picture}`}
+                                alt={professional.name}
                             />
                             <h3>{professional.name}</h3>
                             <p className="pS">City</p>

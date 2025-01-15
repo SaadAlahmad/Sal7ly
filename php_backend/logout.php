@@ -1,7 +1,7 @@
 <?php
 session_start();
 header("Content-Type: application/json");
-$allowedOrigins = ['http://localhost:5173']; // Add your allowed origins here
+$allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 if (in_array($origin, $allowedOrigins)) {
@@ -15,11 +15,9 @@ if (in_array($origin, $allowedOrigins)) {
     exit;
 }
 
-// Destroy the session
 session_unset();
 session_destroy();
 
-// Respond with success
 echo json_encode(['success' => true, 'message' => 'Logged out successfully']);
 exit;
 ?>

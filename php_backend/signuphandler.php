@@ -17,18 +17,16 @@ try {
     $userType = $_POST['userType'] ?? null;
 
     if ($userType === 'user') {
-        // Generate a unique ID for the user
         function generateUserId($conn) {
             do {
                 $prefix = '8800';
-                $randomPart = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // 6 random digits
+                $randomPart = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
                 $uniqueId = $prefix . $randomPart;
 
-                // Check if the ID is already in use
                 $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE id = :id");
                 $stmt->bindParam(':id', $uniqueId);
                 $stmt->execute();
-                $exists = $stmt->fetchColumn() > 0; // Check if count > 0
+                $exists = $stmt->fetchColumn() > 0;
             } while ($exists);
 
             return $uniqueId;
@@ -36,7 +34,6 @@ try {
 
         $userId = generateUserId($conn);
 
-        // Validate required fields for users
         $requiredFields = ['name', 'email', 'mobile', 'password'];
         foreach ($requiredFields as $field) {
             if (empty($_POST[$field])) {
@@ -44,7 +41,6 @@ try {
             }
         }
 
-        // Extract form data
         $name = htmlspecialchars($_POST['name']);
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         $mobile = htmlspecialchars($_POST['mobile']);
@@ -56,7 +52,6 @@ try {
             throw new Exception('Invalid email address.');
         }
 
-        // Insert user data into the `users` table
         $stmt = $conn->prepare("
             INSERT INTO users (id, name, email, mobile, password, created_at, updated_at)
             VALUES (:id, :name, :email, :mobile, :password, :created_at, :updated_at)
@@ -75,18 +70,16 @@ try {
         $response['message'] = 'User registered successfully.';
         $response['userId'] = $userId;
     } elseif ($userType === 'craftsman') {
-        // Generate a unique ID for the craftsman
         function generateCraftsmanId($conn) {
             do {
-                $datePart = date('Ymd'); // YYYYMMDD format (8 digits)
-                $randomPart = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // 4 random digits
+                $datePart = date('Ymd');
+                $randomPart = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
                 $uniqueId = $datePart . $randomPart;
 
-                // Check if the ID is already in use
                 $stmt = $conn->prepare("SELECT COUNT(*) FROM craftspeople WHERE id = :id");
                 $stmt->bindParam(':id', $uniqueId);
                 $stmt->execute();
-                $exists = $stmt->fetchColumn() > 0; // Check if count > 0
+                $exists = $stmt->fetchColumn() > 0;
             } while ($exists);
 
             return $uniqueId;
@@ -94,7 +87,6 @@ try {
 
         $craftsmanId = generateCraftsmanId($conn);
 
-        // Validate required fields for craftsman
         $requiredFields = ['name', 'email', 'mobile', 'city', 'category', 'bio', 'password'];
         foreach ($requiredFields as $field) {
             if (empty($_POST[$field])) {
@@ -102,7 +94,6 @@ try {
             }
         }
 
-        // Extract form data
         $name = htmlspecialchars($_POST['name']);
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         $mobile = htmlspecialchars($_POST['mobile']);
@@ -115,15 +106,12 @@ try {
             throw new Exception('Invalid email address.');
         }
 
-        // Handle profile picture upload
         $picture = null;
 
         if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
-            // Use the uploaded picture
             $picture = file_get_contents($_FILES['picture']['tmp_name']);
         } else {
-            // Use the default picture if none is uploaded
-            $defaultPicturePath = __DIR__ . "/pictures/userjpg.jpg"; // Path to the default picture
+            $defaultPicturePath = __DIR__ . "/pictures/userjpg.jpg";
             if (file_exists($defaultPicturePath)) {
                 $picture = file_get_contents($defaultPicturePath);
             } else {
@@ -131,7 +119,6 @@ try {
             }
         }
         
-        // Insert craftsman data into the `craftspeople` table
         $stmt = $conn->prepare("
             INSERT INTO craftspeople (id, name, email, mobile, city, category, bio, picture, password)
             VALUES (:id, :name, :email, :mobile, :city, :category, :bio, :picture, :password)
@@ -148,7 +135,6 @@ try {
 
         $stmt->execute();
 
-        // Handle work samples upload
         $workSamples = [];
         if (isset($_FILES['workSamples']['tmp_name']) && is_array($_FILES['workSamples']['tmp_name'])) {
             foreach ($_FILES['workSamples']['tmp_name'] as $key => $tmpName) {

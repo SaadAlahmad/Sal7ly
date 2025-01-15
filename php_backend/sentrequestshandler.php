@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-$allowedOrigins = ['http://localhost:5173']; // Add your allowed origins here
+$allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 if (in_array($origin, $allowedOrigins)) {
@@ -17,14 +17,11 @@ if (in_array($origin, $allowedOrigins)) {
 require_once 'DbConnect.php';
 
 try {
-    // Initialize database connection
     $db = new DbConnect();
     $conn = $db->connect();
 
-    // Decode the JSON payload
     $input = json_decode(file_get_contents("php://input"), true);
 
-    // Validate input data
     $category = isset($input['category']) ? trim(htmlspecialchars($input['category'])) : '';
     $city = isset($input['city']) ? trim(htmlspecialchars($input['city'])) : '';
 
@@ -35,25 +32,14 @@ try {
 
     error_log("Category: $category, City: $city");
 
-    // Fetch requests matching the category and city
     $stmt = $conn->prepare("
-        SELECT 
-            r.id, 
-            r.user_id, 
-            r.details, 
-            r.city, 
-            r.location, 
-            r.created_at,
-            u.name 
-        FROM 
-            requests r
-        JOIN 
-            users u 
-        ON 
-            r.user_id = u.id
-        WHERE 
-            r.service = :category AND 
-            r.city = :city
+    SELECT r.id, r.user_id, r.details, r.city, r.location, r.created_at, u.name,
+           COUNT(a.id) AS applications_count
+    FROM requests r
+    JOIN users u ON r.user_id = u.id
+    LEFT JOIN applications a ON r.id = a.request_id AND a.status = 1
+    WHERE r.service = :category AND r.city = :city AND r.status = 1
+    GROUP BY r.id
     ");
     $stmt->bindParam(':category', $category);
     $stmt->bindParam(':city', $city);

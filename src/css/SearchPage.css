@@ -125,11 +125,35 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.search-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rating-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f1c40f;
+  color: #fff;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.rating-badge .star {
+  color: #fff;
+  font-size: 1rem;
+}
+
 .search-result-picture {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-bottom: 10px;
 }
 
 .search-result-info {

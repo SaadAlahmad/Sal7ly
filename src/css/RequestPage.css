@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Reem+Kufi:wght@400..700&display=swap');
 
-/* General Styles */
 .request-container {
   font-family: 'Lato', sans-serif;
   padding: 20px;
@@ -25,7 +24,6 @@
   margin: 0;
 }
 
-/* Form Styles */
 .request-form {
   background-color: white;
   padding: 20px;
@@ -63,7 +61,6 @@ textarea {
   height: 100px;
 }
 
-/* Button Styles */
 .submit-button,
 .modify-button,
 .delete-button {
@@ -103,7 +100,6 @@ textarea {
   background-color: #CC0000;
 }
 
-/* Active Requests Section */
 .active-requests-section {
   background-color: white;
   padding: 20px;
@@ -126,6 +122,10 @@ textarea {
   border-radius: 5px;
 }
 
+
+.request-item .det {
+  white-space: pre-wrap;
+}
 .not-logged-in-container {
   font-family: "Lato", serif;
   font-weight: 700;
@@ -161,7 +161,6 @@ textarea {
   background-color: #006909;
 }
 
-/* Style for the overlay when modifying a request */
 .modify-form-overlay {
   position: fixed;
   top: 0;
@@ -173,10 +172,9 @@ textarea {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(8px); /* Adjust the blur intensity as needed */
+  backdrop-filter: blur(8px);
 }
 
-/* Style for the modify form container */
 .modify-form-container {
   background-color: #fff;
   padding: 20px;
@@ -187,7 +185,6 @@ textarea {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Style for the close button */
 .close-button {
   position: absolute;
   top: 10px;
@@ -198,7 +195,6 @@ textarea {
   cursor: pointer;
 }
 
-/* Form group styling */
 .modify-form .form-group {
   margin-bottom: 15px;
   align-items: center;
@@ -220,7 +216,6 @@ textarea {
   font-size: 16px;
 }
 
-/* Style for the submit button in modify form */
 .modify-form .submit-button {
   background-color: #0d9e00fd;
   color: #fff;
@@ -254,14 +249,13 @@ textarea {
   background-color: #6d0000;
 }
 
-/* General Styles for Modals */
 .applications-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -347,7 +341,6 @@ textarea {
   color: #333333;
 }
 
-/* Show Applications Button */
 .applications-button {
   background-color: #007bff;
   color: #ffffff;
@@ -364,7 +357,20 @@ textarea {
   background-color: #0056b3;
 }
 
-/* Animations */
+.accept-button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.accept-button:hover {
+  background-color: #218838;
+}
+
 @keyframes fadeIn {
   from {
       opacity: 0;

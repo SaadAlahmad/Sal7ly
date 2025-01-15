@@ -27,12 +27,11 @@ export const Navbar = () => {
   };
 
   if (loading) {
-    // Optionally show a loading indicator
     return <nav>Loading...</nav>;
   }
 
   return (
-    <nav>
+    <nav className="mainNav">
       <Link to="/" className="title">
         صلحلي
       </Link>
@@ -70,6 +69,13 @@ export const Navbar = () => {
             Help
           </NavLink>
         </li>
+        {user && (
+          <li>
+            <NavLink to="/projects" className="nav-link">
+              Projects
+            </NavLink>
+          </li>
+        )}
         {user ? (
           <li className="user-dropdown">
             <button

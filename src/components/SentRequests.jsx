@@ -16,58 +16,38 @@ const SentRequests = () => {
 
   const fetchApplicationsAndRequests = async () => {
     try {
-      const applicationsResponse = await fetch(
-        "http://localhost/Sal7ly/php_backend/fetchApplicationsHandler.php",
-        {
+      const [applicationsResponse, requestsResponse] = await Promise.all([
+        fetch("http://localhost/Sal7ly/php_backend/fetchApplicationsHandler.php", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ craftsman_id: user.id, action: "fetch" }),
-        }
-      );
-
-      const applicationsData = await applicationsResponse.json();
-      if (!applicationsResponse.ok) {
-        throw new Error(
-          applicationsData.error || "Failed to fetch applications."
-        );
-      }
-      const applications = applicationsData.applications || [];
-
-      const requestsResponse = await fetch(
-        "http://localhost/Sal7ly/php_backend/sentrequestshandler.php",
-        {
+        }),
+        fetch("http://localhost/Sal7ly/php_backend/sentrequestshandler.php", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            category: user.category,
-            city: user.city,
-          }),
-        }
-      );
-
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category: user.category, city: user.city }),
+        }),
+      ]);
+  
+      const applicationsData = await applicationsResponse.json();
       const requestsData = await requestsResponse.json();
-      if (!requestsResponse.ok) {
-        throw new Error(requestsData.error || "Failed to fetch requests.");
-      }
+  
+      if (!applicationsResponse.ok) throw new Error(applicationsData.error || "Failed to fetch applications.");
+      if (!requestsResponse.ok) throw new Error(requestsData.error || "Failed to fetch requests.");
+  
+      const applications = applicationsData.applications || [];
       const requests = requestsData.requests || [];
-
+  
       const updatedRequests = requests.map((request) => {
-        const existingApplication = applications.find(
-          (app) => app.request_id === request.id
-        );
+        const existingApplication = applications.find((app) => app.request_id === request.id);
         return { ...request, hasApplication: !!existingApplication };
       });
-
+  
       const applicationsWithRequests = applications.map((app) => {
         const matchingRequest = requests.find((req) => req.id === app.request_id);
-        return { ...app, request: matchingRequest || null };
-      });
-
-      // Update state
+        return { ...app, request: matchingRequest || { details: 'No details available' } };
+    });
+      
       setApplications(applicationsWithRequests);
       setRequests(updatedRequests);
     } catch (error) {
@@ -75,7 +55,7 @@ const SentRequests = () => {
       setError(error.message);
     }
   };
-
+  
   useEffect(() => {
     if (loading) return;
   
