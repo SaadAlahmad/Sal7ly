@@ -11,6 +11,7 @@ import ProjectsPage from './components/ProjectsPage'
 import SupportPage from './components/SupportPage'
 import LoginPage from './components/LoginPage'
 import SignUpPage from './components/SignupPage'
+import AdminPage from './components/AdminPage'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import './css/App.css'
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/help" element={<Layout><SupportPage /></Layout>} />
           <Route path="/login" element={<Layout><LoginPage /></Layout>} />
           <Route path="/signup" element={<Layout><SignUpPage /></Layout>} />
+          <Route path="/admin" element={<Layout><AdminPage /></Layout>} />
         </Routes>
       </HashRouter>
     </>

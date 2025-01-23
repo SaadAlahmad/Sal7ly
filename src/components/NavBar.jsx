@@ -56,23 +56,32 @@ export const Navbar = () => {
             Categories
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to={user?.userType === "craftsman" ? "/showrequests" : "/request"}
-            className="nav-link"
-          >
-            {user?.userType === "craftsman" ? "Show Requests" : "Send a Request"}
-          </NavLink>
-        </li>
+        {user?.userType !== "admin" && (
+          <li>
+            <NavLink
+              to={user?.userType === "craftsman" ? "/showrequests" : "/request"}
+              className="nav-link"
+            >
+              {user?.userType === "craftsman" ? "Show Requests" : "Send a Request"}
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink to="/help" className="nav-link">
             Help
           </NavLink>
         </li>
-        {user && (
+        {user && user.userType !== "admin" && (
           <li>
             <NavLink to="/projects" className="nav-link">
               Projects
+            </NavLink>
+          </li>
+        )}
+        {user?.userType === "admin" && (
+          <li>
+            <NavLink to="/admin" className="nav-link">
+              Admin
             </NavLink>
           </li>
         )}
