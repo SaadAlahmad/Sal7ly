@@ -21,28 +21,30 @@ const categories = [
 
 const CategoriesPage = () => {
     return (
-        <div className="categories-container">
-            <div className="categories-intro">
-                <h2 className="intro-title">
+        <div className="categories-page">
+            <div className="categories-page__intro">
+                <h2 className="categories-page__intro-title">
                     Explore Our Service Categories | استكشف فئات الخدمات لدينا
                 </h2>
-                <p className="intro-description-en">
+                <p className="categories-page__description categories-page__description--en">
                     Find the right craftspeople to get your tasks done quickly and efficiently. Whether you need a plumber, electrician, or tailor, we've got you covered. 
                 </p>
-                <p className="intro-description-ar">
+                <p className="categories-page__description categories-page__description--ar">
                     .ابحث عن الحرفيين المناسبين لإنجاز مهامك بسرعة وكفاءة. سواء كنت بحاجة إلى سباك، كهربائي، أو خياط، نحن هنا لخدمتك
                 </p>
             </div>
-            <h1 className="categories-title">Explore Categories</h1>
-            <div className="categories-grid">
+            
+            <h1 className="categories-page__title">Explore Categories</h1>
+            
+            <div className="categories-page__grid">
                 {categories.map((category) => (
                     <Link
                         to={`/categories/${category.name.toLowerCase()}`}
-                        className="category-card"
+                        className="categories-page__card"
                         key={category.name}
                     >
-                        <div className="category-icon">{category.icon}</div>
-                        <div className="category-name">{category.name}</div>
+                        <div className="categories-page__card-icon">{category.icon}</div>
+                        <div className="categories-page__card-name">{category.name}</div>
                     </Link>
                 ))}
             </div>

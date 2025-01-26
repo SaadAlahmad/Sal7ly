@@ -52,7 +52,7 @@ const LoginPage = () => {
             const data = await response.json();
 
             if (data.loggedIn) {
-                if(data.userType === 'craftsman') {
+                if (data.userType === 'craftsman') {
                     setUser({
                         id: data.id,
                         name: data.name,
@@ -61,14 +61,14 @@ const LoginPage = () => {
                         city: data.city,
                         category: data.category,
                         picture: data.picture,
-                    });    
+                    });
                 } else {
                     setUser({
                         id: data.id,
                         name: data.name,
                         email: data.email,
                         userType: data.userType,
-                    });    
+                    });
                 }
             } else {
                 alert("Failed to fetch user data after login.");
@@ -80,44 +80,48 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="login-container">
-            <div className="side-menu">
+        <div className="login-page">
+            <div className="login-page__menu">
                 <div
-                    className={`side-menu-item ${loginType === "user" ? "active" : ""}`}
+                    className={`login-page__menu-item ${loginType === "user" ? "login-page__menu-item--active" : ""}`}
                     onClick={() => setLoginType("user")}
                 >
                     Login as User
                 </div>
                 <div
-                    className={`side-menu-item ${loginType === "craftsman" ? "active" : ""}`}
+                    className={`login-page__menu-item ${loginType === "craftsman" ? "login-page__menu-item--active" : ""}`}
                     onClick={() => setLoginType("craftsman")}
                 >
                     Login as Craftsman
                 </div>
             </div>
 
-            <div className="login-content">
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <h1>Login</h1>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
+            <div className="login-page__content">
+                <form className="login-page__form" onSubmit={handleSubmit}>
+                    <h1 className="login-page__title">Login</h1>
+                    
+                    <div className="login-page__form-group">
+                        <label htmlFor="email" className="login-page__label">Email</label>
                         <input
                             type="email"
                             id="email"
                             name="email"
+                            className="login-page__input"
                             placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleInputChange}
                             required
                         />
                     </div>
-                    <div className="form-group password-group">
-                        <label htmlFor="password">Password</label>
-                        <div className="password-input-login-container">
+                    
+                    <div className="login-page__form-group">
+                        <label htmlFor="password" className="login-page__label">Password</label>
+                        <div className="login-page__password-container">
                             <input
                                 type="password"
                                 id="password"
                                 name="password"
+                                className="login-page__input"
                                 placeholder="Enter your password"
                                 value={formData.password}
                                 onChange={handleInputChange}
@@ -125,7 +129,8 @@ const LoginPage = () => {
                             />
                         </div>
                     </div>
-                    <button type="submit" className="submit-button">
+                    
+                    <button type="submit" className="login-page__submit-button">
                         Login
                     </button>
                 </form>

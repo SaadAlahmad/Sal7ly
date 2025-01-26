@@ -47,7 +47,6 @@ const RequestPage = () => {
     });
     const [showModifyForm, setShowModifyForm] = useState(false);
     const [modifyRequestId, setModifyRequestId] = useState(null);
-
     const [selectedRequestId, setSelectedRequestId] = useState(null);
     const [applications, setApplications] = useState([]);
     const [showApplicationsModal, setShowApplicationsModal] = useState(false);
@@ -90,7 +89,6 @@ const RequestPage = () => {
             console.error("Failed to fetch applications:", error);
         }
     };
-    
 
     useEffect(() => {
         if (!loading && user) {
@@ -235,16 +233,11 @@ const RequestPage = () => {
 
     if (user && user.userType === 'craftsman') {
         return (
-            <div className="not-logged-in-container">
+            <div className="request-page__auth-container">
                 <h1>You are logged in as a craftsman</h1>
                 <p>To be able to send custom requests you need to log in to a user account.</p>
-                <div className="auth-buttons">
-                <button
-                  onClick={() => {
-                    handleLogout();
-                  }}
-                  className="logoutbt"
-                >
+                <div className="request-page__auth-buttons">
+                <button onClick={handleLogout} className="request-page__logout">
                   Logout
                 </button>
                 </div>
@@ -254,14 +247,14 @@ const RequestPage = () => {
 
     if (!user) {
         return (
-            <div className="not-logged-in-container">
+            <div className="request-page__auth-container">
                 <h1>You are not logged in</h1>
                 <p>If you want to send a request for signed craftspeople, you need to log in.</p>
-                <div className="auth-buttons">
-                    <Link to="/login" className="auth-button">
+                <div className="request-page__auth-buttons">
+                    <Link to="/login" className="request-page__auth-button">
                         Log In
                     </Link>
-                    <Link to="/signup" className="auth-button">
+                    <Link to="/signup" className="request-page__auth-button">
                         Sign Up
                     </Link>
                 </div>
@@ -270,24 +263,27 @@ const RequestPage = () => {
     }
 
     return (
-        <div className="request-container">
+        <div className="request-page">
             {showModifyForm && (
-                <div className="modify-form-overlay">
-                    <div className="modify-form-container">
-                        <button className="close-button" onClick={handleCloseModifyForm}>
-                            X
+                <div className="request-page__modify-overlay">
+                    <div className="request-page__modify-container">
+                        <button className="request-page__modify-close" onClick={handleCloseModifyForm}>
+                            &times;
                         </button>
-                        <form className="modify-form" onSubmit={handleModifySubmit}>
+                        <form className="request-page__modify-form" onSubmit={handleModifySubmit}>
                             {[
                                 { name: "service", type: "select", options: services },
                                 { name: "details", type: "textarea", placeholder: "Describe the job" },
                                 { name: "city", type: "select", options: cities },
                                 { name: "location", type: "text", placeholder: "Enter exact location" },
                             ].map(({ name, type, options, placeholder }, idx) => (
-                                <div className="form-group" key={idx}>
-                                    <label htmlFor={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+                                <div className="request-page__form-group" key={idx}>
+                                    <label className="request-page__form-label" htmlFor={name}>
+                                        {name.charAt(0).toUpperCase() + name.slice(1)}
+                                    </label>
                                     {type === "select" ? (
                                         <select
+                                            className="request-page__form-select"
                                             id={name}
                                             name={name}
                                             value={modifyFormData[name]}
@@ -303,6 +299,7 @@ const RequestPage = () => {
                                         </select>
                                     ) : type === "textarea" ? (
                                         <textarea
+                                            className="request-page__form-textarea"
                                             id={name}
                                             name={name}
                                             placeholder={placeholder}
@@ -312,6 +309,7 @@ const RequestPage = () => {
                                         />
                                     ) : (
                                         <input
+                                            className="request-page__form-input"
                                             type={type}
                                             id={name}
                                             name={name}
@@ -323,27 +321,32 @@ const RequestPage = () => {
                                     )}
                                 </div>
                             ))}
-                            <button type="submit" className="submit-button">
+                            <button type="submit" className="request-page__submit request-page__submit--modify">
                                 Update Service
                             </button>
                         </form>
                     </div>
                 </div>
             )}
-            <header className="request-header">
-                <h1>Submit a Job Request</h1>
+
+            <header className="request-page__header">
+                <h1 className="request-page__title">Submit a Job Request</h1>
             </header>
-            <form className="request-form" onSubmit={handleSubmit}>
+
+            <form className="request-page__form" onSubmit={handleSubmit}>
                 {[
                     { name: "service", type: "select", options: services },
                     { name: "details", type: "textarea", placeholder: "Describe the job" },
                     { name: "city", type: "select", options: cities },
                     { name: "location", type: "text", placeholder: "Enter exact location" },
                 ].map(({ name, type, options, placeholder }, idx) => (
-                    <div className="form-group" key={idx}>
-                        <label htmlFor={name}>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+                    <div className="request-page__form-group" key={idx}>
+                        <label className="request-page__form-label" htmlFor={name}>
+                            {name.charAt(0).toUpperCase() + name.slice(1)}
+                        </label>
                         {type === "select" ? (
                             <select
+                                className="request-page__form-select"
                                 id={name}
                                 name={name}
                                 value={formData[name]}
@@ -359,6 +362,7 @@ const RequestPage = () => {
                             </select>
                         ) : type === "textarea" ? (
                             <textarea
+                                className="request-page__form-textarea"
                                 id={name}
                                 name={name}
                                 placeholder={placeholder}
@@ -368,6 +372,7 @@ const RequestPage = () => {
                             />
                         ) : (
                             <input
+                                className="request-page__form-input"
                                 type={type === "text" ? "text" : type}
                                 id={name}
                                 name={name}
@@ -379,87 +384,103 @@ const RequestPage = () => {
                         )}
                     </div>
                 ))}
-                <button type="submit" className="submit-button">
+                <button type="submit" className="request-page__submit">
                     Submit Request
                 </button>
             </form>
-            <section className="active-requests-section">
-                <h2>Active Requests</h2>
+
+            <section className="request-page__requests">
+                <h2 className="request-page__subtitle">Active Requests</h2>
                 {activeRequests.length === 0 ? (
-                    <p>No active requests found.</p>
+                    <p className="request-page__empty">No active requests found.</p>
                 ) : (
-                    <ul className="requests-list">
+                    <ul className="request-page__requests-list">
                         {activeRequests.map((request) => (
-                            <li key={request.id} className="request-item">
-                                <p>ID: {request.id}</p>
-                                <strong>{request.service}</strong> in {request.city}
-                                <div className="det"><p>{request.details}</p></div>
-                                <p>
-                                    <em>Location:</em> {request.location}
+                            <li key={request.id} className="request-page__request-item">
+                                <p className="request-page__request-id">ID: {request.id}</p>
+                                <h3 className="request-page__request-title">{request.service} in {request.city}</h3>
+                                <div className="request-page__request-details">
+                                    <p>{request.details}</p>
+                                </div>
+                                <p className="request-page__request-location">
+                                    <span className="request-page__location-label">Location: </span> 
+                                    {request.location}
                                 </p>
-                                <button
-                                    onClick={() => handleModifyRequest(request.id)}
-                                    className="modify-button"
-                                >
-                                    Modify
-                                </button>
-                                <button
-                                    onClick={() => handleDeleteRequest(request.id)}
-                                    className="delete-button"
-                                >
-                                    Delete
-                                </button>
-                                <button
-                                    onClick={() => fetchApplications(request.id)}
-                                    className="applications-button"
-                                >
-                                    Show Applications ({request.applicationsCount || 0})
-                                </button>
+                                <div className="request-page__request-actions">
+                                    <button
+                                        onClick={() => handleModifyRequest(request.id)}
+                                        className="request-page__button request-page__button--modify"
+                                    >
+                                        Modify
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteRequest(request.id)}
+                                        className="request-page__button request-page__button--delete"
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        onClick={() => fetchApplications(request.id)}
+                                        className="request-page__button request-page__button--applications"
+                                    >
+                                        Show Applications ({request.applicationsCount || 0})
+                                    </button>
+                                </div>
                             </li>
                         ))}
                     </ul>
                 )}
             </section>
+
             {showApplicationsModal && (
-                <div className="applications-modal-overlay">
-                    <div className="applications-modal">
+                <div className="request-page__applications-overlay">
+                    <div className="request-page__applications-modal">
                         <button
-                            className="close-modal-button"
+                            className="request-page__applications-close"
                             onClick={() => setShowApplicationsModal(false)}
                         >
-                            X
+                            &times;
                         </button>
-                        <h2>Applications for Request #{selectedRequestId}</h2>
+                        <h2 className="request-page__applications-title">
+                            Applications for Request #{selectedRequestId}
+                        </h2>
                         {applications.length === 0 ? (
-                            <p>No applications found.</p>
+                            <p className="request-page__applications-empty">No applications found.</p>
                         ) : (
-                            <ul className="applications-list">
+                            <ul className="request-page__applications-list">
                                 {applications.map((app) => (
-                                    <li key={app.id} className="application-item">
-                                        <strong>
-                                            Craftsman:
+                                    <li key={app.id} className="request-page__application-item">
+                                        <div className="request-page__application-header">
+                                            <h3 className="request-page__application-craftsman">
+                                                Craftsman:{" "}
+                                                <button
+                                                    onClick={() => navigate(`/profile/${app.craftsman_id}`)}
+                                                    className="request-page__craftsman-button"
+                                                >
+                                                    {app.craftsman_name}
+                                                </button>
+                                            </h3>
+                                            <p className="request-page__application-mobile">
+                                                <span className="request-page__mobile-label">Mobile:</span> 
+                                                +{app.craftsman_mobile}
+                                            </p>
+                                        </div>
+                                        <div className="request-page__application-message">
+                                            <p className="request-page__message-label">Message:</p>
+                                            <p className="request-page__message-content">{app.message}</p>
+                                        </div>
+                                        <div className="request-page__application-footer">
+                                            <p className="request-page__application-date">
+                                                Submitted on:{" "}
+                                                {new Date(app.created_at).toLocaleString()}
+                                            </p>
                                             <button
-                                                onClick={() => navigate(`/profile/${app.craftsman_id}`)}
-                                                className="craftsman-button"
+                                                className="request-page__button request-page__button--accept"
+                                                onClick={() => handleAcceptApplication(app)}
                                             >
-                                                {app.craftsman_name}
+                                                Accept
                                             </button>
-                                        </strong>
-                                        <br />
-                                        <strong>Mobile: +</strong>{app.craftsman_mobile}
-                                        <p></p>
-                                        <p>Message:</p>
-                                        <p className="appMessage">{app.message}</p>
-                                        <p>
-                                            <em>Submitted on:</em>{" "}
-                                            {new Date(app.created_at).toLocaleString()}
-                                        </p>
-                                        <button
-                                            className="accept-button"
-                                            onClick={() => handleAcceptApplication(app)}
-                                        >
-                                            Accept
-                                        </button>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>

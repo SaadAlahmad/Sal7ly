@@ -14,15 +14,13 @@ const HomePage = () => {
             .then((response) => response.json())
             .then((data) => {
                 setWorkSamples(data.workSamples);
-                // console.log("Fetched work samples:", data);
-                // console.log("WorkSamples Data:", workSamples);
             })
             .catch((error) => console.error("Error fetching work samples:", error));
     }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setFadeClass("fade-image");
+            setFadeClass("home-page__worksample-image--fade");
             setTimeout(() => {
                 setCurrentSampleIndex((prevIndex) =>
                     workSamples.length > 0 ? (prevIndex + 1) % workSamples.length : 0
@@ -35,39 +33,39 @@ const HomePage = () => {
     }, [workSamples]);
 
     if (loading) {
-        return <div className="loading">جاري التحميل... / Loading...</div>;
+        return <div className="home-page__loading">جاري التحميل... / Loading...</div>;
     }
 
     return (
-        <div className="homepage-container">
-            <header className="homepage-header">
-                <h1>مرحبًا بك في صلحلي / Welcome to Sal7ly</h1>
-                <p>
+        <div className="home-page">
+            <header className="home-page__header">
+                <h1 className="home-page__title">مرحبًا بك في صلحلي / Welcome to Sal7ly</h1>
+                <p className="home-page__subtitle">
                     منصة تجمع بين العملاء والمحترفين المهرة / A platform connecting customers with skilled professionals.
                 </p>
                 {!user && (
-                    <div className="homepage-greeting-card">
-                        <p>
-                            مرحبًا! يرجى <Link to="/login">تسجيل الدخول</Link> أو <Link to="/signup">التسجيل</Link> لاستكشاف المزيد.
+                    <div className="home-page__greeting-card">
+                        <p className="home-page__greeting-text">
+                            مرحبًا! يرجى <Link to="/login" className="home-page__link">تسجيل الدخول</Link> أو <Link to="/signup" className="home-page__link">التسجيل</Link> لاستكشاف المزيد.
                             <br />
-                            Hello! Please <Link to="/login">log in</Link> or <Link to="/signup">sign up</Link> to explore more.
+                            Hello! Please <Link to="/login" className="home-page__link">log in</Link> or <Link to="/signup" className="home-page__link">sign up</Link> to explore more.
                         </p>
                     </div>
                 )}
-                {user && <p className="homepage-greeting">مرحبًا، {user.name}! / Welcome back, {user.name}!</p>}
+                {user && <p className="home-page__greeting">مرحبًا، {user.name}! / Welcome back, {user.name}!</p>}
             </header>
 
             {user && user.userType === "craftsman" && (
-                <section className="homepage-profile-card">
-                    <Link to={`/profile/${user.id}`} className="profile-card">
+                <section className="home-page__profile-section">
+                    <Link to={`/profile/${user.id}`} className="home-page__profile-card">
                         <img
                             src={user.picture}
                             alt="صورة الملف الشخصي / Profile picture"
-                            className="profile-card-image"
+                            className="home-page__profile-image"
                         />
-                        <div className="profile-card-info">
-                            <h3>{user.name}</h3>
-                            <p>
+                        <div className="home-page__profile-info">
+                            <h3 className="home-page__profile-name">{user.name}</h3>
+                            <p className="home-page__profile-details">
                                 {user.category} - {user.city}
                             </p>
                         </div>
@@ -75,48 +73,39 @@ const HomePage = () => {
                 </section>
             )}
 
-            {/* <section className="homepage-about">
-                <h2>من نحن / About Us</h2>
-                <p>
-                    صلحلي هي منصة تربط العملاء مع المهنيين المهرة مثل السباكين، والنجارين، والحدادين، وغيرهم.
-                    <br />
-                    Sal7ly is a platform connecting customers with skilled professionals such as plumbers, carpenters, blacksmiths, and more.
-                </p>
-            </section> */}
-
-            <section className="homepage-features">
-            <h2>مميزاتنا / Our Features</h2>
-            <div className="features-container">
-                <div className="feature-item">
-                <span className="feature-icon">✓</span>
-                <p>بحث سهل الاستخدام / Easy-to-use search functionality</p>
+            <section className="home-page__features">
+                <h2 className="home-page__features-title">مميزاتنا / Our Features</h2>
+                <div className="home-page__features-grid">
+                    <div className="home-page__feature-item">
+                        <span className="home-page__feature-icon">✓</span>
+                        <p className="home-page__feature-text">بحث سهل الاستخدام / Easy-to-use search functionality</p>
+                    </div>
+                    <div className="home-page__feature-item">
+                        <span className="home-page__feature-icon">✓</span>
+                        <p className="home-page__feature-text">تصنيفات شاملة للمهارات والمهن / Comprehensive categories for various trades and skills</p>
+                    </div>
+                    <div className="home-page__feature-item">
+                        <span className="home-page__feature-icon">✓</span>
+                        <p className="home-page__feature-text">تصفية حسب المدينة للعثور على المهنيين بالقرب منك / City-based filtering for finding professionals near you</p>
+                    </div>
+                    <div className="home-page__feature-item">
+                        <span className="home-page__feature-icon">✓</span>
+                        <p className="home-page__feature-text">إرسال الطلبات بسهولة للحصول على خدمات مخصصة / Simple request submission for customized services</p>
+                    </div>
                 </div>
-                <div className="feature-item">
-                <span className="feature-icon">✓</span>
-                <p>تصنيفات شاملة للمهارات والمهن / Comprehensive categories for various trades and skills</p>
-                </div>
-                <div className="feature-item">
-                <span className="feature-icon">✓</span>
-                <p>تصفية حسب المدينة للعثور على المهنيين بالقرب منك / City-based filtering for finding professionals near you</p>
-                </div>
-                <div className="feature-item">
-                <span className="feature-icon">✓</span>
-                <p>إرسال الطلبات بسهولة للحصول على خدمات مخصصة / Simple request submission for customized services</p>
-                </div>
-            </div>
             </section>
 
             {workSamples.length > 0 && (
-                <section className="homepage-featured-worksample">
-                    <div className="worksample-card">
+                <section className="home-page__worksample-section">
+                    <div className="home-page__worksample-card">
                         <Link to={`/profile/${workSamples[currentSampleIndex].craftsperson_id}`}>
                             <div
-                                className={`worksample-card-image ${fadeClass}`}
+                                className={`home-page__worksample-image ${fadeClass}`}
                                 style={{
                                     backgroundImage: `url(data:${workSamples[currentSampleIndex].file_type};base64,${workSamples[currentSampleIndex].file_data})`,
                                 }}
                             />
-                            <div className="worksample-card-caption">
+                            <div className="home-page__worksample-caption">
                                 {workSamples[currentSampleIndex].craftsperson_name}
                             </div>
                         </Link>
@@ -124,24 +113,24 @@ const HomePage = () => {
                 </section>
             )}
 
-            <section className="homepage-cta">
-                <h2>ابدأ اليوم / Get Started Today</h2>
-                <p>
+            <section className="home-page__cta">
+                <h2 className="home-page__cta-title">ابدأ اليوم / Get Started Today</h2>
+                <p className="home-page__cta-text">
                     سواء كنت مهنيًا تتطلع إلى توسيع نطاق عملك أو عميلًا يبحث عن خدمات موثوقة، صلحلي هو الحل.
                     <br />
                     Whether you're a professional looking to expand your reach or a customer in need of reliable services, Sal7ly is the solution.
                 </p>
-                <div className="cta-buttons">
+                <div className="home-page__cta-buttons">
                     {user && user.userType === "craftsman" ? (
-                        <Link to="/showrequests" className="homepage-button">
+                        <Link to="/showrequests" className="home-page__cta-button">
                             عرض الطلبات / Show Requests
                         </Link>
                     ) : (
                         <>
-                            <Link to="/search" className="homepage-button">
+                            <Link to="/search" className="home-page__cta-button">
                                 ابحث عن المهنيين / Find Professionals
                             </Link>
-                            <Link to="/request" className="homepage-button">
+                            <Link to="/request" className="home-page__cta-button">
                                 أرسل طلبًا / Post a Request
                             </Link>
                         </>

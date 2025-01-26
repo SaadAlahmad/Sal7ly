@@ -5,9 +5,9 @@ import "../css/Navbar.css";
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
-  const dropdownRef = useRef(null); // Reference for dropdown width
-  const { user, setUser, loading } = useContext(UserContext); // Use loading from context
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { user, setUser, loading } = useContext(UserContext);
 
   const handleLogout = async () => {
     try {
@@ -27,86 +27,116 @@ export const Navbar = () => {
   };
 
   if (loading) {
-    return <nav>Loading...</nav>;
+    return <nav className="navbar">Loading...</nav>;
   }
 
   return (
-    <nav className="mainNav">
-      <Link to="/" className="title">
+    <nav className="navbar">
+      <Link to="/" className="navbar__title">
         صلحلي
       </Link>
-      <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
-        <span></span>
-        <span></span>
-        <span></span>
+      <div className="navbar__menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+        <span className="navbar__menu-line"></span>
+        <span className="navbar__menu-line"></span>
+        <span className="navbar__menu-line"></span>
       </div>
-      <ul className={menuOpen ? "open" : ""}>
-        <li>
-          <NavLink to="/" className="nav-link">
+      <ul className={`navbar__list ${menuOpen ? "navbar__list--open" : ""}`}>
+        <li className="navbar__item">
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => 
+              isActive ? "navbar__link navbar__link--active" : "navbar__link"
+            }
+          >
             Home
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/search" className="nav-link">
+        <li className="navbar__item">
+          <NavLink 
+            to="/search" 
+            className={({ isActive }) => 
+              isActive ? "navbar__link navbar__link--active" : "navbar__link"
+            }
+          >
             Search
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/categories" className="nav-link">
+        <li className="navbar__item">
+          <NavLink 
+            to="/categories" 
+            className={({ isActive }) => 
+              isActive ? "navbar__link navbar__link--active" : "navbar__link"
+            }
+          >
             Categories
           </NavLink>
         </li>
         {user?.userType !== "admin" && (
-          <li>
+          <li className="navbar__item">
             <NavLink
               to={user?.userType === "craftsman" ? "/showrequests" : "/request"}
-              className="nav-link"
+              className={({ isActive }) => 
+                isActive ? "navbar__link navbar__link--active" : "navbar__link"
+              }
             >
               {user?.userType === "craftsman" ? "Show Requests" : "Send a Request"}
             </NavLink>
           </li>
         )}
-        <li>
-          <NavLink to="/help" className="nav-link">
+        <li className="navbar__item">
+          <NavLink 
+            to="/help" 
+            className={({ isActive }) => 
+              isActive ? "navbar__link navbar__link--active" : "navbar__link"
+            }
+          >
             Help
           </NavLink>
         </li>
         {user && user.userType !== "admin" && (
-          <li>
-            <NavLink to="/projects" className="nav-link">
+          <li className="navbar__item">
+            <NavLink 
+              to="/projects" 
+              className={({ isActive }) => 
+                isActive ? "navbar__link navbar__link--active" : "navbar__link"
+              }
+            >
               Projects
             </NavLink>
           </li>
         )}
         {user?.userType === "admin" && (
-          <li>
-            <NavLink to="/admin" className="nav-link">
+          <li className="navbar__item">
+            <NavLink 
+              to="/admin" 
+              className={({ isActive }) => 
+                isActive ? "navbar__link navbar__link--active" : "navbar__link"
+              }
+            >
               Admin
             </NavLink>
           </li>
         )}
         {user ? (
-          <li className="user-dropdown">
+          <li className="navbar__user-dropdown">
             <button
               ref={dropdownRef}
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className={`user-button ${dropdownOpen ? "active" : ""}`}
+              className={`navbar__user-button ${dropdownOpen ? "navbar__user-button--active" : ""}`}
             >
               {user.name}
             </button>
             {dropdownOpen && (
-              <div
-                className="dropdown-menu"
-                style={{
-                  width: dropdownRef.current?.offsetWidth,
-                }}
+              <div 
+                className="navbar__dropdown-menu"
+                style={{ width: dropdownRef.current?.offsetWidth }}
               >
                 <button
                   onClick={() => {
                     handleLogout();
                     setDropdownOpen(false);
                   }}
-                  className="dropdown-item"
+                  className="navbar__dropdown-item"
                 >
                   Logout
                 </button>
@@ -115,13 +145,19 @@ export const Navbar = () => {
           </li>
         ) : (
           <>
-            <li>
-              <NavLink to="/login" className="nav-login">
+            <li className="navbar__item">
+              <NavLink 
+                to="/login" 
+                className="navbar__auth-link navbar__auth-link--login"
+              >
                 Log in
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/signup" className="nav-cta">
+            <li className="navbar__item">
+              <NavLink 
+                to="/signup" 
+                className="navbar__auth-link navbar__auth-link--cta"
+              >
                 Get Started
               </NavLink>
             </li>

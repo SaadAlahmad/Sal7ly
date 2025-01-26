@@ -40,56 +40,63 @@ const ProfilePage = () => {
         setModalImage(null);
     };
 
-    if (loading) return <p className="loadingp">Loading...</p>;
-    if (!professional) return <p>Craftsman not found.</p>;
+    if (loading) return <p className="profile-page__loading">Loading...</p>;
+    if (!professional) return <p className="profile-page__error">Craftsman not found.</p>;
 
     return (
-        <div className="profile-container">
-            <div className="profile-page">
-                <div className="profile-header">
-                    <img src={professional.picture} alt={professional.name} className="profile-picture" />
-                    <div className="profile-main">
-                        <div className="profile-details">
-                            <h1>{professional.name}</h1>
-                            <p><strong>City:</strong> {professional.city}</p>
-                            <p><strong>Mobile:</strong> +{professional.mobile}</p>
+        <div className="profile-page">
+            <div className="profile-page__main">
+                <div className="profile-page__header">
+                    <img
+                        src={professional.picture}
+                        alt={professional.name}
+                        className="profile-page__picture"
+                    />
+                    <div className="profile-page__info">
+                        <div className="profile-page__details">
+                            <h1 className="profile-page__name">{professional.name}</h1>
+                            <p className="profile-page__detail"><strong>City:</strong> {professional.city}</p>
+                            <p className="profile-page__detail"><strong>Mobile:</strong> +{professional.mobile}</p>
                         </div>
-                        <div className="profile-bio">
-                            <h3>Bio:</h3>
-                            <p dangerouslySetInnerHTML={{ __html: professional.bio.replace(/\n/g, "<br />") }} />
+                        <div className="profile-page__bio">
+                            <h3 className="profile-page__bio-title">Bio:</h3>
+                            <p
+                                className="profile-page__bio-text"
+                                dangerouslySetInnerHTML={{ __html: professional.bio.replace(/\n/g, "<br />") }}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="profile-worksamples">
-                    <h3>Work Samples:</h3>
+
+                <div className="profile-page__worksamples">
+                    <h3 className="profile-page__worksamples-title">Work Samples:</h3>
                     {professional.worksamples.length > 0 ? (
-                        <div className="worksamples-grid">
+                        <div className="profile-page__worksamples-grid">
                             {professional.worksamples.map((sample, index) => (
                                 <img
                                     key={sample.id}
                                     src={sample.data}
                                     alt={`Sample ${index + 1}`}
-                                    className="work-sample-image"
+                                    className="profile-page__worksample-image"
                                     onClick={() => openModal(sample.data)}
                                 />
                             ))}
                         </div>
                     ) : (
-                        <p>No work samples available.</p>
+                        <p className="profile-page__empty-state">No work samples available.</p>
                     )}
                 </div>
             </div>
 
-            {/* Reviews Section */}
-            <div className="profile-reviews">
-                <h3>Ratings and Reviews:</h3>
+            <div className="profile-page__reviews">
+                <h3 className="profile-page__reviews-title">Ratings and Reviews:</h3>
                 {professional.reviews.length > 0 ? (
-                    <div className="reviews-list">
+                    <div className="profile-page__reviews-list">
                         {professional.reviews.map((review) => (
-                            <div key={review.review_id} className="review-card">
-                                <div className="review-header">
-                                    <p><strong>{review.user_name}</strong></p>
-                                    <p className="review-date">
+                            <div key={review.review_id} className="profile-page__review-card">
+                                <div className="profile-page__review-header">
+                                    <p className="profile-page__review-user"><strong>{review.user_name}</strong></p>
+                                    <p className="profile-page__review-date">
                                         {new Date(review.created_at).toLocaleDateString("en-GB", {
                                             day: "2-digit",
                                             month: "2-digit",
@@ -97,13 +104,13 @@ const ProfilePage = () => {
                                         })}
                                     </p>
                                 </div>
-                                <div className="review-rating">
+                                <div className="profile-page__review-rating">
                                     {Array(5)
                                         .fill(0)
                                         .map((_, i) => (
                                             <span
                                                 key={i}
-                                                className={`star ${i < review.rating ? "filled" : "empty"}`}
+                                                className={`profile-page__star ${i < review.rating ? "profile-page__star--filled" : "profile-page__star--empty"}`}
                                             >
                                                 ★
                                             </span>
@@ -111,26 +118,31 @@ const ProfilePage = () => {
                                     }
                                 </div>
                                 {review.review_text && (
-                                    <div className="review-body">
+                                    <div className="profile-page__review-body">
                                         <p><strong>Comment:</strong> {review.review_text}</p>
                                     </div>
                                 )}
-                                <small className="review-request-id">Request ID: {review.request_id}</small>
+                                <small className="profile-page__review-id">Request ID: {review.request_id}</small>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p>No reviews available.</p>
+                    <p className="profile-page__empty-state">No reviews available.</p>
                 )}
             </div>
 
             {modalImage && (
-                <div className="image-modal" onClick={closeModal}>
-                    <img src={modalImage} alt="Enlarged Work Sample" />
-                    <button className="close-button" onClick={(e) => {
-                        e.stopPropagation();
-                        closeModal();
-                    }}>×</button>
+                <div className="profile-page__modal" onClick={closeModal}>
+                    <img src={modalImage} alt="Enlarged Work Sample" className="profile-page__modal-image" />
+                    <button
+                        className="profile-page__modal-close"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            closeModal();
+                        }}
+                    >
+                        ×
+                    </button>
                 </div>
             )}
         </div>
