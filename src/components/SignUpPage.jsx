@@ -42,10 +42,54 @@ const SignUpPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Keep original submit handler logic unchanged
-        // ... (existing submit handler implementation)
-    };
 
+        let mobile = formData.mobile.trim();
+        if (mobile.startsWith("0")) {
+            mobile = mobile.slice(1);
+        }
+        if (mobile.length > 10) {
+            alert("Mobile number must not exceed 10 digits.");
+            return;
+        }
+
+        const fullMobile = countryCode + mobile;
+
+        const formDataToSend = new FormData();
+        Object.keys(formData).forEach((key) => {
+            if (key === "workSamples") {
+                formData.workSamples.forEach((file, index) => {
+                    formDataToSend.append(`workSamples[${index}]`, file);
+                });
+            } else if (formData[key] !== null) {
+                formDataToSend.append(key, formData[key]);
+            }
+        });
+
+        formDataToSend.append("mobile", fullMobile);
+        formDataToSend.append("userType", userType);
+
+        try {
+            const response = await fetch("http://localhost/Sal7ly/php_backend/signuphandler.php", {
+                method: "POST",
+                body: formDataToSend,
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.status) {
+                alert(result.message || "Successfully registered!");
+                setFormData({
+                    name: "", email: "", mobile: "", city: "", password: "", category: "", bio: "", picture: null, workSamples: []
+                });
+            } else {
+                alert(result.error || "Registration failed. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again later.");
+        }
+    };
+    
     return (
         <div className="signup-page">
             <header className="signup-page__header">
