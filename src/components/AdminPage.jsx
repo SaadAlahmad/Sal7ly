@@ -330,40 +330,94 @@ const AdminPage = () => {
                     <span className="stat-label">Open Inquiries</span>
                   </div>
                 </div>
-                <p className="admin__section-text">
-                  Quick look at the management sections.
-                </p>
               </div>
 
-              <div className="admin__dashboard-section">
-                <h3 className="admin__section-title">👥 Manage Users</h3>
-                <ul className="admin__feature-list">
-                  <li className="admin__feature-item">View all registered end-users</li>
-                  <li className="admin__feature-item">Edit user details</li>
-                  <li className="admin__feature-item">Reset user passwords</li>
-                  <li className="admin__feature-item">Delete user accounts</li>
-                </ul>
-              </div>
+              <div className="admin__dashboard-grid">
 
-              <div className="admin__dashboard-section">
-                <h3 className="admin__section-title">🛠️ Manage Craftspeople</h3>
-                <ul className="admin__feature-list">
-                  <li className="admin__feature-item">View service providers</li>
-                  <li className="admin__feature-item">Edit craftsperson profiles</li>
-                  <li className="admin__feature-item">Verify/unverify craftspeople</li>
-                  <li className="admin__feature-item">Update location information</li>
-                </ul>
-              </div>
+                <div className="admin__feature-card">
+                  <div className="feature-card__header">
+                    <i className="fas fa-users-cog feature-card__icon"></i>
+                    <h3 className="feature-card__title">User Management</h3>
+                  </div>
+                  <div className="feature-card__content">
+                    <div className="feature-item">
+                      <i className="fas fa-list-ul feature-item__icon"></i>
+                      <div className="feature-item__text">View all registered end-users</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-search feature-item__icon"></i>
+                      <div className="feature-item__text">Search by ID, name, email, or mobile</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-edit feature-item__icon"></i>
+                      <div className="feature-item__text">Edit user details</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-key feature-item__icon"></i>
+                      <div className="feature-item__text">Reset user passwords</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-trash-alt feature-item__icon"></i>
+                      <div className="feature-item__text">Delete user accounts</div>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="admin__dashboard-section">
-                <h3 className="admin__section-title">⭐ Manage Reviews</h3>
-                <ul className="admin__feature-list">
-                  <li className="admin__feature-item">Monitor user-submitted reviews</li>
-                  <li className="admin__feature-item">Search by user name or request ID</li>
-                  <li className="admin__feature-item">Edit review content and ratings</li>
-                  <li className="admin__feature-item">Moderate reviews</li>
-                </ul>
+                <div className="admin__feature-card">
+                  <div className="feature-card__header">
+                    <i className="fas fa-tools feature-card__icon"></i>
+                    <h3 className="feature-card__title">Craftsperson Management</h3>
+                  </div>
+                  <div className="feature-card__content">
+                    <div className="feature-item">
+                      <i className="fas fa-hammer feature-item__icon"></i>
+                      <div className="feature-item__text">View service providers</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-filter feature-item__icon"></i>
+                      <div className="feature-item__text">Search by multiple criteria</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-id-card feature-item__icon"></i>
+                      <div className="feature-item__text">Edit craftsperson profiles</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-check-circle feature-item__icon"></i>
+                      <div className="feature-item__text">Verification management</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-map-marker-alt feature-item__icon"></i>
+                      <div className="feature-item__text">Update location information</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="admin__feature-card">
+                  <div className="feature-card__header">
+                    <i className="fas fa-star-half-alt feature-card__icon"></i>
+                    <h3 className="feature-card__title">Review Management</h3>
+                  </div>
+                  <div className="feature-card__content">
+                    <div className="feature-item">
+                      <i className="fas fa-comment-alt feature-item__icon"></i>
+                      <div className="feature-item__text">Monitor user reviews</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-search-dollar feature-item__icon"></i>
+                      <div className="feature-item__text">Advanced review search</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-pencil-alt feature-item__icon"></i>
+                      <div className="feature-item__text">Edit content & ratings</div>
+                    </div>
+                    <div className="feature-item">
+                      <i className="fas fa-shield-alt feature-item__icon"></i>
+                      <div className="feature-item__text">Content moderation</div>
+                    </div>
+                  </div>
+                </div>
               </div>
+              
               <div className="admin__dashboard-section">
                 <h3 className="admin__section-title">📩 Support Overview</h3>
                 <div className="support-overview">
@@ -405,6 +459,7 @@ const AdminPage = () => {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Mobile</th>
+                  <th>Registration Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -415,6 +470,7 @@ const AdminPage = () => {
                     <td className="admin-table__data">{user.name}</td>
                     <td className="admin-table__data">{user.email}</td>
                     <td className="admin-table__data">+{user.mobile}</td>
+                    <td className="admin-table__data">{user.created_at}</td>
                     <td className="admin-table__actions">
                       <button
                         className="admin-table__action-btn admin-table__action-btn--edit"
@@ -456,6 +512,7 @@ const AdminPage = () => {
                   <th>City</th>
                   <th>Category</th>
                   <th>Verified</th>
+                  <th>Registration Date</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -471,6 +528,7 @@ const AdminPage = () => {
                     <td className="admin-table__data">
                       {person.verified === 1 ? "Yes" : "No"}
                     </td>
+                    <td className="admin-table__data">{person.created_at}</td>
                     <td className="admin-table__actions">
                       <button
                         className="admin-table__action-btn admin-table__action-btn--edit"

@@ -1,3 +1,5 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+
 .admin {
   display: flex;
   min-height: 100vh;
@@ -90,16 +92,74 @@
   font-size: 0.9rem;
 }
 
-.admin__section-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #444;
+.admin__dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.admin__feature-list {
-  list-style: none;
-  padding-left: 1.5rem;
+.admin__feature-card {
+  background: #e2e2e23b;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.219);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.feature-card__header {
+  background: linear-gradient(135deg, #00360e 0%, #009231 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feature-card__icon {
+  font-size: 1.8rem;
+  width: 40px;
+  text-align: center;
+}
+
+.feature-card__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.feature-card__content {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #eeeeee;
+  position: relative;
+}
+
+.feature-item__icon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+  color: #009231;
+  transition: color 0.2s ease;
+}
+
+.feature-item__text {
+  font-size: 0.95rem;
+  color: #2c3e50;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .admin__feature-item {
@@ -504,6 +564,14 @@
 @media (max-width: 480px) {
   .admin__main-title {
     font-size: 1.5rem;
+  }
+
+  .feature-card__title {
+    font-size: 1.2rem;
+  }
+  
+  .feature-item__text {
+    font-size: 0.9rem;
   }
   
   .admin-table__data {
