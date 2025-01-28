@@ -1,11 +1,11 @@
-<?php 
+<?php
 /**
 * Database Connection
 */
 
 class DbConnect {
 	private $server = 'localhost';
-	private $dbname = 'test';
+	private $dbname = 'sal7ly';
 	private $user = 'root';
 	private $pass = '';
 
@@ -19,4 +19,4 @@ class DbConnect {
 		}
 	}
 }
- ?>
+?>
