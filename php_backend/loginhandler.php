@@ -1,6 +1,12 @@
 <?php
 session_start();
 header("Content-Type: application/json");
+
+/* 
+ FOR RUNING ON PORT 5173 AND DATABASE ON LOCALHOST XAMPP
+ CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT 
+*/
+
 $allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 

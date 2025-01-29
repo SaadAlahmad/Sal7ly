@@ -1,5 +1,11 @@
 <?php
 header("Content-Type: application/json");
+
+/* 
+ FOR RUNING ON PORT 5173 AND DATABASE ON LOCALHOST XAMPP
+ CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT 
+*/
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");

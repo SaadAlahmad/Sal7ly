@@ -1,6 +1,11 @@
 <?php
 header("Content-Type: application/json");
 
+/* 
+  FOR RUNING ON PORT 5173 AND DATABASE ON LOCALHOST XAMPP
+  CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT 
+*/
+
 $allowedOrigins = ['http://localhost:5173'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
@@ -85,24 +90,38 @@ try {
         : json_encode(['error' => 'Failed to modify craftsperson']);
       break;
         
-    case 'delete':
-      if (!$id) {
-        echo json_encode(['error' => 'Invalid input for deletion']);
-        exit;
+      case 'delete':
+        if (!$id) {
+            echo json_encode(['error' => 'Invalid input for deletion']);
+            exit;
         }
-
-        $stmt = $conn->prepare("DELETE FROM craftspeople WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-        echo $stmt->execute()
-          ? json_encode(['success' => true, 'message' => 'Craftsperson deleted successfully'])
-          : json_encode(['error' => 'Failed to delete craftsperson']);
+        try {
+            $conn->beginTransaction();
+    
+            $stmt = $conn->prepare("DELETE FROM worksamples WHERE craftsperson_id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            $stmt = $conn->prepare("DELETE FROM craftspeople WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            $conn->commit();
+    
+            echo json_encode([
+                'success' => true,
+                'message' => 'Craftsperson and associated worksamples deleted successfully'
+            ]);
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+        }
         break;
-
-      default:
-        echo json_encode(['error' => 'Invalid action']);
-        break;
-    }
+        
+    default:
+      echo json_encode(['error' => 'Invalid action']);
+      break;
+  }
 } catch (PDOException $e) {
     echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 } finally {

@@ -1,6 +1,6 @@
 <?php 
-/**
-* Database Connection
+/*
+	Database Connection
 */
 
 class DbConnect {
