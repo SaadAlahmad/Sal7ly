@@ -1,9 +1,9 @@
 <?php
 header("Content-Type: application/json");
 
-/* 
+/*
  FOR RUNING ON PORT 5173 AND DATABASE ON LOCALHOST XAMPP
- CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT 
+ CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT
 */
 
 header("Access-Control-Allow-Origin: *");
@@ -53,6 +53,18 @@ try {
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $created_at = date('Y-m-d H:i:s');
         $updated_at = $created_at;
+
+        $checkEmailStmt = $conn->prepare("
+            SELECT email FROM users WHERE email = :email
+            UNION
+            SELECT email FROM craftspeople WHERE email = :email
+        ");
+        $checkEmailStmt->bindParam(':email', $email);
+        $checkEmailStmt->execute();
+        if ($checkEmailStmt->rowCount() > 0) {
+            throw new Exception('Email already registered.');
+        }
+
 
         if (!$email) {
             throw new Exception('Invalid email address.');
@@ -108,6 +120,17 @@ try {
         $bio = htmlspecialchars($_POST['bio']);
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
+        $checkEmailStmt = $conn->prepare("
+            SELECT email FROM users WHERE email = :email
+            UNION
+            SELECT email FROM craftspeople WHERE email = :email
+        ");
+        $checkEmailStmt->bindParam(':email', $email);
+        $checkEmailStmt->execute();
+        if ($checkEmailStmt->rowCount() > 0) {
+            throw new Exception('Email already registered.');
+        }
+
         if (!$email) {
             throw new Exception('Invalid email address.');
         }
@@ -124,7 +147,7 @@ try {
                 throw new Exception("Default picture not found.");
             }
         }
-        
+
         $stmt = $conn->prepare("
             INSERT INTO craftspeople (id, name, email, mobile, city, category, bio, picture, password)
             VALUES (:id, :name, :email, :mobile, :city, :category, :bio, :picture, :password)

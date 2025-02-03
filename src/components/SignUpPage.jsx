@@ -4,6 +4,7 @@ import "../css/SignUpPage.css";
 const SignUpPage = () => {
     const [userType, setUserType] = useState("user");
     const [countryCode, setCountryCode] = useState("+970");
+    const [emailError, setEmailError] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -17,13 +18,29 @@ const SignUpPage = () => {
     });
 
     const categories = [
-        "Plumber", "Blacksmith", "Electrician", "Mechanic", 
-        "Carpenter", "Gardener", "Mason", "Cleaner", "Tailor", "Tiler"
+        "Plumber",
+        "Blacksmith",
+        "Electrician",
+        "Mechanic",
+        "Carpenter",
+        "Gardener",
+        "Mason",
+        "Cleaner",
+        "Tailor",
+        "Tiler",
     ];
 
     const cities = [
-        "Jenin", "Tubas", "Tulkarem", "Nablus", "Qalqilya", 
-        "Salfit", "Ramallah and al-Birah", "Jericho", "Bethlehem", "Hebron"
+        "Jenin",
+        "Tubas",
+        "Tulkarem",
+        "Nablus",
+        "Qalqilya",
+        "Salfit",
+        "Ramallah and al-Birah",
+        "Jericho",
+        "Bethlehem",
+        "Hebron"
     ];
 
     const handleInputChange = (e) => {
@@ -42,6 +59,7 @@ const SignUpPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setEmailError("");
 
         let mobile = formData.mobile.trim();
         if (mobile.startsWith("0")) {
@@ -82,14 +100,18 @@ const SignUpPage = () => {
                     name: "", email: "", mobile: "", city: "", password: "", category: "", bio: "", picture: null, workSamples: []
                 });
             } else {
-                alert(result.error || "Registration failed. Please try again.");
+                if (result.error.includes("Email already registered")) {
+                    setEmailError("This email is already in use. Please use a different email.");
+                } else {
+                    alert(result.error || "Registration failed. Please try again.");
+                }
             }
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again later.");
         }
     };
-    
+
     return (
         <div className="signup-page">
             <header className="signup-page__header">
@@ -132,15 +154,19 @@ const SignUpPage = () => {
                 <div className="signup-page__form-group">
                     <label className="signup-page__label" htmlFor="email">Email</label>
                     <input
-                        className="signup-page__input"
+                        className={`signup-page__input ${emailError ? "signup-page__input--error" : ""}`}
                         type="email"
                         id="email"
                         name="email"
                         placeholder="Enter your email"
                         value={formData.email}
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                            handleInputChange(e);
+                            setEmailError("");
+                        }}
                         required
                     />
+                    {emailError && <div className="signup-page__error">{emailError}</div>}
                 </div>
 
                 <div className="signup-page__form-group">

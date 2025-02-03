@@ -130,6 +130,16 @@
   background-color: #f8f8f8;
 }
 
+.signup-page__input--error {
+  border-color: #ff4444 !important;
+}
+
+.signup-page__error {
+  color: #ff4444;
+  margin-top: 4px;
+  font-size: 0.875rem;
+}
+
 @media (max-width: 768px) {
   .signup-page {
     padding: 1rem;
