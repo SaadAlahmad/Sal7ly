@@ -6,7 +6,7 @@ import "../css/AdminPage.css";
 const AdminPage = () => {
   const { user, loading } = useContext(UserContext);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (!loading && (!user || user.userType !== "admin")) {
       navigate("/");
@@ -43,7 +43,7 @@ const AdminPage = () => {
     "Tailor",
     "Tiler",
   ];
-  
+
   const cities = [
     "Jenin",
     "Tubas",
@@ -55,7 +55,7 @@ const AdminPage = () => {
     "Jericho",
     "Bethlehem",
     "Hebron",
-  ];  
+  ];
 
 
   const urlMap = {
@@ -95,13 +95,13 @@ const AdminPage = () => {
 
   const handleModifyItem = async (type, id, updatedData) => {
     if (!window.confirm("Are you sure you want to save these changes?")) return;
-    
+
     const body = {
       action: "modify",
       id,
       ...updatedData,
     };
-  
+
     try {
       const response = await fetch(urlMap[type], {
         method: "POST",
@@ -109,7 +109,7 @@ const AdminPage = () => {
         body: JSON.stringify(body),
       });
       const data = await response.json();
-  
+
       if (data.success) {
         switch (type) {
           case "users":
@@ -132,10 +132,10 @@ const AdminPage = () => {
       alert("An error occurred while modifying the item.");
     }
   };
-    
+
   const handleDeleteItem = async (type, id) => {
     if (!window.confirm(`Are you sure you want to delete this ${type === "reviews" ? "review" : type}?`)) return;
-    
+
     try {
       const response = await fetch(urlMap[type], {
         method: "POST",
@@ -143,7 +143,7 @@ const AdminPage = () => {
         body: JSON.stringify({ action: "delete", id }),
       });
       const data = await response.json();
-  
+
       if (data.success) {
         switch (type) {
           case "users":
@@ -164,7 +164,7 @@ const AdminPage = () => {
       console.error(`Error deleting ${type}:`, error);
       alert("An error occurred while deleting the item.");
     }
-  };  
+  };
 
   const openEditPopup = (type, item) => {
     setSelectedItem({ type, item });
@@ -417,13 +417,13 @@ const AdminPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="admin__dashboard-section">
                 <h3 className="admin__section-title">📩 Support Overview</h3>
                 <div className="support-overview">
                   <div className="support-progress">
-                    <div 
-                      className="progress-bar" 
+                    <div
+                      className="progress-bar"
                       style={{ width: `${(supportInquiries.filter(i => i.opened === 0).length / supportInquiries.length * 100 || 0)}%` }}
                     ></div>
                     <div className="progress-stats">
@@ -460,6 +460,7 @@ const AdminPage = () => {
                   <th>Email</th>
                   <th>Mobile</th>
                   <th>Registration Date</th>
+                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -471,6 +472,7 @@ const AdminPage = () => {
                     <td className="admin-table__data">{user.email}</td>
                     <td className="admin-table__data">+{user.mobile}</td>
                     <td className="admin-table__data">{user.created_at}</td>
+                    <td className="admin-table__data">{user.status === 1 ? "Active" : "Inactive"}</td>
                     <td className="admin-table__actions">
                       <button
                         className="admin-table__action-btn admin-table__action-btn--edit"
@@ -702,13 +704,31 @@ const AdminPage = () => {
                       </label>
                     </div>
                     <div className="popup__field-group">
+                      <label className="popup__label popup__label--checkbox">
+                        Active:
+                        <input
+                          className="popup__checkbox"
+                          type="checkbox"
+                          name="verified"
+                          checked={!!updatedData.status}
+                          onChange={(e) =>
+                            setUpdatedData({
+                              ...updatedData,
+                              status: e.target.checked ? 1 : 0,
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                    <div className="popup__field-group">
                       <label className="popup__label">
                         Password (optional):
                         <input
                           className="popup__input"
                           type="password"
                           name="password"
-                          placeholder="Enter a new password"
+                          placeholder="Enter new password to change"
+                          value={updatedData.password || ""}
                           onChange={handleInputChange}
                         />
                       </label>
@@ -769,7 +789,7 @@ const AdminPage = () => {
                         </select>
                       </label>
                     </div>
-                    
+
                     <div className="popup__field-group">
                       <label className="popup__label">
                         Category:

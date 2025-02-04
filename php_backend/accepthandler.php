@@ -1,9 +1,9 @@
 <?php
 header("Content-Type: application/json");
 
-/* 
+/*
  FOR RUNING ON PORT 5173 AND DATABASE ON LOCALHOST XAMPP
- CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT 
+ CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT
 */
 
 $allowedOrigins = ['http://localhost:5173'];
@@ -37,14 +37,14 @@ try {
             exit;
         }
 
-        $stmtRequest = $conn->prepare("UPDATE requests SET status = 0 WHERE id = :request_id");
+        $stmtRequest = $conn->prepare("UPDATE requests SET status = 0, closure_reason = 'system' WHERE id = :request_id");
         $stmtRequest->bindParam(':request_id', $requestId, PDO::PARAM_INT);
         if (!$stmtRequest->execute()) {
             echo json_encode(['error' => 'Failed to update request status']);
             exit;
         }
 
-        $stmtApplications = $conn->prepare("UPDATE applications SET status = 0 WHERE request_id = :request_id");
+        $stmtApplications = $conn->prepare("UPDATE applications SET status = 0, closure_reason = 'system' WHERE request_id = :request_id");
         $stmtApplications->bindParam(':request_id', $requestId, PDO::PARAM_INT);
         if (!$stmtApplications->execute()) {
             echo json_encode(['error' => 'Failed to update applications status']);
@@ -52,11 +52,11 @@ try {
         }
 
         $stmtProject = $conn->prepare(
-          "INSERT INTO projects (craftsman_id, user_id, application_id, request_id, created_at, status) 
-          VALUES (:craftsman_id, 
-                  (SELECT user_id FROM requests WHERE id = :request_id LIMIT 1), 
-                  :application_id, 
-                  :request_id, 
+          "INSERT INTO projects (craftsman_id, user_id, application_id, request_id, created_at, status)
+          VALUES (:craftsman_id,
+                  (SELECT user_id FROM requests WHERE id = :request_id LIMIT 1),
+                  :application_id,
+                  :request_id,
                   NOW(),
                   1)"
       );

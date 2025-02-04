@@ -1,9 +1,9 @@
 <?php
 header("Content-Type: application/json");
 
-/* 
+/*
  FOR RUNING ON PORT 5173 AND DATABASE ON LOCALHOST XAMPP
- CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT 
+ CTRL + / AFTER NPM RUN BUILD IF EVERYTHING IS RUNNING ON THE SAME PORT
 */
 
 $allowedOrigins = ['http://localhost:5173'];
@@ -79,7 +79,7 @@ try {
                 exit;
             }
 
-            $stmt = $conn->prepare("UPDATE applications SET status = 0 WHERE id = :application_id AND craftsman_id = :craftsman_id");
+            $stmt = $conn->prepare("UPDATE applications SET status = 0, closure_reason = 'user' WHERE id = :application_id AND craftsman_id = :craftsman_id");
             $stmt->bindParam(':application_id', $applicationId, PDO::PARAM_INT);
             $stmt->bindParam(':craftsman_id', $craftsmanId, PDO::PARAM_INT);
 
