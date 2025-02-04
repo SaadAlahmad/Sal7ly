@@ -61,6 +61,5 @@ Ensure that the MySQL server is running with the database configured as specifie
 ### Additional Information
 
 - **Weighted Rating System**: The rating system is based on Bayesian average to ensure fair and balanced ratings.
-- **MySQL Server**: Ensure that the MySQL server is running with the database configured as specified in `sal7ly.php`.
 - **Craftsperson Profiles**: Craftspeople can create custom profiles showcasing their work samples, information, and bio.
 - **Client Requests**: Craftspeople can also find clients by browsing and responding to custom requests.
