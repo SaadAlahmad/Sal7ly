@@ -48,7 +48,7 @@ Start the frontend development server:
 npm run dev
 ```
 
-Ensure that the MySQL server is running with the database configured as specified in `sal7ly.php`.
+Ensure that the MySQL server is running with the database configured as specified in `db\sal7ly.sql`.
 
 ### Usage
 
