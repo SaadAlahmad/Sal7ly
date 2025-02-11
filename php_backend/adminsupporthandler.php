@@ -13,7 +13,7 @@ if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: $origin");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Headers: Content-Type, Authorization");
-    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Methods: POST");
 } else {
     header("HTTP/1.1 403 Forbidden");
     echo json_encode(['error' => 'Origin not allowed']);

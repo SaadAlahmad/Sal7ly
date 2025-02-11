@@ -57,7 +57,6 @@ const AdminPage = () => {
     "Hebron",
   ];
 
-
   const urlMap = {
     users: "http://localhost/Sal7ly/php_backend/adminuserhandler.php",
     craftspeople: "http://localhost/Sal7ly/php_backend/admincraftsmanhandler.php",
@@ -78,7 +77,10 @@ const AdminPage = () => {
         if (type === "users") setUsers(data.users);
         else if (type === "craftspeople") setCraftspeople(data.craftspeople);
         else if (type === "reviews") setReviews(data.reviews);
-        else if (type === "support") setSupportInquiries(data.inquiries);
+        else if (type === "support") {
+          console.log("Fetched support inquiries:", data.inquiries);
+          setSupportInquiries(data.inquiries);
+        }
       }
     } catch (error) {
       console.error(`Error fetching ${type}:`, error);
@@ -244,6 +246,7 @@ const AdminPage = () => {
 
   const renderSupportTable = (openedStatus) => {
     const filteredInquiries = supportInquiries.filter((inquiry) => inquiry.opened === openedStatus);
+    console.log(`Filtered inquiries with opened status ${openedStatus}:`, filteredInquiries);
 
     return (
       <table className="admin-table">
