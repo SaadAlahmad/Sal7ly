@@ -52,7 +52,7 @@ const CategoryPage = () => {
                                 {professional.bayesian && professional.bayesian > 0 ? (
                                     <>
                                         <span className="category-page__rating-value">
-                                            <strong>Rating: </strong>{professional.bayesian.toFixed(2)}
+                                            <strong>Rating: </strong>{(Number(professional.bayesian) || 0).toFixed(2)}
                                         </span>
                                         <span className="category-page__rating-star">&#9733;</span>
                                     </>

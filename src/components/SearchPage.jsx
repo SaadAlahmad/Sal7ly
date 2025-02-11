@@ -164,7 +164,7 @@ const SearchPage = () => {
                                 </div>
                                 {result.bayesian > 0 && (
                                     <div className="search-page__rating-badge">
-                                        {result.bayesian.toFixed(2)} 
+                                        {(Number(result.bayesian) || 0).toFixed(2)} 
                                         <span className="search-page__star">★</span>
                                     </div>
                                 )}
