@@ -73,18 +73,24 @@ const AdminPage = () => {
         body: JSON.stringify({ action: "fetch" }),
       });
       const data = await response.json();
-
+  
       if (data.success) {
         if (type === "users") setUsers(data.users);
         else if (type === "craftspeople") setCraftspeople(data.craftspeople);
         else if (type === "reviews") setReviews(data.reviews);
-        else if (type === "support") setSupportInquiries(data.inquiries);
+        else if (type === "support") {
+          const parsedInquiries = data.inquiries.map(inquiry => ({
+            ...inquiry,
+            opened: parseInt(inquiry.opened, 10)
+          }));
+          setSupportInquiries(parsedInquiries);
+        }
       }
     } catch (error) {
       console.error(`Error fetching ${type}:`, error);
     }
   };
-
+  
   const tabs = [
     { label: "Dashboard", value: "dashboard" },
     { label: "Manage Users", value: "users" },
