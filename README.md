@@ -54,8 +54,8 @@ Ensure that the MySQL server is running with the database configured as specifie
 
 - Register or log in to your account.
 - Find verified craftspeople and freelancers based on location and rating.
-- Browse available services or create custom requests.
-- Book a service or request a custom creation.
+- Browse available services, and check craftspeople's profiles and work samples.
+- Book a service / request a custom creation.
 - Provide feedback and rating after the service is completed.
 
 ### Additional Information
