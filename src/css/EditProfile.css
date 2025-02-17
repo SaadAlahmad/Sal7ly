@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+.edit-profile {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    margin: 2rem auto;
+    display: flex;
+    width: 800px;
+    height: 550px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.edit-profile__menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f1f1;
+}
+
+.edit-profile__menu-item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.edit-profile__menu-item:last-child {
+    border-bottom: none;
+}
+
+.edit-profile__menu-item:hover {
+    background-color: #00c210;
+    color: black;
+}
+
+.edit-profile__menu-item--active {
+    background-color: #009213;
+    color: #fff;
+}
+
+/* Content */
+.edit-profile__content {
+    flex: 2;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-profile__form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.edit-profile__title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.edit-profile__form-group {
+    margin-bottom: 1.5rem;
+}
+
+.edit-profile__label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.edit-profile__input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.edit-profile__submit-button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #059900;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-profile__submit-button:hover {
+    background-color: #036100;
+}

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import "../css/Navbar.css";
@@ -8,6 +8,18 @@ export const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { user, setUser, loading } = useContext(UserContext);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -118,19 +130,18 @@ export const Navbar = () => {
           </li>
         )}
         {user ? (
-          <li className="navbar__user-dropdown">
+          <li className="navbar__user-dropdown" ref={dropdownRef}>
             <button
-              ref={dropdownRef}
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className={`navbar__user-button ${dropdownOpen ? "navbar__user-button--active" : ""}`}
             >
-              {user.name}
+              {user.name} ⏷
             </button>
             {dropdownOpen && (
-              <div 
-                className="navbar__dropdown-menu"
-                style={{ width: dropdownRef.current?.offsetWidth }}
-              >
+              <div className="navbar__dropdown-menu">
+                <Link to={`/edit-profile/${user.id}`} className="navbar__dropdown-item">
+                  ✏️ Edit Profile
+                </Link>
                 <button
                   onClick={() => {
                     handleLogout();
@@ -138,7 +149,7 @@ export const Navbar = () => {
                   }}
                   className="navbar__dropdown-item"
                 >
-                  Logout
+                  🚪 Logout
                 </button>
               </div>
             )}
