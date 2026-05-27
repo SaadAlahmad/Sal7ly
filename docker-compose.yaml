@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: sal7ly_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./postgres_data:/var/lib/postgresql
+
+  redis:
+    image: redis:8-alpine
+    container_name: sal7ly_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  sal7ly_data:
