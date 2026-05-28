@@ -10,7 +10,7 @@ class MeController extends Controller
     public function me(Request $request)
     {
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'account' => $request->user(),
         ]);
     }

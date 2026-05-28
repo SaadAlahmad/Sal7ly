@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 #[Table('craftspeople')]
-#[Fillable(['name', 'email', 'mobile', 'password', 'category_id', 'city', 'bio', 'years_experience', 'availability'])]
+#[Fillable(['name', 'email', 'mobile', 'password', 'city', 'bio', 'years_experience', 'availability'])]
 #[Hidden(['password'])]
 class Craftsman extends Authenticatable
 {

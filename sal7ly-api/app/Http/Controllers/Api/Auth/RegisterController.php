@@ -15,8 +15,11 @@ class RegisterController extends Controller
         $role = $request->input('role');
 
         if($role === 'craftsman') {
-            $data = $request->only(['name', 'email', 'mobile', 'password', 'category_id', 'city', 'bio', 'years_experience']);
-            $account = Craftsman::create($data);
+            $data = $request->only(['name', 'email', 'mobile', 'password', 'city', 'bio', 'years_experience']);
+            $account = new Craftsman();
+            $account->fill($data);
+            $account->category_id = $request->input('category_id');
+            $account->save();
             CraftsmanRating::create([
                 'craftsman_id'   => $account->id,
                 'reviews_count'  => 0,

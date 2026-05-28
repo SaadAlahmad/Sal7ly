@@ -22,29 +22,29 @@ class LoginController extends Controller
 
         if (!$account || !Hash::check($request->input('password'), $account->password)) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Invalid credentials.',
             ], 401);
         }
 
         if ($role === 'craftsman' && !$account->is_verified) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Your account is pending admin approval.',
             ], 403);
         }
 
         if ($role === 'user' && $account->status !== 'active') {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Your account has been suspended.',
             ], 403);
         }
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Login successful.',
-            'token'   => $account->createToken('auth_token')->plainTextToken,
+            'token' => $account->createToken('auth_token')->plainTextToken,
             'account' => $account,
         ]);
     }
