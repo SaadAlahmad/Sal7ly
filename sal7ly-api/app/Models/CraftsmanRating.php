@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable(['craftsman_id', 'reviews_count', 'average_rating', 'bayesian_score'])]
 class CraftsmanRating extends Model
 {
     public $timestamps = false;
