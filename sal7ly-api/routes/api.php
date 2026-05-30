@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\MeController;
@@ -17,9 +18,17 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    // requests
     Route::get('requests', [JobRequestController::class, 'index']);
     Route::post('requests', [JobRequestController::class, 'store']);
     Route::get('requests/{jobRequest}', [JobRequestController::class, 'show']);
     Route::put('requests/{jobRequest}', [JobRequestController::class, 'update']);
     Route::delete('requests/{jobRequest}', [JobRequestController::class, 'destroy']);
+    // applications
+    Route::get('applications', [ApplicationController::class, 'index']);
+    Route::post('applications', [ApplicationController::class, 'store']);
+    Route::get('applications/{application}', [ApplicationController::class, 'show']);
+    Route::put('applications/{application}', [ApplicationController::class, 'update']);
+    Route::delete('applications/{application}', [ApplicationController::class, 'destroy']);
 });
+

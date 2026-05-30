@@ -16,7 +16,7 @@ class Application extends Model
         ];
     }
 
-    public function request(): BelongsTo {
+    public function jobRequest(): BelongsTo {
         return $this->belongsTo(JobRequest::class, 'request_id');
     }
 

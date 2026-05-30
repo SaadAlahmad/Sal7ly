@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\JobRequest\DeleteJobRequestRequest;
 use App\Http\Requests\JobRequest\StoreJobRequestRequest;
 use App\Http\Requests\JobRequest\UpdateJobRequestRequest;
 use App\Models\JobRequest;
@@ -69,7 +70,7 @@ class JobRequestController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, JobRequest $jobRequest) {
+    public function destroy(DeleteJobRequestRequest $request, JobRequest $jobRequest) {
         if(!$this->isOwner($request, $jobRequest)) {
             return response()->json([
                 'status' => false,

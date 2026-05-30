@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+        $middleware->redirectGuestsTo(fn() => response()->json([
+            'status'  => false,
+            'message' => 'Unauthenticated.',
+        ], 401));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, Request $request) {
