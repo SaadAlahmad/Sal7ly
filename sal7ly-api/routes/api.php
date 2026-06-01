@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\MeController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\JobRequestController;
+use App\Http\Controllers\Api\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function() {
@@ -28,7 +29,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('applications', [ApplicationController::class, 'index']);
     Route::post('applications', [ApplicationController::class, 'store']);
     Route::get('applications/{application}', [ApplicationController::class, 'show']);
-    Route::put('applications/{application}', [ApplicationController::class, 'update']);
+    Route::put('applications/{application}', [ApplicationController::class, 'update']); // ACCEPTS THE APPLICATION -> CREATES THE PROJECT & CONVERSATION
     Route::delete('applications/{application}', [ApplicationController::class, 'destroy']);
+    // projects
+    Route::get('projects', [ProjectController::class, 'index']);
+    Route::get('projects/{proj}', [ProjectController::class, 'show']);
+    Route::patch('projects/{proj}/complete', [ProjectController::class, 'complete']);
+    Route::patch('projects/{proj}/confirm', [ProjectController::class, 'confirm']);
+    Route::patch('projects/{proj}/cancel', [ProjectController::class, 'cancel']);
+    Route::post('projects/{proj}/dispute', [ProjectController::class, 'dispute']); // CREATES DISPUTE
 });
 

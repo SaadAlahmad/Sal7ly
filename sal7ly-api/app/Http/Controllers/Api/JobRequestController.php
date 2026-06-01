@@ -46,6 +46,7 @@ class JobRequestController extends Controller
             'data' => $jobRequest,
         ]);
     }
+
     public function update(UpdateJobRequestRequest $request, JobRequest $jobRequest) {
         if(!$this->isOwner($request, $jobRequest)) {
             return response()->json([
