@@ -24,7 +24,6 @@ class StoreReviewRequest extends FormRequest
     {
         return [
             'project_id' => ['required', 'exists:projects,id'],
-            'direction' => ['required', 'in:client_to_craftsman,craftsman_to_client'],
             'rating' => ['required', 'integer', 'between:1,5'],
             'review_text' => ['nullable'],
         ];

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\MeController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\CraftsmanController;
 use App\Http\Controllers\Api\JobRequestController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\ReviewController;
@@ -18,6 +19,10 @@ Route::prefix('auth')->group(function() {
         Route::get('me', [MeController::class, 'me']);
     });
 });
+
+// public -> does not need auth
+Route::get('craftsmen', [CraftsmanController::class, 'index']);
+Route::get('craftsmen/{craftsman}', [CraftsmanController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     // requests
@@ -43,4 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('reviews', [ReviewController::class, 'store']);
     Route::get('reviews/my', [ReviewController::class, 'myReviews']);
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
+    // Craftsman Profile
+    Route::patch('craftsmen/profile', [CraftsmanController::class, 'updateProfile']);
 });
