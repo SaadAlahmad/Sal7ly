@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\MeController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\JobRequestController;
 use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function() {
@@ -38,5 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('projects/{proj}/confirm', [ProjectController::class, 'confirm']);
     Route::patch('projects/{proj}/cancel', [ProjectController::class, 'cancel']);
     Route::post('projects/{proj}/dispute', [ProjectController::class, 'dispute']); // CREATES DISPUTE
+    // Reviews
+    Route::post('reviews', [ReviewController::class, 'store']);
+    Route::get('reviews/my', [ReviewController::class, 'myReviews']);
+    Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
 });
-

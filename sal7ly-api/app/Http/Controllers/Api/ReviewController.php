@@ -12,12 +12,25 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
-    public function index() {
+    public function myReviews(Request $request) {
+        $user = $request->user();
+        if($user instanceof User) {
+            $projectIds = Project::where('user_id', $user->id)->pluck('id');
+            $reviewsGiven = Review::whereIn('project_id', $projectIds)->where('direction', 'client_to_craftsman')->where('status', 'visible')->get();
+            $reviewsReceived = Review::whereIn('project_id', $projectIds)->where('direction', 'craftsman_to_client')->where('status', 'visible')->get();
+        } else {
+            $projectIds = Project::where('craftsman_id', $user->id)->pluck('id');
+            $reviewsGiven = Review::whereIn('project_id', $projectIds)->where('direction', 'craftsman_to_client')->where('status', 'visible')->get();
+            $reviewsReceived = Review::whereIn('project_id', $projectIds)->where('direction', 'client_to_craftsman')->where('status', 'visible')->get();
+        }
 
-    }
-
-    public function myReviews() {
-
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'given' => $reviewsGiven,
+                'received' => $reviewsReceived,
+            ],
+        ]);
     }
 
     public function store(StoreReviewRequest $request) {
@@ -48,7 +61,24 @@ class ReviewController extends Controller
         ], 201);
     }
 
-    public function destroy() {
-
+    public function destroy(Request $request, Review $review) {
+        $user = $request->user();
+        if($user instanceof User) {
+            $projectIds = Project::where('user_id', $user->id)->pluck('id');
+            if (!$projectIds->contains($review->project_id)) return response()->json(['status' => false, 'message' => 'Forbidden'], 403);
+            if ($review->direction !== 'client_to_craftsman' || $review->status !== 'visible') return response()->json(['status' => false, 'message' => 'Forbidden'], 403);
+            $review->status = 'hidden';
+            $review->save();
+        } else {
+            $projectIds = Project::where('craftsman_id', $user->id)->pluck('id');
+            if (!$projectIds->contains($review->project_id)) return response()->json(['status' => false, 'message' => 'Forbidden'], 403);
+            if ($review->direction !== 'craftsman_to_client' || $review->status !== 'visible') return response()->json(['status' => false, 'message' => 'Forbidden'], 403);
+            $review->status = 'hidden';
+            $review->save();
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Review deleted successfully.'
+        ],200);
     }
 }

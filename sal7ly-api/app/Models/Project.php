@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([])]
@@ -37,8 +38,8 @@ class Project extends Model
         return $this->hasOne(Conversation::class);
     }
 
-    public function review(): HasOne {
-        return $this->hasOne(Review::class);
+    public function reviews(): HasMany {
+        return $this->hasMany(Review::class);
     }
 
     public function dispute(): HasOne {

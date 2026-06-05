@@ -125,4 +125,3 @@ class ProjectController extends Controller
         ], 201);
     }
 }
-
