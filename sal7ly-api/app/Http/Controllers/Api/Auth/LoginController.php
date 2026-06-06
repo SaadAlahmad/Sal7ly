@@ -34,6 +34,13 @@ class LoginController extends Controller
             ], 403);
         }
 
+        if ($role === 'craftsman' && $account->status === 'banned') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Your account has been suspended.',
+            ], 403);
+        }
+
         if ($role === 'user' && $account->status !== 'active') {
             return response()->json([
                 'status' => false,
