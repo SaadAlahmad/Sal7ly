@@ -78,4 +78,65 @@ class JobRequestTest extends TestCase
         $this->assertFalse($ids->contains($requestB->id)); // Different City => shouldn't appear
         $this->assertFalse($ids->contains($requestC->id)); // Different Category => shouldn't appear
     }
+
+    public function test_client_can_update_rqeuest(): void {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $request = JobRequest::factory()->create(['user_id' => $user->id]);
+        $response = $this->actingAs($user)->putJson("api/requests/{$request->id}", [
+            'title' => 'Updated Title',
+            'details' => 'Updated Details',
+            'city' => 'Jenin',
+            'location' => 'Updated Location',
+            'budget' => '250',
+        ]);
+        $response->assertOk();
+        $response->assertJson([
+            'status' => true,
+            'message' => 'Job request updated successfully',
+        ]);
+        $response->assertJsonPath('data.title', 'Updated Title');
+        $response->assertJsonPath('data.city', 'Jenin');
+        $response->assertJsonPath('data.budget', '250.00');
+        $this->assertDatabaseHas('requests', [
+            'id' => $request->id,
+            'title' => 'Updated Title',
+            'city' => 'Jenin',
+            'location' => 'Updated Location',
+        ]);
+    }
+
+    public function test_client_can_not_update_someone_elses_request(): void {
+        $userA = User::factory()->create(); // owns the request
+        /** @var User $userB */
+        $userB = User::factory()->create(); // tries to modify request
+        $request = JobRequest::factory()->create(['user_id' => $userA->id]);
+        $response = $this->actingAs($userB)->putJson("api/requests/{$request->id}", [
+            'title' => 'Updated Title',
+            'details' => 'Updated Details',
+            'city' => 'Jenin',
+            'location' => 'Updated Location',
+            'budget' => '250',
+        ]);
+        $response->assertStatus(403);
+        $request->refresh();
+        $this->assertNotEquals('Updated Title', $request->title);
+        $this->assertNotEquals('Updated Details', $request->details);
+        $this->assertNotEquals('Jenin', $request->city);
+    }
+
+    public function test_client_can_close_their_own_request(): void {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $request = JobRequest::factory()->create(['user_id' => $user->id]);
+        $response = $this->actingAs($user)->delete("api/requests/{$request->id}");
+        $response->assertOk();
+            $response->assertJson([
+            'status' => true,
+            'message' => 'Job request closed.',
+        ]);
+        $request->refresh();
+        $this->assertEquals('closed', $request->status);
+        $this->assertEquals('user', $request->closure_reason);
+    }
 }
