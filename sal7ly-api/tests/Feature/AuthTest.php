@@ -13,9 +13,6 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     */
     public function test_user_can_register(): void
     {
         $response = $this->postJson('api/auth/register', [

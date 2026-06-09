@@ -14,9 +14,6 @@ class JobRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     */
     public function test_client_can_create_job_request(): void
     {
         /** @var User $user */
@@ -36,7 +33,7 @@ class JobRequestTest extends TestCase
 
     public function test_craftsman_can_not_create_job_request(): void {
         /** @var Craftsman $craftsman */
-        $craftsman = Craftsman::factory()->create();
+        $craftsman = Craftsman::factory()->create(['is_verified' => true]);
         $category = Category::factory()->create();
         $response = $this->actingAs($craftsman)->postJson('api/requests', [
             'category_id' => $category->id,
