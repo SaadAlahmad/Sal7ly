@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Craftsman;
+use App\Models\CraftsmanRating;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,5 +41,17 @@ class CraftsmanFactory extends Factory
             'is_badge_verified' => false,
             'credits_balance' => 0,
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Craftsman $craftsman) {
+            CraftsmanRating::create([
+                'craftsman_id' => $craftsman->id,
+                'reviews_count' => 0,
+                'average_rating' => 0,
+                'bayesian_score' => 0,
+            ]);
+        });
     }
 }

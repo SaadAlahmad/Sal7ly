@@ -16,8 +16,7 @@ class ProjectTest extends TestCase
 {
     use RefreshDatabase;
 
-        private function createProject(): array
-    {
+    private function createProject(): array {
         $user = User::factory()->create();
         $craftsman = Craftsman::factory()->create(['is_verified' => true]);
         $jobRequest = JobRequest::factory()->create(['user_id' => $user->id]);
