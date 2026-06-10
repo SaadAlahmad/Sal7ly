@@ -7,14 +7,8 @@ use App\Models\Review;
 
 class ReviewObserver
 {
-    /**
-     * Handle the Review "created" event.
-     */
-    public function created(Review $review): void
+    private function recalculateRating(int $craftsmanId): void
     {
-        if ($review->direction !== 'client_to_craftsman') return;
-
-        $craftsmanId = $review->project->craftsman_id;
         $rating = CraftsmanRating::where('craftsman_id', $craftsmanId)->first();
 
         $totalReviews = Review::where('direction', 'client_to_craftsman')
@@ -25,18 +19,37 @@ class ReviewObserver
         $averageRating = Review::where('direction', 'client_to_craftsman')
             ->whereHas('project', fn($q) => $q->where('craftsman_id', $craftsmanId))
             ->where('status', 'visible')
-            ->avg('rating');
+            ->avg('rating') ?? 0;
 
-        // Bayesian formula: (C * m + R * v) / (C + v)
-        // C = global average, m = minimum reviews threshold, R = craftsman average, v = review count
-        $globalAverage = 3.0; // neutral middle of 1-5 scale
-        $minimumReviews = 5;  // reviews needed before score is trusted
+        $globalAverage = 3.0;
+        $minimumReviews = 5;
 
-        $bayesianScore = (($minimumReviews * $globalAverage) + ($totalReviews * $averageRating)) / ($minimumReviews + $totalReviews);
+        $bayesianScore = $totalReviews > 0
+            ? (($minimumReviews * $globalAverage) + ($totalReviews * $averageRating)) / ($minimumReviews + $totalReviews)
+            : 0;
 
         $rating->reviews_count = $totalReviews;
         $rating->average_rating = round($averageRating, 2);
         $rating->bayesian_score = round($bayesianScore, 4);
         $rating->save();
+    }
+
+    /**
+     * Handle the Review "created" event.
+     */
+    public function created(Review $review): void
+    {
+        if ($review->direction !== 'client_to_craftsman') return;
+        $this->recalculateRating($review->project->craftsman_id);
+    }
+
+    /**
+     * Handle the Review "updated" event.
+     */
+    public function updated(Review $review): void
+    {
+        if ($review->direction !== 'client_to_craftsman') return;
+        if (!$review->wasChanged('status')) return;
+        $this->recalculateRating($review->project->craftsman_id);
     }
 }

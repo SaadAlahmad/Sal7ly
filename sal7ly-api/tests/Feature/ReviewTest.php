@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use App\Models\Application;
 use App\Models\Conversation;
 use App\Models\Craftsman;
+use App\Models\CraftsmanRating;
 use App\Models\JobRequest;
 use App\Models\Project;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -143,5 +145,59 @@ class ReviewTest extends TestCase
             'review_text' => 'Good work',
             'status' => 'visible',
         ]);
+    }
+
+    public function test_user_can_hide_their_review(): void
+    {
+        ['user' => $user, 'craftsman' => $craftsman, 'project' => $project] = $this->createProject();
+        /** @var User $user */
+        /** @var Craftsman $craftsman */
+        $this->actingAs($craftsman)->patch("api/projects/{$project->id}/complete");
+        $this->actingAs($user)->patch("api/projects/{$project->id}/confirm");
+        $reviewClient = Review::factory()->create([
+            'project_id' => $project->id,
+            'direction' => 'client_to_craftsman',
+            'rating' => 4,
+            'review_text' => 'Very good job.'
+        ]);
+        $reviewCraftsman = Review::factory()->create([
+            'project_id' => $project->id,
+            'direction' => 'craftsman_to_client',
+            'rating' => 4,
+            'review_text' => 'Nice client.',
+        ]);
+        $responseClient = $this->actingAs($user)->delete("api/reviews/{$reviewClient->id}");
+        $responseCraftsman = $this->actingAs($craftsman)->delete("api/reviews/{$reviewCraftsman->id}");
+        $responseClient->assertOk();
+        $responseCraftsman->assertOk();
+        $this->assertDatabaseHas('reviews', [
+            'project_id' => $project->id,
+            'review_text' => 'Very good job.',
+            'direction' => 'client_to_craftsman',
+            'status' => 'hidden',
+        ]);
+        $this->assertDatabaseHas('reviews', [
+            'project_id' => $project->id,
+            'review_text' => 'Nice client.',
+            'direction' => 'craftsman_to_client',
+            'status' => 'hidden',
+        ]);
+    }
+
+    public function test_bayesian_score_updates_after_review(): void
+    {
+        ['user' => $user, 'craftsman' => $craftsman, 'project' => $project] = $this->createProject();
+        $this->actingAs($craftsman)->patch("api/projects/{$project->id}/complete");
+        $this->actingAs($user)->patch("api/projects/{$project->id}/confirm");
+        /** @var User $user */
+        $this->actingAs($user)->postJson('api/reviews', [
+            'project_id' => $project->id,
+            'rating' => 5,
+            'review_text' => 'Excellent work.',
+        ]);
+        $rating = CraftsmanRating::where('craftsman_id', $craftsman->id)->first();
+        $this->assertEquals(1, $rating->reviews_count);
+        $this->assertEquals(5.00, $rating->average_rating);
+        $this->assertGreaterThan(0, $rating->bayesian_score);
     }
 }
