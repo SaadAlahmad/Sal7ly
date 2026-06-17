@@ -52,6 +52,7 @@ class LoginController extends Controller
             'status' => true,
             'message' => 'Login successful.',
             'token' => $account->createToken('auth_token')->plainTextToken,
+            'role' => $role,
             'account' => $account,
         ]);
     }
